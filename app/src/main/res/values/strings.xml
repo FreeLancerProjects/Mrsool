@@ -1,0 +1,100 @@
+<resources>
+    <string name="app_name">MRSOOLK</string>
+    <string name="notifications">Notifications</string>
+    <string name="si_su">Please Sign in or sign up .</string>
+    <string name="ok">Ok</string>
+    <string name="sign_in">Sign In</string>
+    <string name="back">Back</string>
+    <string name="sign_in_btn">Sign In</string>
+    <string name="new_account">New Account</string>
+    <string name="field_req">Field required</string>
+    <string name="inv_phone">Invalid phone</string>
+    <string name="signning_in">Signing In...</string>
+    <string name="full_name">Full name</string>
+    <string name="phone">Phone</string>
+    <string name="email_address">Email address</string>
+    <string name="password">Password</string>
+    <string name="wait">Wait...</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="perm_image_denied">Permission denied</string>
+    <string name="upload_personal_photo">Upload personal photo</string>
+    <string name="rsa">SR</string>
+    <string name="home">Home</string>
+    <string name="offers">Offers</string>
+    <string name="my_order">My orders</string>
+    <string name="fav">Favourite</string>
+    <string name="me">Me</string>
+    <string name="cancel">Cancel</string>
+    <string name="message">Message</string>
+    <string name="send">Send</string>
+    <string name="update">Update</string>
+    <string name="contact_us">Contact us</string>
+    <string name="delete">Delete</string>
+
+    <string name="update_password">Update password</string>
+    <string name="current_password">Current password</string>
+    <string name="new_password">New password</string>
+    <string name="update_phone">Update phone</string>
+    <string name="succ">Success</string>
+    <string name="failed">Failed try again later</string>
+    <string name="phone_number_not_exists">Phone number not exists</string>
+    <string name="sgin_out">Signing out...</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="order_sent_successfully">Order sent successfully</string>
+    <string name="updating_phone">Updating phone number...</string>
+    <string name="incorrect_old_password">incorrect old password</string>
+    <string name="sign_up_with_your_phone">Sign up with your phone</string>
+    <string name="skip">Skip</string>
+
+    <string name="you_are_just_one_step_away">You are just one step away...</string>
+    <string name="never_share_phone_number">We will never share or sell your phone number</string>
+    <string name="your_privacy_guaranteed">Your privacy is 100% guaranteed</string>
+    <string name="by_using_this_app_you_agree_to">By using this app you agree to</string>
+
+    <string name="terms_and_conditions">Terms and conditions</string>
+    <string name="stores">Stores</string>
+    <string name="my_orders">My Orders</string>
+    <string name="profile">Profile</string>
+    <string name="new_order">New</string>
+    <string name="current">Current</string>
+    <string name="previous">Previous</string>
+
+
+    <string name="personal_information">Personal information</string>
+    <string name="_500_500_pixel">500 * 500 pixel</string>
+    <string name="country">Country</string>
+
+    <string name="pers_photo_req">Personal photo required</string>
+    <string name="inv_email">Invalid email</string>
+    <string name="inc_img_path">incorrect image path</string>
+    <string name="allow_mrsoolk_to_access_gps">Allow MRSOOLK To Access GPS</string>
+    <string name="allow">Allow</string>
+    <string name="deny">Deny</string>
+    <string name="rate">Rate</string>
+    <string name="search_for_stores">Search for stores...</string>
+    <string name="something">Something went haywire try again later</string>
+    <string name="fetching_your_location">Fetching your location....</string>
+    <string name="there_are_no_nearby_stores">There are no nearby stores</string>
+    <string name="active">Open</string>
+    <string name="inactive">Closed</string>
+    <string name="im_a_courier">I\'m a Courier</string>
+    <string name="courier_in">Courier in</string>
+    <string name="state">State</string>
+    <string name="away">Km away</string>
+    <string name="shop_info">Shop Info</string>
+    <string name="pending_order">Pending Orders</string>
+    <string name="view_in_map">View in map</string>
+    <string name="km">Km</string>
+    <string name="nearby">nearby</string>
+    <string name="florist">florist</string>
+    <string name="bakery">bakery</string>
+    <string name="supermarket">supermarket</string>
+    <string name="cafe">cafe</string>
+    <string name="restaurant">restaurant</string>
+    <string name="store">store</string>
+    <string name="recent">Recent</string>
+    <string name="near_me">Near me</string>
+    <string name="today_s">Today\'s</string>
+    <string name="all_day">All day</string>
+
+</resources>

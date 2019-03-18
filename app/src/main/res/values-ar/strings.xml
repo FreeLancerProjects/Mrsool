@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">مرسولك</string>
+    <string name="notifications">الإشعارات</string>
+    <string name="si_su">قم بتسجيل الدخول أو إنشاء حساب جديد .</string>
+    <string name="ok">حسنا</string>
+    <string name="sign_in">تسجيل الدخول</string>
+    <string name="back">عودة</string>
+    <string name="sign_in_btn">دخول</string>
+    <string name="new_account">تسجيل جديد</string>
+    <string name="field_req">الحقل مطلوب</string>
+    <string name="inv_phone">رقم الجوال غير صحيح</string>
+    <string name="signning_in">جار تسجيل الدخول</string>
+    <string name="full_name">الاسم</string>
+    <string name="phone">رقم الهاتف</string>
+    <string name="email_address">البريد الالكتروني</string>
+    <string name="password">كلمة المرور</string>
+    <string name="sign_up">سجل</string>
+    <string name="perm_image_denied">لم يتمكن التطبيق للوصل الى الصور</string>
+    <string name="upload_personal_photo">رفع الصورة الشخصية</string>
+    <string name="wait">إنتظر قليلا...</string>
+    <string name="rsa">ر.س</string>
+    <string name="home">متجر</string>
+    <string name="offers">العروض</string>
+    <string name="my_order">طلباتي</string>
+    <string name="fav">مفضلة</string>
+
+    <string name="me">حسابي</string>
+    <string name="cancel">إلغاء</string>
+    <string name="message">الرسالة</string>
+    <string name="send">إرسال</string>
+    <string name="update">تعديل</string>
+    <string name="contact_us">إتصل بنا</string>
+    <string name="delete">حذف</string>
+
+    <string name="update_password">تعديل كلمة المرور</string>
+    <string name="current_password">كلمة المرور الحالية</string>
+    <string name="new_password">كلمة المرور الجديدة</string>
+    <string name="update_phone">تعديل رقم الهاتف</string>
+    <string name="succ">تم بنجاح</string>
+    <string name="failed">فشل حاول مرة اخرى لاحقا</string>
+
+    <string name="phone_number_not_exists">لم يتم التسجيل برقم الجوال من قبل</string>
+    <string name="sgin_out">جار تسجيل الخروج...</string>
+    <string name="sign_out">تسجيل الخروج</string>
+    <string name="order_sent_successfully">تم إرسال الطلب بنجاح</string>
+    <string name="updating_phone">جار تعديل رقم الجوال...</string>
+    <string name="incorrect_old_password">كلمة المرور القديمة غير صحيحة</string>
+    <string name="sign_up_with_your_phone">التسجيل برقم الجوال</string>
+    <string name="skip">ليس الآن</string>
+    <string name="you_are_just_one_step_away">خطوة اخيرة...</string>
+    <string name="never_share_phone_number">بياناتك في الحفظ والصون لدينا,</string>
+    <string name="your_privacy_guaranteed">لن نقوم بمشاركة بياناتك لاي احد ولا لأي سبب.</string>
+    <string name="by_using_this_app_you_agree_to">إستخدامك لهذا التطبيق يعني الموافقة على</string>
+    <string name="terms_and_conditions">الشروط والاحكام</string>
+    <string name="stores">متاجر</string>
+    <string name="my_orders">طلباتي</string>
+    <string name="profile">حسابي</string>
+    <string name="new_order">الجديدة</string>
+    <string name="current">الحالية</string>
+    <string name="previous">السابقة</string>
+    <string name="personal_information">المعلومات الشخصية</string>
+    <string name="_500_500_pixel">500 * 500 بكسل</string>
+    <string name="country">المدينة</string>
+
+    <string name="pers_photo_req">الصورة الشخصية مطلوبة</string>
+    <string name="inv_email">البريد الالكتروني غير صحيح</string>
+    <string name="inc_img_path">مسار الصورة غير صحيح</string>
+    <string name="allow_mrsoolk_to_access_gps">السماح لمرسولك للوصول لل GPS</string>
+    <string name="allow">السماح</string>
+    <string name="deny">رفض</string>
+    <string name="rate">التقييم</string>
+    <string name="search_for_stores">البحث عن متاجر...</string>
+    <string name="something">تحقق من الاتصال بالانترنت حاول مرة اخرى لاحقا</string>
+    <string name="fetching_your_location">جار تحديد موقعك....</string>
+    <string name="there_are_no_nearby_stores">لا توجد متاجر قريبة منك.</string>
+    <string name="active">مفتوح</string>
+    <string name="inactive">مغلق</string>
+    <string name="im_a_courier">سجلني كمرسول</string>
+    <string name="courier_in">مرسول متواجد</string>
+    <string name="state">الحالة</string>
+    <string name="away"> كم يبعد عنك</string>
+    <string name="shop_info">معلومات المتجر</string>
+    <string name="pending_order">طلبات في الانتظار</string>
+    <string name="view_in_map">إطلع على الخريطة</string>
+    <string name="km">كم</string>
+    <string name="nearby">الاقرب</string>
+    <string name="florist">هدايا</string>
+    <string name="bakery">حلويات</string>
+    <string name="supermarket">سوبرماركت</string>
+    <string name="cafe">كافيهات</string>
+    <string name="restaurant">مطاعم</string>
+    <string name="store">متاجر</string>
+    <string name="recent">آخر ماقمت بالبحث عنة</string>
+
+    <string name="near_me">الاقرب مني</string>
+    <string name="today_s">اليوم</string>
+    <string name="all_day">طول اليوم</string>
+
+</resources>
