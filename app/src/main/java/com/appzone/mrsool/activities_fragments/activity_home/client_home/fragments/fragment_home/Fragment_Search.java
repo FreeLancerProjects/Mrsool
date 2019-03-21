@@ -271,6 +271,7 @@ public class Fragment_Search extends Fragment {
                     public void onFailure(Call<SearchDataModel> call, Throwable t) {
                         try {
 
+
                             progBar.setVisibility(View.GONE);
                             Toast.makeText(activity, getString(R.string.something), Toast.LENGTH_LONG).show();
                         } catch (Exception e) {
@@ -351,7 +352,16 @@ public class Fragment_Search extends Fragment {
                 {
                     if (address.getLocality()!=null)
                     {
-                        user_address = address.getLocality();
+                        if (address.getSubAdminArea()!=null)
+                        {
+                            user_address = address.getSubAdminArea();
+
+                        }else {
+                            user_address = address.getLocality();
+
+                        }
+
+
                     }
                 }
             }

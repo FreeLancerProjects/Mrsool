@@ -32,7 +32,7 @@ import com.squareup.picasso.Picasso;
 import java.io.File;
 import java.util.Locale;
 
-public class Fragment_Complete_Profile extends Fragment {
+public class Fragment_Sign_Up extends Fragment {
 
     private FloatingActionButton fab;
     private SignInActivity activity;
@@ -50,8 +50,8 @@ public class Fragment_Complete_Profile extends Fragment {
         return view;
     }
 
-    public static Fragment_Complete_Profile newInstance(){
-        return new Fragment_Complete_Profile();
+    public static Fragment_Sign_Up newInstance(){
+        return new Fragment_Sign_Up();
     }
     private void initView(View view) {
 

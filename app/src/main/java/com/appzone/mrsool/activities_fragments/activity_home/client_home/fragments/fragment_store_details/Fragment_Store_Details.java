@@ -17,8 +17,6 @@ import android.widget.TextView;
 
 import com.appzone.mrsool.R;
 import com.appzone.mrsool.activities_fragments.activity_home.client_home.activity.ClientHomeActivity;
-import com.appzone.mrsool.adapters.SliderAdapter;
-import com.appzone.mrsool.adapters.ViewPagerAdapter;
 import com.appzone.mrsool.models.PlaceModel;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.SphericalUtil;
@@ -26,8 +24,6 @@ import com.google.maps.android.SphericalUtil;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import io.paperdb.Paper;
 
@@ -47,10 +43,7 @@ public class Fragment_Store_Details extends Fragment {
     private double lat = 0.0,lng = 0.0;
     private List<String> titleList;
     private List<Fragment> fragmentList;
-    private ViewPagerAdapter viewPagerAdapter;
-    private SliderAdapter sliderAdapter;
-    private Timer timer;
-    private TimerTask timerTask;
+
 
 
     public static Fragment_Store_Details newInstance(PlaceModel placeModel, double lat , double lng)
@@ -131,41 +124,10 @@ public class Fragment_Store_Details extends Fragment {
         fragmentList.add(Fragment_Details.newInstance(placeModel,lat,lng));
         fragmentList.add(Fragment_Pending_Orders.newInstance(placeModel));
 
-        viewPagerAdapter = new ViewPagerAdapter(getChildFragmentManager());
-        viewPagerAdapter.AddTitles(titleList);
-        viewPagerAdapter.AddFragments(fragmentList);
-        pager.setAdapter(viewPagerAdapter);
-        pager.setOffscreenPageLimit(2);
-    }
-
-    private void updateSliderAdaptr()
-    {
 
     }
 
-    private class MyTimerTask extends TimerTask{
-        @Override
-        public void run() {
-            activity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
 
-                }
-            });
-        }
-    }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        if (timer!=null)
-        {
-            timer.purge();
-            timer.cancel();
-        }
-        if (timerTask!=null)
-        {
-            timerTask.cancel();
-        }
-    }
+
 }

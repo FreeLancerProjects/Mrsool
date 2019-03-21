@@ -26,6 +26,7 @@ import com.appzone.mrsool.activities_fragments.activity_home.client_home.fragmen
 import com.appzone.mrsool.activities_fragments.activity_home.client_home.fragments.fragment_home.Fragment_Client_Store;
 import com.appzone.mrsool.activities_fragments.activity_home.client_home.fragments.fragment_home.Fragment_Home;
 import com.appzone.mrsool.activities_fragments.activity_home.client_home.fragments.fragment_home.Fragment_Search;
+import com.appzone.mrsool.activities_fragments.activity_home.client_home.fragments.fragment_home.Fragment_Settings;
 import com.appzone.mrsool.activities_fragments.activity_home.client_home.fragments.fragment_orders.Fragment_Client_Orders;
 import com.appzone.mrsool.activities_fragments.activity_home.client_home.fragments.fragment_store_details.Fragment_Store_Details;
 import com.appzone.mrsool.language.Language_Helper;
@@ -57,6 +58,7 @@ public class ClientHomeActivity extends AppCompatActivity {
     private Fragment_Client_Profile fragment_client_profile;
     private Fragment_Store_Details fragment_store_details;
     private Fragment_Search fragment_search;
+    private Fragment_Settings fragment_settings;
     private UserSingleTone userSingleTone;
     private UserModel userModel;
     private Preferences preferences;
@@ -64,6 +66,7 @@ public class ClientHomeActivity extends AppCompatActivity {
     private ProgressDialog dialog;
     private Location location;
     private String current_lang;
+    private String lastSelectedFragment="";
 
     @Override
     protected void attachBaseContext(Context base) {
@@ -128,7 +131,7 @@ public class ClientHomeActivity extends AppCompatActivity {
     ///////////////////////////////////
 
     public void DisplayFragmentHome() {
-
+        lastSelectedFragment = "";
 
         if (fragment_home == null) {
             fragment_home = Fragment_Home.newInstance();
@@ -146,6 +149,8 @@ public class ClientHomeActivity extends AppCompatActivity {
     }
 
     public void DisplayFragmentStore() {
+
+        lastSelectedFragment = "fragment_client_store";
 
         if (fragment_home != null && fragment_home.isAdded()) {
             fragment_home.updateBottomNavigationPosition(0);
@@ -260,6 +265,8 @@ public class ClientHomeActivity extends AppCompatActivity {
 
         if (location!=null)
         {
+            lastSelectedFragment = "fragment_search";
+
             fragment_search = Fragment_Search.newInstance(location.getLatitude(),location.getLongitude());
 
             if (fragment_home!=null&&fragment_home.isAdded())
@@ -278,9 +285,32 @@ public class ClientHomeActivity extends AppCompatActivity {
 
     }
 
+    public void DisplayFragmentSettings() {
+
+
+
+            fragment_settings = Fragment_Settings.newInstance();
+
+            if (fragment_home!=null&&fragment_home.isAdded())
+            {
+                fragmentManager.beginTransaction().hide(fragment_home).commit();
+            }
+
+            if (fragment_settings.isAdded()) {
+                fragmentManager.beginTransaction().show(fragment_settings).commit();
+
+            } else {
+                fragmentManager.beginTransaction().add(R.id.fragment_app_container, fragment_settings, "fragment_settings").addToBackStack("fragment_settings").commit();
+            }
+
+
+
+    }
+
 
     public void DisplayFragmentStoreDetails(PlaceModel placeModel)
     {
+
         if (fragment_home != null && fragment_home.isAdded()) {
             fragmentManager.beginTransaction().hide(fragment_home).commit();
         }
@@ -415,6 +445,57 @@ public class ClientHomeActivity extends AppCompatActivity {
     {
         if (fragment_store_details!=null&&fragment_store_details.isVisible())
         {
+            if (lastSelectedFragment.equals("fragment_search"))
+            {
+                super.onBackPressed();
+            }else if (lastSelectedFragment.equals("fragment_client_store"))
+            {
+                super.onBackPressed();
+
+                DisplayFragmentHome();
+
+            }
+
+        }
+        else if (fragment_search!=null&&fragment_search.isVisible())
+        {
+            super.onBackPressed();
+            DisplayFragmentHome();
+
+        }else if (fragment_settings!=null&&fragment_settings.isVisible())
+        {
+            super.onBackPressed();
+            DisplayFragmentHome();
+
+        }
+        else if (fragment_home!=null&&fragment_home.isVisible())
+        {
+            if (fragment_client_store!=null&&fragment_client_store.isVisible())
+            {
+                finish();
+            }else
+            {
+                DisplayFragmentStore();
+            }
+        }else
+            {
+                String name = fragmentManager.getBackStackEntryAt(fragmentManager.getBackStackEntryCount()-1).getName();
+                if (name.equals("fragment_search"))
+                {
+
+                }else if (name.equals("fragment_store_details"))
+                {
+                    super.onBackPressed();
+                    DisplayFragmentHome();
+                }
+                else if (name.equals("fragment_settings"))
+                {
+                    super.onBackPressed();
+                    DisplayFragmentHome();
+                }
+            }
+        /*if (fragment_store_details!=null&&fragment_store_details.isVisible())
+        {
             fragmentManager.popBackStack("fragment_store_details",FragmentManager.POP_BACK_STACK_INCLUSIVE);
             DisplayFragmentHome();
         }else if (fragment_search!=null&&fragment_search.isVisible())
@@ -436,7 +517,7 @@ public class ClientHomeActivity extends AppCompatActivity {
                     DisplayFragmentStore();
                 }
 
-        }
+        }*/
     }
     @Override
     public void onBackPressed() {

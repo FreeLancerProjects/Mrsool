@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.appzone.mrsool.models.Favourite_location;
 import com.appzone.mrsool.models.QueryModel;
 import com.appzone.mrsool.models.UserModel;
 import com.appzone.mrsool.tags.Tags;
@@ -184,6 +185,24 @@ public class Preferences {
         }
 
         return isIn;
+    }
+
+    public void SaveFavouriteLocation(Context context,Favourite_location favourite_location)
+    {
+        String gson = new Gson().toJson(favourite_location);
+        SharedPreferences preferences = context.getSharedPreferences("fav_loc",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("location",gson);
+        editor.apply();
+
+    }
+
+    public Favourite_location getFavouriteLocation(Context context)
+    {
+        SharedPreferences preferences = context.getSharedPreferences("fav_loc",Context.MODE_PRIVATE);
+        String gson = preferences.getString("location","");
+        Favourite_location favourite_location = new Gson().fromJson(gson,Favourite_location.class);
+        return favourite_location;
     }
     public void ClearPreference(Context context)
     {

@@ -96,5 +96,30 @@
     <string name="near_me">الاقرب مني</string>
     <string name="today_s">اليوم</string>
     <string name="all_day">طول اليوم</string>
+    <string name="account_balance">رصيد الحساب</string>
+    <string name="user_feedback">التعليقات</string>
+    <string name="logout">تسجيل الخروج</string>
+    <string name="my_field_complains">قائمة الشكاوي المقدمة</string>
+    <string name="edit_profile">تعديل الملف الشخصي</string>
+    <string name="language_settings">إعدادات اللغة</string>
+    <string name="terms_of_service">شروط الإستخدام</string>
+    <string name="privacy_policy">سياسة الخصوصية</string>
+    <string name="rate_this_app">قيم التطبيق</string>
+    <string name="help">مساعدة</string>
+    <string name="about_tour">نبذة عن التطبيق</string>
+    <string name="settings">الإعدادات</string>
+    <string name="orders_count">عدد الطلبات</string>
+    <string name="order_now">إطلب الان</string>
+    <string name="delivery_location">مكان التسليم</string>
+    <string name="choose_delivery_location">إختر عنوان التوصيل</string>
+    <string name="delivery_time">وقت التوصيل</string>
+    <string name="check_here_to_choose_delivery_time">إضغط هنا لاختيار وقت التوصيل</string>
+    <string name="write_order_details">إكتب هنا تفاصيل طلبك من المحل مثلا: 1 هامبرجر بالجبنةو 1 بطاطس كبير ونرجو منك كتابة القيمة التقديرية للطلب حتى يتسنى للمرسول خدمتك.</string>
+    <string name="set_location_on_map">حدد الموقع على الخريطة</string>
+    <string name="save_favorite_location">حفظ الموقع في المفضلة</string>
+    <string name="name">الاسم</string>
+    <string name="enter_name">أدخل الاسم</string>
+    <string name="save">حفظ</string>
+    <string name="cancel2">تراجع</string>
 
 </resources>

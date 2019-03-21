@@ -11,7 +11,7 @@ import android.util.Log;
 import com.appzone.mrsool.R;
 import com.appzone.mrsool.activities_fragments.activity_home.client_home.activity.ClientHomeActivity;
 import com.appzone.mrsool.activities_fragments.activity_sign_in.fragments.Fragment_Chooser_Login;
-import com.appzone.mrsool.activities_fragments.activity_sign_in.fragments.Fragment_Complete_Profile;
+import com.appzone.mrsool.activities_fragments.activity_sign_in.fragments.Fragment_Sign_Up;
 import com.appzone.mrsool.activities_fragments.activity_sign_in.fragments.Fragment_Language;
 import com.appzone.mrsool.activities_fragments.activity_sign_in.fragments.Fragment_Phone;
 import com.appzone.mrsool.activities_fragments.terms_conditions.TermsConditionsActivity;
@@ -27,7 +27,7 @@ public class SignInActivity extends AppCompatActivity {
     private Fragment_Language fragment_language;
     private Fragment_Chooser_Login fragment_chooser_login;
     private Fragment_Phone fragment_phone;
-    private Fragment_Complete_Profile fragment_complete_profile;
+    private Fragment_Sign_Up fragment_signUp;
     private Preferences preferences;
     private String phone = "";
     private String current_lang;
@@ -128,17 +128,17 @@ public class SignInActivity extends AppCompatActivity {
         {
             fragmentManager.beginTransaction().hide(fragment_phone).commit();
         }
-        if (fragment_complete_profile == null)
+        if (fragment_signUp == null)
         {
-            fragment_complete_profile = Fragment_Complete_Profile.newInstance();
+            fragment_signUp = Fragment_Sign_Up.newInstance();
         }
-        if (fragment_complete_profile.isAdded())
+        if (fragment_signUp.isAdded())
         {
-            fragmentManager.beginTransaction().show(fragment_complete_profile).commit();
+            fragmentManager.beginTransaction().show(fragment_signUp).commit();
 
         }else
             {
-                fragmentManager.beginTransaction().add(R.id.fragment_sign_in_container,fragment_complete_profile,"fragment_complete_profile").addToBackStack("fragment_complete_profile").commit();
+                fragmentManager.beginTransaction().add(R.id.fragment_sign_in_container, fragment_signUp,"fragment_signUp").addToBackStack("fragment_signUp").commit();
 
             }
 
@@ -158,6 +158,7 @@ public class SignInActivity extends AppCompatActivity {
     public void NavigateToTermsActivity()
     {
         Intent intent = new Intent(this, TermsConditionsActivity.class);
+        intent.putExtra("type",1);
         startActivity(intent);
 
     }
@@ -188,7 +189,7 @@ public class SignInActivity extends AppCompatActivity {
 
     public void Back()
     {
-        if (fragment_complete_profile!=null&&fragment_complete_profile.isVisible())
+        if (fragment_signUp !=null&& fragment_signUp.isVisible())
         {
             DisplayFragmentPhone();
         }else if (fragment_phone!=null&&fragment_phone.isVisible())

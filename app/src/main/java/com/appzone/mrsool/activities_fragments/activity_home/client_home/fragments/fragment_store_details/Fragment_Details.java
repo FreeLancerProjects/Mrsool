@@ -24,13 +24,16 @@ import com.appzone.mrsool.models.PlaceDetailsModel;
 import com.appzone.mrsool.models.PlaceModel;
 import com.appzone.mrsool.remote.Api;
 import com.appzone.mrsool.share.Common;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MapStyleOptions;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.ui.IconGenerator;
 
@@ -51,6 +54,7 @@ public class Fragment_Details extends Fragment implements OnMapReadyCallback {
     private static final String TAG2 = "LAT";
     private static final String TAG3 = "LNG";
     //٣٠.٦٠١٥٣,٣٠.٩٦٧٥١
+
     private ClientHomeActivity activity;
     private LinearLayout ll_map;
     private TextView tv_delegate_count,tv_name,tv_address,tv_state,tv;
@@ -356,14 +360,20 @@ public class Fragment_Details extends Fragment implements OnMapReadyCallback {
         IconGenerator iconGenerator= new IconGenerator(activity);
         iconGenerator.setContentView(view);
         iconGenerator.setBackground(null);
-        mMap.addMarker(new MarkerOptions().position(new LatLng(lat,lng)).icon(BitmapDescriptorFactory.fromBitmap(iconGenerator.makeIcon())).anchor(iconGenerator.getAnchorU(),iconGenerator.getAnchorV()));
+        Marker marker1 = mMap.addMarker(new MarkerOptions().position(new LatLng(lat, lng)).icon(BitmapDescriptorFactory.fromBitmap(iconGenerator.makeIcon())).anchor(iconGenerator.getAnchorU(), iconGenerator.getAnchorV()));
 
         iconGenerator.setContentView(view2);
         iconGenerator.setBackground(null);
 
-        mMap.addMarker(new MarkerOptions().position(new LatLng(placeModel.getLat(),placeModel.getLng())).icon(BitmapDescriptorFactory.fromBitmap(iconGenerator.makeIcon())).anchor(iconGenerator.getAnchorU(),iconGenerator.getAnchorV()));
+        Marker marker2= mMap.addMarker(new MarkerOptions().position(new LatLng(placeModel.getLat(),placeModel.getLng())).icon(BitmapDescriptorFactory.fromBitmap(iconGenerator.makeIcon())).anchor(iconGenerator.getAnchorU(),iconGenerator.getAnchorV()));
 
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(placeModel.getLat(),placeModel.getLng()),11.0f));
+        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+        builder.include(marker1.getPosition());
+        builder.include(marker2.getPosition());
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(builder.build(),200);
+
+        mMap.moveCamera(cameraUpdate);
+
 
     }
 

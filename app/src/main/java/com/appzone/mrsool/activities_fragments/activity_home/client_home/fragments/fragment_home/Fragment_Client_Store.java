@@ -26,6 +26,7 @@ import com.appzone.mrsool.R;
 import com.appzone.mrsool.activities_fragments.activity_home.client_home.activity.ClientHomeActivity;
 import com.appzone.mrsool.adapters.NearbyAdapter;
 import com.appzone.mrsool.adapters.QueryAdapter;
+import com.appzone.mrsool.adapters.SliderAdapter;
 import com.appzone.mrsool.models.NearbyModel;
 import com.appzone.mrsool.models.NearbyStoreDataModel;
 import com.appzone.mrsool.models.PlaceModel;
@@ -34,6 +35,8 @@ import com.appzone.mrsool.remote.Api;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -54,6 +57,9 @@ public class Fragment_Client_Store extends Fragment {
     private Location location;
     private QueryAdapter queryAdapter;
     private List<String> queriesList,en_ar_queriesList;
+    private Timer timer;
+    private TimerTask timerTask;
+    private SliderAdapter sliderAdapter;
 
 
 
@@ -130,7 +136,24 @@ public class Fragment_Client_Store extends Fragment {
             }
         });
 
+        getSliders();
 
+
+
+    }
+
+    private void getSliders() {
+        List<Integer> imgList = new ArrayList<>();
+        imgList.add(R.drawable.slider);
+        imgList.add(R.drawable.slider);
+        imgList.add(R.drawable.slider);
+
+        sliderAdapter = new SliderAdapter(imgList,activity);
+        pager.setAdapter(sliderAdapter);
+
+        timer = new Timer();
+        timerTask = new MyTimerTask();
+        timer.scheduleAtFixedRate(timerTask,6000,6000);
     }
 
 
@@ -141,7 +164,7 @@ public class Fragment_Client_Store extends Fragment {
         activity.DismissDialog();
         progBar.setVisibility(View.VISIBLE);
         cardView.setVisibility(View.VISIBLE);
-
+        ll_no_store.setVisibility(View.GONE);
         nearbyModelList.clear();
         if (adapter!=null)
         {
@@ -207,6 +230,8 @@ public class Fragment_Client_Store extends Fragment {
     private void updateUi(NearbyStoreDataModel nearbyStoreDataModel, Location location) {
 
 
+
+
         if (mainNearbyModelList.size()==0)
         {
 
@@ -215,6 +240,9 @@ public class Fragment_Client_Store extends Fragment {
         }
 
         nearbyModelList.addAll(getPlaceModelFromResult(nearbyStoreDataModel.getResults()));
+
+
+
         if (adapter == null)
         {
             adapter = new NearbyAdapter(nearbyModelList,activity,this,location.getLatitude(),location.getLongitude());
@@ -263,6 +291,11 @@ public class Fragment_Client_Store extends Fragment {
         {
             nearbyModelList.clear();
             nearbyModelList.addAll(mainNearbyModelList);
+            if (mainNearbyModelList.size()>0)
+            {
+                ll_no_store.setVisibility(View.GONE);
+
+            }
             if (adapter!=null)
             {
                 adapter.notifyDataSetChanged();
@@ -273,5 +306,38 @@ public class Fragment_Client_Store extends Fragment {
                 getNearbyPlaces(location,query);
 
             }
+    }
+
+    private class MyTimerTask extends TimerTask {
+        @Override
+        public void run() {
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+
+                    if (pager.getCurrentItem()<pager.getAdapter().getCount()-1)
+                    {
+                        pager.setCurrentItem(pager.getCurrentItem()+1,true);
+                    }else
+                        {
+                            pager.setCurrentItem(0);
+                        }
+                }
+            });
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (timer!=null)
+        {
+            timer.purge();
+            timer.cancel();
+        }
+        if (timerTask!=null)
+        {
+            timerTask.cancel();
+        }
     }
 }

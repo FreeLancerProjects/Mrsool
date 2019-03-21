@@ -23,6 +23,7 @@ public class Fragment_Client_Previous_Orders extends Fragment{
     private RecyclerView.LayoutManager manager;
     private ClientHomeActivity activity;
 
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

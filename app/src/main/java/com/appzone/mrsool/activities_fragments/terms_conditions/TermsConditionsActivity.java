@@ -1,6 +1,7 @@
 package com.appzone.mrsool.activities_fragments.terms_conditions;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -20,11 +21,13 @@ import io.paperdb.Paper;
 
 public class TermsConditionsActivity extends AppCompatActivity {
 
+    private TextView tv_title;
     private ImageView arrow;
     private LinearLayout ll_back;
     private TextView tv_content;
     private SmoothProgressBar smoothprogressbar;
     private String current_lang;
+
 
     @Override
     protected void attachBaseContext(Context base) {
@@ -37,7 +40,19 @@ public class TermsConditionsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_terms_conditions);
         initView();
+        getDataFromIntent();
     }
+
+    private void getDataFromIntent() {
+        Intent intent = getIntent();
+        if (intent!=null)
+        {
+            int type = intent.getIntExtra("type",-1);
+            UpdateUI(type);
+        }
+    }
+
+
 
     private void initView() {
         Paper.init(this);
@@ -55,6 +70,8 @@ public class TermsConditionsActivity extends AppCompatActivity {
 
 
             }
+        tv_title = findViewById(R.id.tv_title);
+
         ll_back = findViewById(R.id.ll_back);
         tv_content = findViewById(R.id.tv_content);
         smoothprogressbar = findViewById(R.id.smoothprogressbar);
@@ -66,14 +83,45 @@ public class TermsConditionsActivity extends AppCompatActivity {
             }
         });
 
-        getTerms();
     }
 
 
+    private void UpdateUI(int type) {
+
+        if (type == 1)
+        {
+            tv_title.setText(getString(R.string.terms_and_conditions));
+            getTerms();
+
+
+        }else if (type == 2)
+        {
+            tv_title.setText(getString(R.string.privacy_policy));
+
+            getPrivacyPolicy();
+        }else if (type == 3)
+        {
+            tv_title.setText(getString(R.string.about_tour));
+
+            getAboutApp();
+        }
+    }
 
     private void getTerms() {
 
     }
+
+    private void getPrivacyPolicy()
+    {
+
+    }
+
+    private void getAboutApp()
+    {
+
+    }
+
+
 
     private void updateTermsContent(String content) {
         tv_content.setText(content);

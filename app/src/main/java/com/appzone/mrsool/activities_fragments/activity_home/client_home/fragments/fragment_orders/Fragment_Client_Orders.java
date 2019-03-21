@@ -23,6 +23,7 @@ public class Fragment_Client_Orders extends Fragment{
     private ViewPagerAdapter adapter;
     private List<Fragment> fragmentList;
     private List<String> titleList;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
