@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.appzone.mrsool.R;
 import com.appzone.mrsool.activities_fragments.activity_home.client_home.activity.ClientHomeActivity;
+import com.appzone.mrsool.adapters.ViewPagerAdapter;
 import com.appzone.mrsool.models.PlaceModel;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.SphericalUtil;
@@ -43,6 +44,7 @@ public class Fragment_Store_Details extends Fragment {
     private double lat = 0.0,lng = 0.0;
     private List<String> titleList;
     private List<Fragment> fragmentList;
+    private ViewPagerAdapter viewPagerAdapter;
 
 
 
@@ -91,6 +93,7 @@ public class Fragment_Store_Details extends Fragment {
         tab = view.findViewById(R.id.tab);
         pager = view.findViewById(R.id.pager);
         tab.setupWithViewPager(pager);
+        viewPagerAdapter = new ViewPagerAdapter(getChildFragmentManager());
 
         cons_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,6 +126,10 @@ public class Fragment_Store_Details extends Fragment {
         titleList.add(getString(R.string.pending_order));
         fragmentList.add(Fragment_Details.newInstance(placeModel,lat,lng));
         fragmentList.add(Fragment_Pending_Orders.newInstance(placeModel));
+
+        viewPagerAdapter.AddFragments(fragmentList);
+        viewPagerAdapter.AddTitles(titleList);
+        pager.setAdapter(viewPagerAdapter);
 
 
     }

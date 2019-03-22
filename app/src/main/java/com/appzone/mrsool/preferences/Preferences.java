@@ -204,6 +204,15 @@ public class Preferences {
         Favourite_location favourite_location = new Gson().fromJson(gson,Favourite_location.class);
         return favourite_location;
     }
+
+    public void ClearFavoriteLocation(Context context)
+    {
+        SharedPreferences preferences = context.getSharedPreferences("fav_loc",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.clear();
+        editor.apply();
+    }
+
     public void ClearPreference(Context context)
     {
         SharedPreferences preferences1 = context.getSharedPreferences("user",Context.MODE_PRIVATE);
@@ -231,5 +240,7 @@ public class Preferences {
         editor5.clear();
         editor5.apply();
 
+
+       ClearFavoriteLocation(context);
     }
 }

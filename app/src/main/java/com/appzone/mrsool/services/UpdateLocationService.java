@@ -5,12 +5,14 @@ import android.app.Service;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.appzone.mrsool.models.LocationError;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationCallback;
@@ -25,6 +27,10 @@ public class UpdateLocationService extends Service implements LocationListener ,
 
     private GoogleApiClient googleApiClient;
     private LocationRequest locationRequest;
+    private Handler handler;
+    private Runnable runnable;
+    private int accuracy;
+
 
     @Nullable
     @Override
@@ -32,10 +38,12 @@ public class UpdateLocationService extends Service implements LocationListener ,
         return null;
     }
 
+
+
     @Override
     public void onCreate() {
         super.onCreate();
-        initGoogleApiClient();
+
     }
 
     private void initGoogleApiClient() {
@@ -49,11 +57,11 @@ public class UpdateLocationService extends Service implements LocationListener ,
 
 
 
+
     @SuppressLint("MissingPermission")
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        initLocationRequest();
-
+        initLocationRequest(accuracy);
         LocationServices.getFusedLocationProviderClient(this)
                 .requestLocationUpdates(locationRequest,new LocationCallback()
                 {
@@ -64,10 +72,37 @@ public class UpdateLocationService extends Service implements LocationListener ,
                 }, Looper.myLooper());
     }
 
-    private void initLocationRequest() {
-        locationRequest = new LocationRequest();
-        locationRequest.setFastestInterval(1000*5*60);
-        locationRequest.setInterval(1000*5*60);
+    private void initLocationRequest(final int accuracy) {
+
+        locationRequest = LocationRequest.create();
+        locationRequest.setPriority(accuracy);
+
+
+        handler = new Handler();
+
+        runnable = new Runnable() {
+            @Override
+            public void run() {
+
+                if (accuracy == LocationRequest.PRIORITY_HIGH_ACCURACY)
+                {
+                    EventBus.getDefault().post(new LocationError(0));
+
+                }else if (accuracy == LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY)
+                {
+                    EventBus.getDefault().post(new LocationError(1));
+
+                }else if ( accuracy == LocationRequest.PRIORITY_LOW_POWER)
+                {
+                    EventBus.getDefault().post(new LocationError(2));
+
+                }
+                handler.removeCallbacks(runnable);
+            }
+        };
+        handler.postDelayed(runnable,5000);
+
+
 
     }
 
@@ -89,5 +124,16 @@ public class UpdateLocationService extends Service implements LocationListener ,
     public void onLocationChanged(Location location) {
         Log.e("lat",location.getLatitude()+"");
         EventBus.getDefault().post(location);
+        handler.removeCallbacks(runnable);
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        accuracy = intent.getIntExtra("accuracy",LocationRequest.PRIORITY_HIGH_ACCURACY);
+        Log.e("accc",accuracy+"");
+        initGoogleApiClient();
+
+        return START_STICKY;
+
     }
 }

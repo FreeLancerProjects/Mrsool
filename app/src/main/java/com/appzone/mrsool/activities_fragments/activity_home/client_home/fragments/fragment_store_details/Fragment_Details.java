@@ -180,7 +180,12 @@ public class Fragment_Details extends Fragment implements OnMapReadyCallback {
             }
         });
 
-
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                activity.DisplayFragmentReserveOrder(placeModel);
+            }
+        });
 
     }
 

@@ -161,6 +161,7 @@ public class Fragment_Client_Store extends Fragment {
     public void getNearbyPlaces(final Location location,String query)
     {
 
+
         activity.DismissDialog();
         progBar.setVisibility(View.VISIBLE);
         cardView.setVisibility(View.VISIBLE);
@@ -242,7 +243,7 @@ public class Fragment_Client_Store extends Fragment {
         nearbyModelList.addAll(getPlaceModelFromResult(nearbyStoreDataModel.getResults()));
 
 
-
+        recViewQueries.setVisibility(View.VISIBLE);
         if (adapter == null)
         {
             adapter = new NearbyAdapter(nearbyModelList,activity,this,location.getLatitude(),location.getLongitude());
@@ -268,7 +269,6 @@ public class Fragment_Client_Store extends Fragment {
 
             if (nearbyModel.getOpening_hours()!=null)
             {
-                Log.e("hour",nearbyModel.getOpening_hours().isOpen_now()+"");
                 placeModel.setOpenNow(nearbyModel.getOpening_hours().isOpen_now());
 
             }else

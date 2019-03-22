@@ -16,6 +16,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import com.appzone.mrsool.R;
@@ -28,6 +29,7 @@ import com.squareup.picasso.Picasso;
 
 import net.cachapa.expandablelayout.ExpandableLayout;
 
+import java.util.Calendar;
 import java.util.Locale;
 
 import io.paperdb.Paper;
@@ -46,9 +48,10 @@ public class Fragment_Reserve_Order extends Fragment {
     private String current_language;
     private Preferences preferences;
     private Favourite_location favourite_location;
+    private String [] timesList;
     ////////////////////////////////////////////////
     private Favourite_location selected_location = null;
-
+    private double selected_time;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -72,6 +75,17 @@ public class Fragment_Reserve_Order extends Fragment {
         preferences = Preferences.getInstance();
         Paper.init(activity);
         current_language = Paper.book().read("lang", Locale.getDefault().getLanguage());
+
+        timesList = new String[]{getString(R.string.hour1),
+                getString(R.string.hour2),
+                getString(R.string.hour3),
+                getString(R.string.day1),
+                getString(R.string.day2),
+                getString(R.string.day3)
+
+        };
+
+
         arrow = view.findViewById(R.id.arrow);
 
         if (current_language.equals("ar")) {
@@ -126,7 +140,7 @@ public class Fragment_Reserve_Order extends Fragment {
                     {
                         if (!checkbox.isChecked())
                         {
-                            //Display fragment map
+                            activity.DisplayFragmentMap();
 
                         }
                     }
@@ -136,7 +150,8 @@ public class Fragment_Reserve_Order extends Fragment {
         ll_fav_map_loc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Display fragment map
+                activity.DisplayFragmentMap();
+
             }
         });
 
@@ -144,7 +159,13 @@ public class Fragment_Reserve_Order extends Fragment {
             @Override
             public void onClick(View v) {
 
-                updateSelectedAddress(favourite_location,true);
+                if (favourite_location!=null)
+                {
+                    expandLayout.collapse(true);
+                    selected_location = new Favourite_location(favourite_location.getName(),favourite_location.getStreet(),favourite_location.getAddress(),favourite_location.getLat(),favourite_location.getLng());
+                    updateSelectedAddress(favourite_location,true);
+
+                }
             }
         });
 
@@ -156,10 +177,20 @@ public class Fragment_Reserve_Order extends Fragment {
                 if (checkbox.isChecked())
                 {
                     DisplayAlertEnterAddressTitle();
-                }
+                }else
+                    {
+                        preferences.ClearFavoriteLocation(activity);
+                        expandLayout.collapse(true);
+                    }
             }
         });
 
+        ll_choose_delivery_time.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CreateTimeDialog();
+            }
+        });
 
         Bundle bundle = getArguments();
         if (bundle != null) {
@@ -195,10 +226,17 @@ public class Fragment_Reserve_Order extends Fragment {
 
         checkbox.setVisibility(View.VISIBLE);
 
-        this.selected_location = selected_location;
 
+        if (!TextUtils.isEmpty(selected_location.getStreet()))
+        {
+            tv_address.setText(selected_location.getStreet()+"\n"+selected_location.getAddress());
 
-        tv_address.setText(selected_location.getStreet()+"\n"+selected_location.getAddress());
+        }else
+            {
+                tv_address.setText(selected_location.getAddress());
+
+            }
+
         if (checked)
         {
             checkbox.setChecked(true);
@@ -234,7 +272,18 @@ public class Fragment_Reserve_Order extends Fragment {
                     Common.CloseKeyBoard(activity,edt_name);
 
                     Favourite_location favourite_location = new Favourite_location(name,selected_location.getStreet(),selected_location.getAddress(),selected_location.getLat(),selected_location.getLng());
+                    Fragment_Reserve_Order.this.favourite_location =favourite_location;
                     preferences.SaveFavouriteLocation(activity,favourite_location);
+                    if (!selected_location.getStreet().isEmpty())
+                    {
+                        tv_fav_address_title.setText(name+" : "+selected_location.getStreet());
+                        tv_fav_address.setText(selected_location.getAddress());
+
+                    }else
+                        {
+                            tv_fav_address_title.setText(name);
+                            tv_fav_address.setText(selected_location.getAddress());
+                        }
                     dialog.dismiss();
 
                 }else
@@ -255,5 +304,85 @@ public class Fragment_Reserve_Order extends Fragment {
         dialog.setView(view);
         dialog.show();
 
+    }
+
+    public void updateSelectedLocation(Favourite_location favourite_location)
+    {
+        this.selected_location = favourite_location;
+        updateSelectedAddress(favourite_location,false);
+    }
+
+    private void CreateTimeDialog()
+    {
+        final AlertDialog dialog = new AlertDialog.Builder(activity)
+                .setCancelable(true)
+                .create();
+
+        View view  = LayoutInflater.from(activity).inflate(R.layout.dialog_delivery_time,null);
+        Button btn_select = view.findViewById(R.id.btn_select);
+        Button btn_cancel = view.findViewById(R.id.btn_cancel);
+
+        final NumberPicker numberPicker = view.findViewById(R.id.numberPicker);
+
+        numberPicker.setMinValue(0);
+        numberPicker.setMaxValue(timesList.length-1);
+        numberPicker.setDisplayedValues(timesList);
+        numberPicker.setWrapSelectorWheel(false);
+        numberPicker.setValue(1);
+        btn_select.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String val = timesList[numberPicker.getValue()];
+                tv_delivery_time.setText(val);
+                setTime(numberPicker.getValue());
+                dialog.dismiss();
+            }
+        });
+
+
+
+
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.getWindow().getAttributes().windowAnimations = R.style.dialog_congratulation_animation;
+        dialog.setView(view);
+        dialog.show();
+    }
+
+    private void setTime(int value) {
+        Calendar calendar = Calendar.getInstance(new Locale(current_language));
+        switch (value)
+        {
+            case 0:
+                calendar.add(Calendar.HOUR_OF_DAY,1);
+                break;
+            case 1:
+                calendar.add(Calendar.HOUR_OF_DAY,2);
+
+                break;
+            case 2:
+                calendar.add(Calendar.HOUR_OF_DAY,3);
+
+                break;
+            case 3:
+                calendar.add(Calendar.DAY_OF_MONTH,1);
+
+                break;
+            case 4:
+                calendar.add(Calendar.DAY_OF_MONTH,2);
+
+                break;
+            case 5:
+                calendar.add(Calendar.DAY_OF_MONTH,3);
+
+                break;
+        }
+
+        selected_time = calendar.getTimeInMillis()/1000.0;
     }
 }

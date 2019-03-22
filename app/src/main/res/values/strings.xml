@@ -121,5 +121,15 @@
     <string name="enter_name">Enter Name</string>
     <string name="save">Save</string>
     <string name="cancel2">Cancel</string>
+    <string name="select_time">Select Time</string>
+    <string name="select">Select</string>
+    <string name="hour1">1 Hour</string>
+    <string name="hour2">2 Hour</string>
+    <string name="hour3">3 Hour</string>
+    <string name="day1">1 Day</string>
+    <string name="day2">2 Day</string>
+    <string name="day3">3 Day</string>
+    <string name="search_for_address">Search for Address...</string>
+    <string name="floor_apartment_no_house_no">Floor/Apartment No/House No</string>
 
 </resources>

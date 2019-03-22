@@ -2,6 +2,8 @@ package com.appzone.mrsool.services;
 
 import com.appzone.mrsool.models.NearbyStoreDataModel;
 import com.appzone.mrsool.models.PlaceDetailsModel;
+import com.appzone.mrsool.models.PlaceGeocodeData;
+import com.appzone.mrsool.models.PlaceMapDetailsData;
 import com.appzone.mrsool.models.SearchDataModel;
 
 import retrofit2.Call;
@@ -32,4 +34,19 @@ public interface Service {
                                             @Query(value = "language") String language,
                                             @Query(value = "key") String key
     );
+
+
+    @GET("place/findplacefromtext/json")
+    Call<PlaceMapDetailsData> searchOnMap(@Query(value = "inputtype") String inputtype,
+                                          @Query(value = "input") String input,
+                                          @Query(value = "fields") String fields,
+                                          @Query(value = "language") String language,
+                                          @Query(value = "key") String key
+    );
+
+    @GET("geocode/json")
+    Call<PlaceGeocodeData> getGeoData(@Query(value = "latlng") String latlng,
+                                      @Query(value = "language") String language,
+                                      @Query(value = "key") String key);
+
 }

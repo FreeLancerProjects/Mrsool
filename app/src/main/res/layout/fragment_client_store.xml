@@ -140,6 +140,16 @@
                 </FrameLayout>
 
             </android.support.design.widget.CollapsingToolbarLayout>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recViewQueries"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:visibility="gone"
+                >
+
+            </android.support.v7.widget.RecyclerView>
         </android.support.design.widget.AppBarLayout>
 
         <android.support.v4.widget.NestedScrollView
@@ -154,15 +164,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 >
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/recViewQueries"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp"
-                    >
 
-                </android.support.v7.widget.RecyclerView>
                 <FrameLayout
 
                     android:layout_width="match_parent"

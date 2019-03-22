@@ -121,5 +121,15 @@
     <string name="enter_name">أدخل الاسم</string>
     <string name="save">حفظ</string>
     <string name="cancel2">تراجع</string>
+    <string name="select_time">إختر الوقت</string>
+    <string name="select">حسنا!</string>
+    <string name="hour1">1 ساعة</string>
+    <string name="hour2">2 ساعات</string>
+    <string name="hour3">3 ساعات</string>
+    <string name="day1">1 يوم</string>
+    <string name="day2">2 أيام</string>
+    <string name="day3">3 أيام</string>
+    <string name="search_for_address">إبحث عن عنوان</string>
+    <string name="floor_apartment_no_house_no">رقم البيت/العمارة/ الشقة</string>
 
 </resources>

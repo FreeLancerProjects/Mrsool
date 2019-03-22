@@ -16,6 +16,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -25,11 +26,15 @@ import com.appzone.mrsool.activities_fragments.activity_home.client_home.fragmen
 import com.appzone.mrsool.activities_fragments.activity_home.client_home.fragments.fragment_home.Fragment_Client_Profile;
 import com.appzone.mrsool.activities_fragments.activity_home.client_home.fragments.fragment_home.Fragment_Client_Store;
 import com.appzone.mrsool.activities_fragments.activity_home.client_home.fragments.fragment_home.Fragment_Home;
+import com.appzone.mrsool.activities_fragments.activity_home.client_home.fragments.fragment_home.Fragment_Map;
+import com.appzone.mrsool.activities_fragments.activity_home.client_home.fragments.fragment_home.Fragment_Reserve_Order;
 import com.appzone.mrsool.activities_fragments.activity_home.client_home.fragments.fragment_home.Fragment_Search;
 import com.appzone.mrsool.activities_fragments.activity_home.client_home.fragments.fragment_home.Fragment_Settings;
 import com.appzone.mrsool.activities_fragments.activity_home.client_home.fragments.fragment_orders.Fragment_Client_Orders;
 import com.appzone.mrsool.activities_fragments.activity_home.client_home.fragments.fragment_store_details.Fragment_Store_Details;
 import com.appzone.mrsool.language.Language_Helper;
+import com.appzone.mrsool.models.Favourite_location;
+import com.appzone.mrsool.models.LocationError;
 import com.appzone.mrsool.models.PlaceModel;
 import com.appzone.mrsool.models.UserModel;
 import com.appzone.mrsool.preferences.Preferences;
@@ -37,6 +42,7 @@ import com.appzone.mrsool.services.UpdateLocationService;
 import com.appzone.mrsool.share.Common;
 import com.appzone.mrsool.singletone.UserSingleTone;
 import com.appzone.mrsool.tags.Tags;
+import com.google.android.gms.location.LocationRequest;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -57,8 +63,10 @@ public class ClientHomeActivity extends AppCompatActivity {
     private Fragment_Client_Notifications fragment_client_notifications;
     private Fragment_Client_Profile fragment_client_profile;
     private Fragment_Store_Details fragment_store_details;
+    private Fragment_Reserve_Order fragment_reserve_order;
     private Fragment_Search fragment_search;
     private Fragment_Settings fragment_settings;
+    private Fragment_Map fragment_map;
     private UserSingleTone userSingleTone;
     private UserModel userModel;
     private Preferences preferences;
@@ -67,6 +75,7 @@ public class ClientHomeActivity extends AppCompatActivity {
     private Location location;
     private String current_lang;
     private String lastSelectedFragment="";
+
 
     @Override
     protected void attachBaseContext(Context base) {
@@ -108,6 +117,10 @@ public class ClientHomeActivity extends AppCompatActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void LocationListener(final Location location)
     {
+        if (dialog!=null)
+        {
+            dialog.dismiss();
+        }
         if (location!=null)
         {
             ClientHomeActivity.this.location = location;
@@ -128,6 +141,21 @@ public class ClientHomeActivity extends AppCompatActivity {
                     },1);
         }
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void LocationErrorListener(final LocationError locationError)
+    {
+        stopService(intentService);
+        if (locationError.getStatus()==0)
+        {
+            StartService(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+        }else if (locationError.getStatus()==1)
+        {
+            StartService(LocationRequest.PRIORITY_LOW_POWER);
+
+        }
+    }
+
     ///////////////////////////////////
 
     public void DisplayFragmentHome() {
@@ -307,6 +335,49 @@ public class ClientHomeActivity extends AppCompatActivity {
 
     }
 
+    public void DisplayFragmentReserveOrder(PlaceModel placeModel) {
+
+
+
+        fragment_reserve_order = Fragment_Reserve_Order.newInstance(placeModel);
+
+        if (fragment_reserve_order.isAdded()) {
+            fragmentManager.beginTransaction().show(fragment_reserve_order).commit();
+
+        } else {
+            fragmentManager.beginTransaction().add(R.id.fragment_app_container, fragment_reserve_order, "fragment_reserve_order").addToBackStack("fragment_reserve_order").commit();
+        }
+
+
+
+    }
+
+    public void DisplayFragmentMap()
+    {
+
+
+
+        if (location!=null)
+        {
+            fragment_map = Fragment_Map.newInstance(location.getLatitude(),location.getLongitude());
+
+        }else
+            {
+                fragment_map = Fragment_Map.newInstance(0.0,0.0);
+
+            }
+
+        if (fragment_map.isAdded()) {
+            fragmentManager.beginTransaction().show(fragment_map).commit();
+
+        } else {
+            fragmentManager.beginTransaction().add(R.id.fragment_app_container, fragment_map, "fragment_map").addToBackStack("fragment_map").commit();
+        }
+
+
+
+    }
+
 
     public void DisplayFragmentStoreDetails(PlaceModel placeModel)
     {
@@ -333,9 +404,10 @@ public class ClientHomeActivity extends AppCompatActivity {
             fragment.onActivityResult(requestCode, resultCode, data);
         }
 
+
         if (requestCode == 33) {
             if (isGpsOpen()) {
-                StartService();
+                StartService(LocationRequest.PRIORITY_LOW_POWER);
             } else {
                 CreateGpsDialog();
             }
@@ -353,7 +425,7 @@ public class ClientHomeActivity extends AppCompatActivity {
         if (requestCode == gps_req && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             if (isGpsOpen())
             {
-                StartService();
+                StartService(LocationRequest.PRIORITY_HIGH_ACCURACY);
             }else
                 {
                     CreateGpsDialog();
@@ -369,7 +441,7 @@ public class ClientHomeActivity extends AppCompatActivity {
 
             if (isGpsOpen())
             {
-                StartService();
+                StartService(LocationRequest.PRIORITY_HIGH_ACCURACY);
             }else
                 {
                     CreateGpsDialog();
@@ -377,11 +449,16 @@ public class ClientHomeActivity extends AppCompatActivity {
                 }
         }
     }
-    private void StartService() {
-        dialog = Common.createProgressDialog(this,getString(R.string.fetching_your_location));
-        dialog.setCancelable(false);
-        dialog.show();
+    private void StartService(int accuracy) {
+        Log.e("saaacc",accuracy+"_");
+        if (dialog == null)
+        {
+            dialog = Common.createProgressDialog(this,getString(R.string.fetching_your_location));
+            dialog.setCancelable(true);
+            dialog.show();
+        }
         intentService = new Intent(this, UpdateLocationService.class);
+        intentService.putExtra("accuracy",accuracy);
         startService(intentService);
     }
 
@@ -389,7 +466,7 @@ public class ClientHomeActivity extends AppCompatActivity {
         boolean isOpened = false;
         LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         if (manager != null) {
-            if (manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            if (manager.isProviderEnabled(LocationManager.GPS_PROVIDER)||manager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
                 isOpened = true;
             }
         }
@@ -443,7 +520,16 @@ public class ClientHomeActivity extends AppCompatActivity {
 
     public void Back()
     {
-        if (fragment_store_details!=null&&fragment_store_details.isVisible())
+        if (fragment_map!=null&&fragment_map.isVisible())
+        {
+            super.onBackPressed();
+
+        }
+        else if (fragment_reserve_order!=null&&fragment_reserve_order.isVisible())
+        {
+            super.onBackPressed();
+        }
+        else if (fragment_store_details!=null&&fragment_store_details.isVisible())
         {
             if (lastSelectedFragment.equals("fragment_search"))
             {
@@ -535,6 +621,21 @@ public class ClientHomeActivity extends AppCompatActivity {
         if (EventBus.getDefault().isRegistered(this))
         {
             EventBus.getDefault().unregister(this);
+        }
+    }
+
+    public void getAddressFromMapListener(final Favourite_location favourite_location) {
+
+        if (fragment_reserve_order!=null&&fragment_reserve_order.isAdded())
+        {
+            new Handler()
+                    .postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            fragment_reserve_order.updateSelectedLocation(favourite_location);
+                            fragmentManager.popBackStack("fragment_map",FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                        }
+                    },1);
         }
     }
 }
