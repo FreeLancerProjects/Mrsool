@@ -16,7 +16,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -32,6 +31,8 @@ import com.appzone.mrsool.activities_fragments.activity_home.client_home.fragmen
 import com.appzone.mrsool.activities_fragments.activity_home.client_home.fragments.fragment_home.Fragment_Settings;
 import com.appzone.mrsool.activities_fragments.activity_home.client_home.fragments.fragment_orders.Fragment_Client_Orders;
 import com.appzone.mrsool.activities_fragments.activity_home.client_home.fragments.fragment_store_details.Fragment_Store_Details;
+import com.appzone.mrsool.activities_fragments.activity_sign_in.activity.SignInActivity;
+import com.appzone.mrsool.activities_fragments.terms_conditions.TermsConditionsActivity;
 import com.appzone.mrsool.language.Language_Helper;
 import com.appzone.mrsool.models.Favourite_location;
 import com.appzone.mrsool.models.LocationError;
@@ -77,16 +78,19 @@ public class ClientHomeActivity extends AppCompatActivity {
     private String lastSelectedFragment="";
 
 
+
     @Override
     protected void attachBaseContext(Context base) {
-        Paper.init(base);
-        current_lang = Paper.book().read("lang", Locale.getDefault().getLanguage());
-        super.attachBaseContext(Language_Helper.setLocality(base,current_lang));
+        super.attachBaseContext(Language_Helper.updateResources(base,Language_Helper.getLanguage(base)));
     }
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_client_home);
+
         initView();
 
         if (savedInstanceState == null) {
@@ -101,6 +105,9 @@ public class ClientHomeActivity extends AppCompatActivity {
 
 
     private void initView() {
+        Paper.init(this);
+        current_lang = Paper.book().read("lang", Locale.getDefault().getLanguage());
+
         preferences = Preferences.getInstance();
         userSingleTone = UserSingleTone.getInstance();
         String session = preferences.getSession(this);
@@ -396,6 +403,59 @@ public class ClientHomeActivity extends AppCompatActivity {
         }
 
     }
+
+    public void getAddressFromMapListener(final Favourite_location favourite_location) {
+
+        if (fragment_reserve_order!=null&&fragment_reserve_order.isAdded())
+        {
+            new Handler()
+                    .postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            fragment_reserve_order.updateSelectedLocation(favourite_location);
+                            fragmentManager.popBackStack("fragment_map",FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                        }
+                    },1);
+        }
+    }
+
+    public void RefreshActivity(String lang)
+    {
+        Paper.book().write("lang",lang);
+        Language_Helper.setNewLocale(this,lang);
+        new Handler()
+                .postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        Intent intent =  getIntent();
+                        finish();
+                        startActivity(intent);
+                    }
+                },1050);
+
+
+
+    }
+
+    public void NavigateToTermsActivity(int type)
+    {
+        Intent intent = new Intent(this, TermsConditionsActivity.class);
+        intent.putExtra("type",type);
+        startActivity(intent);
+        if (current_lang.equals("ar"))
+        {
+            overridePendingTransition(R.anim.from_right,R.anim.to_left);
+
+        }else
+        {
+            overridePendingTransition(R.anim.from_left,R.anim.to_right);
+
+        }
+
+    }
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -450,7 +510,6 @@ public class ClientHomeActivity extends AppCompatActivity {
         }
     }
     private void StartService(int accuracy) {
-        Log.e("saaacc",accuracy+"_");
         if (dialog == null)
         {
             dialog = Common.createProgressDialog(this,getString(R.string.fetching_your_location));
@@ -558,7 +617,27 @@ public class ClientHomeActivity extends AppCompatActivity {
         {
             if (fragment_client_store!=null&&fragment_client_store.isVisible())
             {
-                finish();
+                if (userModel!=null)
+                {
+                    finish();
+                }else
+                    {
+                        Intent intent = new Intent(ClientHomeActivity.this, SignInActivity.class);
+                        startActivity(intent);
+                        finish();
+                        if (current_lang.equals("ar"))
+                        {
+                            overridePendingTransition(R.anim.from_left,R.anim.to_right);
+
+
+
+                        }else
+                        {
+                            overridePendingTransition(R.anim.from_right,R.anim.to_left);
+
+
+                        }
+                    }
             }else
             {
                 DisplayFragmentStore();
@@ -624,18 +703,4 @@ public class ClientHomeActivity extends AppCompatActivity {
         }
     }
 
-    public void getAddressFromMapListener(final Favourite_location favourite_location) {
-
-        if (fragment_reserve_order!=null&&fragment_reserve_order.isAdded())
-        {
-            new Handler()
-                    .postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            fragment_reserve_order.updateSelectedLocation(favourite_location);
-                            fragmentManager.popBackStack("fragment_map",FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                        }
-                    },1);
-        }
-    }
 }

@@ -67,20 +67,6 @@ public class Preferences {
         return session;
     }
 
-    public void SaveLanguage(Context context , String lang)
-    {
-        SharedPreferences preferences = context.getSharedPreferences("language",Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putString("lang",lang);
-        editor.apply();
-    }
-
-    public String getLanguage(Context context,String defLanguage)
-    {
-        SharedPreferences preferences = context.getSharedPreferences("language",Context.MODE_PRIVATE);
-        String lang = preferences.getString("lang",defLanguage);
-        return lang;
-    }
 
     public void saveLoginFragmentState(Context context,int state)
     {

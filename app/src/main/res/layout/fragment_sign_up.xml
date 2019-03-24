@@ -189,7 +189,7 @@
                         android:paddingLeft="15dp"
                         android:paddingRight="15dp"
                         android:textColor="@color/black"
-                        android:textSize="16sp"
+                        android:textSize="14sp"
                         android:hint="@string/full_name"
                         />
 
@@ -228,10 +228,78 @@
                             android:textColor="@color/black"
                             android:singleLine="true"
                             android:gravity="center_vertical"
-                            />
+                            android:layout_marginEnd="15dp"
+                            android:textSize="14sp"
+                            tools:ignore="RtlCompat" />
                     </LinearLayout>
 
+                    <android.support.constraint.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
 
+                        >
+                        <co.ceryle.segmentedbutton.SegmentedButtonGroup
+                            android:id="@+id/segmentGroup"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:sbg_animateSelector="anticipateOvershoot"
+                            app:sbg_borderSize="1dp"
+                            app:sbg_borderColor="@color/colorPrimary"
+                            app:sbg_dividerColor="@color/white"
+                            app:sbg_animateSelectorDuration="700"
+                            app:sbg_dividerPadding="8dp"
+                            app:sbg_ripple="true"
+                            app:sbg_position="0"
+                            app:sbg_selectorColor="@color/colorPrimary"
+                            app:sbg_backgroundColor="@color/white"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:sbg_radius="2dp"
+                            >
+                            <co.ceryle.segmentedbutton.SegmentedButton
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:sb_textColor="@color/black"
+                                app:sb_textColor_onSelection="@color/white"
+                                app:sb_textSize="15sp"
+                                app:sb_text="@string/male"
+                                app:sb_textFillSpace="true"
+                                android:paddingLeft="8dp"
+                                android:paddingRight="8dp"
+                                android:minHeight="10dp"
+                                android:paddingTop="4dp"
+                                android:paddingBottom="4dp"
+                                />
+
+                            <co.ceryle.segmentedbutton.SegmentedButton
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:sb_textColor="@color/black"
+                                app:sb_textColor_onSelection="@color/white"
+                                app:sb_textSize="15sp"
+                                app:sb_text="@string/female"
+                                app:sb_textFillSpace="true"
+                                android:paddingLeft="8dp"
+                                android:paddingRight="8dp"
+                                android:minHeight="10dp"
+                                android:paddingTop="4dp"
+                                android:paddingBottom="4dp"
+                                />
+                        </co.ceryle.segmentedbutton.SegmentedButtonGroup>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toTopOf="@id/segmentGroup"
+                            app:layout_constraintBottom_toBottomOf="@id/segmentGroup"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            android:textColor="@color/gray4"
+                            android:textSize="15sp"
+                            android:text="@string/gender"
+                            />
+
+                    </android.support.constraint.ConstraintLayout>
 
                     <android.support.design.widget.FloatingActionButton
                         android:id="@+id/fab"

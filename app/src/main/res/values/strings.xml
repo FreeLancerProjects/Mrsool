@@ -61,7 +61,7 @@
 
 
     <string name="personal_information">Personal information</string>
-    <string name="_500_500_pixel">500 * 500 pixel</string>
+    <string name="_500_500_pixel">500 * 500 pixel (optional)</string>
     <string name="country">Country</string>
 
     <string name="pers_photo_req">Personal photo required</string>
@@ -131,5 +131,10 @@
     <string name="day3">3 Day</string>
     <string name="search_for_address">Search for Address...</string>
     <string name="floor_apartment_no_house_no">Floor/Apartment No/House No</string>
+    <string name="select_language">Select Language</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="gender">Gender</string>
+    <string name="mobile_number">Mobile Number</string>
 
 </resources>

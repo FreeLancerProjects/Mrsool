@@ -56,7 +56,7 @@ dependencies {
     implementation 'io.paperdb:paperdb:2.6'
     implementation 'com.google.maps.android:android-maps-utils:0.5'
     implementation 'com.balysv:material-ripple:1.0.2'
-
+    implementation 'com.github.ceryle:SegmentedButton:v2.0.2'
 
 
 

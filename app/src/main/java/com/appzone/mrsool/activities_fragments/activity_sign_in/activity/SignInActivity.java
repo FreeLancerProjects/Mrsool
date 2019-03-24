@@ -23,6 +23,7 @@ import java.util.Locale;
 import io.paperdb.Paper;
 
 public class SignInActivity extends AppCompatActivity {
+
     private FragmentManager fragmentManager;
     private Fragment_Language fragment_language;
     private Fragment_Chooser_Login fragment_chooser_login;
@@ -30,23 +31,27 @@ public class SignInActivity extends AppCompatActivity {
     private Fragment_Sign_Up fragment_signUp;
     private Preferences preferences;
     private String phone = "";
+    private String countrycode="";
     private String current_lang;
 
     @Override
-    protected void attachBaseContext(Context base) {
-        Paper.init(base);
-        current_lang = Paper.book().read("lang", Locale.getDefault().getLanguage());
-        super.attachBaseContext(Language_Helper.setLocality(base,current_lang));
+    protected void attachBaseContext(Context base)
+    {
+
+        super.attachBaseContext(Language_Helper.updateResources(base,Language_Helper.getLanguage(base)));
     }
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
+        Paper.init(this);
+        current_lang = Paper.book().read("lang", Locale.getDefault().getLanguage());
         setContentView(R.layout.activity_sign_in);
         fragmentManager = getSupportFragmentManager();
         preferences = Preferences.getInstance();
         setUpFragment();
-    }
 
+    }
     private void setUpFragment()
     {
         int state = preferences.getFragmentState(this);
@@ -74,6 +79,7 @@ public class SignInActivity extends AppCompatActivity {
     public void DisplayFragmentChooserLogin()
     {
         this.phone = "";
+        this.countrycode = "";
         preferences.saveLoginFragmentState(this,1);
 
         if (fragment_chooser_login == null)
@@ -95,6 +101,7 @@ public class SignInActivity extends AppCompatActivity {
     public void DisplayFragmentPhone()
     {
         this.phone = "";
+        this.countrycode="";
 
         if (fragment_chooser_login!=null&&fragment_chooser_login.isAdded())
         {
@@ -117,8 +124,7 @@ public class SignInActivity extends AppCompatActivity {
 
 
     }
-
-    public void DisplayFragmentCompleteProfile(String phone)
+    public void DisplayFragmentSignUp(String phone)
     {
         if (fragment_chooser_login!=null&&fragment_chooser_login.isAdded())
         {
@@ -144,15 +150,23 @@ public class SignInActivity extends AppCompatActivity {
 
 
     }
-    public void NavigateToClientHomeActivity(boolean skip)
+    public void NavigateToClientHomeActivity()
     {
         Intent intent = new Intent(this, ClientHomeActivity.class);
         startActivity(intent);
-
-        if (!skip)
+        finish();
+        if (current_lang.equals("ar"))
         {
-            finish();
+            overridePendingTransition(R.anim.from_right,R.anim.to_left);
+
+
+        }else
+        {
+            overridePendingTransition(R.anim.from_left,R.anim.to_right);
+
+
         }
+
 
     }
     public void NavigateToTermsActivity()
@@ -160,25 +174,65 @@ public class SignInActivity extends AppCompatActivity {
         Intent intent = new Intent(this, TermsConditionsActivity.class);
         intent.putExtra("type",1);
         startActivity(intent);
+        if (current_lang.equals("ar"))
+        {
+            overridePendingTransition(R.anim.from_right,R.anim.to_left);
+
+
+        }else
+        {
+            overridePendingTransition(R.anim.from_left,R.anim.to_right);
+
+
+        }
+
 
     }
-    public void RefreshActivity()
+    public void RefreshActivity(String selected_language)
     {
+        Paper.book().write("lang",selected_language);
+        Language_Helper.setNewLocale(this,selected_language);
         preferences.saveLoginFragmentState(this,1);
-        recreate();
+
+        Intent intent = getIntent();
+        finish();
+        if (selected_language.equals("ar"))
+        {
+            overridePendingTransition(R.anim.from_left,R.anim.to_right);
+
+
+        }else
+            {
+                overridePendingTransition(R.anim.from_right,R.anim.to_left);
+
+            }
+        startActivity(intent);
+        if (selected_language.equals("ar"))
+        {
+            overridePendingTransition(R.anim.from_right,R.anim.to_left);
+
+
+
+        }else
+        {
+            overridePendingTransition(R.anim.from_left,R.anim.to_right);
+
+        }
+
     }
 
-    public void signIn(String m_phone) {
+    public void signIn(String m_phone, String country_code) {
 
         this.phone = m_phone;
+        this.countrycode = country_code;
 
     }
 
-    public void signUpWithImage(String m_name, String m_email, Uri uri) {
+    public void signUpWithImage(String m_name, String m_email,int gender ,Uri uri) {
 
     }
 
-    public void signUpWithoutImage(String m_name, String m_email) {
+    public void signUpWithoutImage(String m_name, String m_email,int gender) {
 
     }
 
@@ -202,6 +256,7 @@ public class SignInActivity extends AppCompatActivity {
                 finish();
             }
     }
+
 
 
 }

@@ -127,7 +127,7 @@
                 android:paddingRight="10dp"
                 android:textSize="17sp"
                 android:textColor="@color/white"
-                android:text="555333447"
+                android:text="@string/mobile_number"
                 android:inputType="phone"
                 android:clickable="false"
                 android:longClickable="false"

@@ -2,8 +2,8 @@ package com.appzone.mrsool.activities_fragments.activity_splash;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
@@ -14,10 +14,6 @@ import com.appzone.mrsool.language.Language_Helper;
 import com.appzone.mrsool.preferences.Preferences;
 import com.appzone.mrsool.tags.Tags;
 
-import java.util.Locale;
-
-import io.paperdb.Paper;
-
 public class SplashActivity extends AppCompatActivity {
 
     private FrameLayout fl;
@@ -27,9 +23,7 @@ public class SplashActivity extends AppCompatActivity {
 
     @Override
     protected void attachBaseContext(Context base) {
-        Paper.init(base);
-        current_lang = Paper.book().read("lang", Locale.getDefault().getLanguage());
-        super.attachBaseContext(Language_Helper.setLocality(base,current_lang));
+        super.attachBaseContext(Language_Helper.updateResources(base,Language_Helper.getLanguage(base)));
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {

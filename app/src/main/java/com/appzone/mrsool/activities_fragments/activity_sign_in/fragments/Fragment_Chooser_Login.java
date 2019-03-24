@@ -54,7 +54,7 @@ public class Fragment_Chooser_Login extends Fragment{
         btn_skip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                activity.NavigateToClientHomeActivity(true);
+                activity.NavigateToClientHomeActivity();
             }
         });
     }

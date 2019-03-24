@@ -14,8 +14,6 @@ import android.widget.TextView;
 import com.appzone.mrsool.R;
 import com.appzone.mrsool.language.Language_Helper;
 
-import java.util.Locale;
-
 import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
 import io.paperdb.Paper;
 
@@ -31,9 +29,8 @@ public class TermsConditionsActivity extends AppCompatActivity {
 
     @Override
     protected void attachBaseContext(Context base) {
-        Paper.init(base);
-        current_lang = Paper.book().read("lang", Locale.getDefault().getLanguage());
-        super.attachBaseContext(Language_Helper.setLocality(base,current_lang));
+
+        super.attachBaseContext(Language_Helper.updateResources(base,Language_Helper.getLanguage(base)));
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +77,15 @@ public class TermsConditionsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 finish();
+                if (current_lang.equals("ar"))
+                {
+                    overridePendingTransition(R.anim.from_left,R.anim.to_right);
+
+                }else
+                    {
+                        overridePendingTransition(R.anim.from_right,R.anim.to_left);
+
+                    }
             }
         });
 
@@ -127,4 +133,18 @@ public class TermsConditionsActivity extends AppCompatActivity {
         tv_content.setText(content);
     }
 
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if (current_lang.equals("ar"))
+        {
+            overridePendingTransition(R.anim.from_left,R.anim.to_right);
+
+        }else
+        {
+            overridePendingTransition(R.anim.from_right,R.anim.to_left);
+
+        }
+    }
 }

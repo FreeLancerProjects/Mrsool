@@ -27,10 +27,14 @@ import android.widget.Toast;
 import com.appzone.mrsool.R;
 import com.appzone.mrsool.activities_fragments.activity_sign_in.activity.SignInActivity;
 import com.appzone.mrsool.share.Common;
+import com.appzone.mrsool.tags.Tags;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.util.Locale;
+
+import co.ceryle.segmentedbutton.SegmentedButtonGroup;
+import io.paperdb.Paper;
 
 public class Fragment_Sign_Up extends Fragment {
 
@@ -42,10 +46,13 @@ public class Fragment_Sign_Up extends Fragment {
     private final int IMG1=1;
     private Uri uri=null;
     private final String read_permission = Manifest.permission.READ_EXTERNAL_STORAGE;
+    private SegmentedButtonGroup segmentGroup;
+    private String current_language;
+    private int gender = Tags.MALE;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_complete_profile,container,false);
+        View view = inflater.inflate(R.layout.fragment_sign_up,container,false);
         initView(view);
         return view;
     }
@@ -56,7 +63,8 @@ public class Fragment_Sign_Up extends Fragment {
     private void initView(View view) {
 
         activity = (SignInActivity) getActivity();
-
+        Paper.init(activity);
+        current_language = Paper.book().read("lang",Locale.getDefault().getLanguage());
         ll_back  = view.findViewById(R.id.ll_back);
         edt_name = view.findViewById(R.id.edt_name);
 
@@ -64,10 +72,12 @@ public class Fragment_Sign_Up extends Fragment {
         image_personal = view.findViewById(R.id.image_personal);
         image_icon1 = view.findViewById(R.id.image_icon1);
         image_back_photo = view.findViewById(R.id.image_back_photo);
+        segmentGroup = view.findViewById(R.id.segmentGroup);
+
         fab = view.findViewById(R.id.fab);
 
 
-        if (Locale.getDefault().getLanguage().equals("ar"))
+        if (current_language.equals("ar"))
         {
             image_back_photo.setImageResource(R.drawable.ic_right_arrow);
             image_back_photo.setColorFilter(ContextCompat.getColor(activity,R.color.colorPrimary), PorterDuff.Mode.SRC_IN);
@@ -102,6 +112,18 @@ public class Fragment_Sign_Up extends Fragment {
             }
         });
 
+        segmentGroup.setOnClickedButtonListener(new SegmentedButtonGroup.OnClickedButtonListener() {
+            @Override
+            public void onClickedButton(int position) {
+                if (position == 0)
+                {
+                    gender = Tags.MALE;
+                }else
+                    {
+                        gender = Tags.FEMALE;
+                    }
+            }
+        });
 
 
     }
@@ -126,11 +148,11 @@ public class Fragment_Sign_Up extends Fragment {
 
             if (uri==null)
             {
-                activity.signUpWithoutImage(m_name,m_email);
+                activity.signUpWithoutImage(m_name,m_email,gender);
 
             }else
                 {
-                    activity.signUpWithImage(m_name,m_email,uri);
+                    activity.signUpWithImage(m_name,m_email,gender,uri);
 
                 }
 

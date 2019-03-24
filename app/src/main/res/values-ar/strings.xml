@@ -60,7 +60,7 @@
     <string name="current">الحالية</string>
     <string name="previous">السابقة</string>
     <string name="personal_information">المعلومات الشخصية</string>
-    <string name="_500_500_pixel">500 * 500 بكسل</string>
+    <string name="_500_500_pixel">500 * 500 بكسل (إختياري)</string>
     <string name="country">المدينة</string>
 
     <string name="pers_photo_req">الصورة الشخصية مطلوبة</string>
@@ -131,5 +131,10 @@
     <string name="day3">3 أيام</string>
     <string name="search_for_address">إبحث عن عنوان</string>
     <string name="floor_apartment_no_house_no">رقم البيت/العمارة/ الشقة</string>
+    <string name="select_language">إختر اللغة</string>
+    <string name="male">ذكر</string>
+    <string name="female">انثى</string>
+    <string name="gender">الجنس</string>
+    <string name="mobile_number">رقم الجوال</string>
 
 </resources>

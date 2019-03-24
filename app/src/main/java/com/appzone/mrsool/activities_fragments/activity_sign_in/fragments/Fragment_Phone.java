@@ -40,6 +40,7 @@ public class Fragment_Phone extends Fragment implements OnCountryPickerListener 
     private CountryPicker picker;
     private String current_language="";
     private String code = "";
+    private String country_code="";
 
     @Nullable
     @Override
@@ -65,6 +66,7 @@ public class Fragment_Phone extends Fragment implements OnCountryPickerListener 
 
         edt_phone = view.findViewById(R.id.edt_phone);
         fab = view.findViewById(R.id.fab);
+
 
         if (current_language.equals("ar"))
         {
@@ -106,7 +108,7 @@ public class Fragment_Phone extends Fragment implements OnCountryPickerListener 
             edt_phone.setError(null);
             Common.CloseKeyBoard(activity, edt_phone);
             String m_phone = code + phone;
-            activity.signIn(m_phone);
+            activity.signIn(m_phone.replace("+","00"),country_code);
         } else {
             if (TextUtils.isEmpty(phone)) {
                 edt_phone.setError(getString(R.string.field_req));
@@ -142,6 +144,8 @@ public class Fragment_Phone extends Fragment implements OnCountryPickerListener 
         {
             tv_code.setText("+966");
             tv_country.setText("Saudi Arabia");
+            this.country_code = "sa";
+
         }
 
 
@@ -157,5 +161,9 @@ public class Fragment_Phone extends Fragment implements OnCountryPickerListener 
         tv_country.setText(country.getName());
         tv_code.setText(country.getDialCode());
         code = country.getDialCode();
+
+
+
+
     }
 }

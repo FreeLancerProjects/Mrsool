@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +13,6 @@ import android.widget.RadioButton;
 
 import com.appzone.mrsool.R;
 import com.appzone.mrsool.activities_fragments.activity_sign_in.activity.SignInActivity;
-import com.appzone.mrsool.language.Language_Helper;
 
 import io.paperdb.Paper;
 
@@ -39,8 +39,7 @@ public class Fragment_Language extends Fragment {
     private void initView(View view) {
         activity = (SignInActivity) getActivity();
         Paper.init(activity);
-        Paper.book().write("lang","ar");
-        Language_Helper.setLocality(activity,"ar");
+
 
         rb_ar = view.findViewById(R.id.rb_ar);
         rb_en = view.findViewById(R.id.rb_en);
@@ -49,12 +48,7 @@ public class Fragment_Language extends Fragment {
         rb_ar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!rb_ar.isChecked())
-                {
-                    selected_language = "ar";
-                    Paper.book().write("lang",selected_language);
-                    Language_Helper.setLocality(activity,"ar");
-                }
+                selected_language = "ar";
 
 
             }
@@ -64,13 +58,8 @@ public class Fragment_Language extends Fragment {
             @Override
             public void onClick(View v) {
 
-                if (!rb_en.isChecked())
-                {
-                    selected_language = "en";
-                    Paper.book().write("lang",selected_language);
-                    Language_Helper.setLocality(activity,"en");
+                selected_language = "en";
 
-                }
 
 
             }
@@ -79,7 +68,7 @@ public class Fragment_Language extends Fragment {
             @Override
             public void onClick(View v) {
 
-                activity.RefreshActivity();
+                activity.RefreshActivity(selected_language);
 
             }
         });
