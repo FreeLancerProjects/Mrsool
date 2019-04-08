@@ -5,6 +5,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@color/gray1"
+    android:clickable="true"
+    android:focusable="true"
     >
 
 
@@ -106,38 +108,46 @@
                 <FrameLayout
                     android:id="@+id/fl_slider"
                     android:layout_width="match_parent"
-                    android:layout_height="160dp"
+                    android:layout_height="wrap_content"
                     >
-                    <android.support.v4.view.ViewPager
-                        android:id="@+id/pager"
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
                         >
+                        <android.support.v4.view.ViewPager
+                            android:id="@+id/pager"
+                            android:layout_width="match_parent"
+                            android:layout_height="160dp"
+                            android:layout_marginBottom="8dp"
+                            >
 
-                    </android.support.v4.view.ViewPager>
-                    <android.support.design.widget.TabLayout
-                        android:id="@+id/tab"
-                        android:layout_width="wrap_content"
-                        android:layout_height="6dp"
-                        android:layout_gravity="bottom|center_horizontal"
-                        android:layout_marginBottom="10dp"
-                        app:tabIndicatorHeight="0dp"
-                        app:tabMode="scrollable"
-                        app:tabMinWidth="6dp"
-                        app:tabMaxWidth="6dp"
-                        app:tabBackground="@drawable/tab_circle_indicator"
+                        </android.support.v4.view.ViewPager>
+                        <android.support.design.widget.TabLayout
+                            android:id="@+id/tab"
+                            android:layout_width="wrap_content"
+                            android:layout_height="6dp"
+                            android:layout_gravity="bottom|center_horizontal"
+                            android:layout_marginBottom="10dp"
+                            app:tabIndicatorHeight="0dp"
+                            app:tabMode="scrollable"
+                            app:tabMinWidth="6dp"
+                            app:tabMaxWidth="6dp"
+                            app:tabBackground="@drawable/tab_circle_indicator"
 
-                        >
+                            >
 
-                    </android.support.design.widget.TabLayout>
+                        </android.support.design.widget.TabLayout>
+                    </LinearLayout>
                     <ProgressBar
                         android:id="@+id/progBarSlider"
                         android:layout_width="35dp"
                         android:layout_height="35dp"
                         android:layout_gravity="center"
-                        android:visibility="gone"
+                        android:visibility="visible"
                         />
                 </FrameLayout>
+
 
             </android.support.design.widget.CollapsingToolbarLayout>
             <android.support.v7.widget.RecyclerView
@@ -183,7 +193,7 @@
                         android:layout_width="35dp"
                         android:layout_height="35dp"
                         android:layout_gravity="top|center_horizontal"
-                        android:visibility="gone"
+                        android:visibility="visible"
                         />
 
                     <LinearLayout

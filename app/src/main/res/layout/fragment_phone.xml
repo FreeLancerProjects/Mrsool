@@ -106,7 +106,7 @@
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:textColor="@color/white"
-                android:text="966"
+                android:text="+966"
                 android:clickable="false"
                 android:longClickable="false"
 
@@ -127,11 +127,11 @@
                 android:paddingRight="10dp"
                 android:textSize="17sp"
                 android:textColor="@color/white"
-                android:text="@string/mobile_number"
+                android:textColorHint="@color/white"
+                android:hint="@string/mobile_number"
                 android:inputType="phone"
-                android:clickable="false"
-                android:longClickable="false"
                 android:background="@color/transparent"
+                android:focusable="true"
                 />
 
         </LinearLayout>

@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.appzone.mrsool">
+    package="com.creativeshare.mrsool">
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
 
     <application
         android:allowBackup="true"
@@ -16,17 +17,26 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:name=".share.App"
+        android:name="com.creativeshare.mrsool.share.App"
         tools:ignore="GoogleAppIndexingWarning">
-        <service android:name=".services.UpdateLocationService"/>
+
+        <service
+            android:name=".notifications.FireBaseMessaging"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <service android:name="com.creativeshare.mrsool.services.UpdateLocationService"/>
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyD2dtIHnb-B4RaFtsPb2dC7iMYCQjtBsg8"/>
+            android:value="AIzaSyCbc2Y5AIwZ8uUeHRUXiozGN3CnpjKT0oI"/>
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".activities_fragments.activity_splash.SplashActivity"
+        <activity android:name="com.creativeshare.mrsool.activities_fragments.activity_splash.SplashActivity"
             android:screenOrientation="portrait"
             >
             <intent-filter>
@@ -35,15 +45,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities_fragments.activity_sign_in.activity.SignInActivity"
+        <activity android:name="com.creativeshare.mrsool.activities_fragments.activity_sign_in.activity.SignInActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"
+
             />
-        <activity android:name=".activities_fragments.terms_conditions.TermsConditionsActivity"
+        <activity android:name="com.creativeshare.mrsool.activities_fragments.terms_conditions.TermsConditionsActivity"
             android:screenOrientation="portrait"
 
             />
-        <activity android:name=".activities_fragments.activity_home.client_home.activity.ClientHomeActivity"
+        <activity android:name="com.creativeshare.mrsool.activities_fragments.activity_home.client_home.activity.ClientHomeActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
 
             />

@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">MRSOOLK</string>
+    <string name="map_api_key">AIzaSyCbc2Y5AIwZ8uUeHRUXiozGN3CnpjKT0oI</string>
     <string name="notifications">Notifications</string>
     <string name="si_su">Please Sign in or sign up .</string>
     <string name="ok">Ok</string>
@@ -78,7 +79,7 @@
     <string name="active">Open</string>
     <string name="inactive">Closed</string>
     <string name="im_a_courier">I\'m a Courier</string>
-    <string name="courier_in">Courier in</string>
+    <string name="courier_in">Courier in (show)</string>
     <string name="state">State</string>
     <string name="away">Km away</string>
     <string name="shop_info">Shop Info</string>
@@ -136,5 +137,14 @@
     <string name="female">Female</string>
     <string name="gender">Gender</string>
     <string name="mobile_number">Mobile Number</string>
+    <string name="general_settings">General Settings</string>
+    <string name="upload_picture">Upload Picture</string>
+    <string name="select_a_picture_to_upload">Select a picture to upload</string>
+    <string name="camera">Camera</string>
+    <string name="gallery">Gallery</string>
+    <string name="inc_em_phone">Incorrect email or phone</string>
+    <string name="date_of_birth">Date of Birth</string>
+    <string name="no_courier_available">No courier available near you</string>
+    <string name="couriers">Couriers</string>
 
 </resources>

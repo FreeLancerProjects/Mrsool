@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">مرسولك</string>
+    <string name="map_api_key">AIzaSyCbc2Y5AIwZ8uUeHRUXiozGN3CnpjKT0oI</string>
     <string name="notifications">الإشعارات</string>
     <string name="si_su">قم بتسجيل الدخول أو إنشاء حساب جديد .</string>
     <string name="ok">حسنا</string>
@@ -77,7 +78,7 @@
     <string name="active">مفتوح</string>
     <string name="inactive">مغلق</string>
     <string name="im_a_courier">سجلني كمرسول</string>
-    <string name="courier_in">مرسول متواجد</string>
+    <string name="courier_in">مرسول متواجد (عرض)</string>
     <string name="state">الحالة</string>
     <string name="away"> كم يبعد عنك</string>
     <string name="shop_info">معلومات المتجر</string>
@@ -136,5 +137,14 @@
     <string name="female">انثى</string>
     <string name="gender">الجنس</string>
     <string name="mobile_number">رقم الجوال</string>
+    <string name="general_settings">إعدادات عامة</string>
+    <string name="upload_picture">رفع صورة</string>
+    <string name="select_a_picture_to_upload">إختر صورة لرفعها</string>
+    <string name="camera">الكاميرا</string>
+    <string name="gallery">البوم الصور</string>
+    <string name="inc_em_phone">البريد الالكتروني او رقم الجوال غير صحيح</string>
+    <string name="date_of_birth">تاريخ الميلاد</string>
+    <string name="no_courier_available">لا يوجد مرسول قريب منك</string>
+    <string name="couriers">مرسول</string>
 
 </resources>

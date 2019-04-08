@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/gray0"
+    android:focusable="true"
+    android:clickable="true"
+    >
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        >
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fitsSystemWindows="true"
+            app:titleEnabled="false"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            >
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="240dp"
+                android:layout_marginTop="56dp"
+                >
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="vertical"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:textColor="@color/white"
+                        android:textSize="17sp"
+                        android:text="@string/edit_profile"
+                        android:layout_marginBottom="10dp"
+                        />
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/image"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        app:civ_border_width="2dp"
+                        app:civ_border_color="@color/white"
+                        android:layout_marginTop="20dp"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@drawable/user_avatar"
+                        />
+                    <com.iarcuschin.simpleratingbar.SimpleRatingBar
+                        android:id="@+id/rateBar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_name"
+                        android:layout_marginTop="10dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:srb_isIndicator="true"
+                        app:srb_stepSize=".5"
+                        app:srb_starSize="25dp"
+                        app:srb_starsSeparation="10dp"
+                        app:srb_numberOfStars="5"
+                        app:srb_fillColor="@color/rating"
+                        app:srb_borderColor="@color/white"
+                        app:srb_starBorderWidth="3"
+                        app:srb_drawBorderEnabled="true"
+                        app:srb_starBackgroundColor="@color/white"
+
+                        />
+
+                </LinearLayout>
+
+            </FrameLayout>
+
+            <android.support.v7.widget.Toolbar
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                app:layout_collapseMode="pin"
+                app:contentInsetStart="0dp"
+                app:contentInsetEnd="0dp"
+                android:background="@color/colorPrimary"
+                >
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    >
+                    <LinearLayout
+                        android:id="@+id/ll_back"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_centerVertical="true"
+                        >
+
+                        <ImageView
+                            android:id="@+id/arrow"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_gravity="center_vertical"
+                            android:padding="5dp"
+                            android:src="@drawable/ic_left_arrow"
+                            android:tint="@color/white"
+                            android:clickable="false"
+                            android:longClickable="false"
+                            />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:paddingStart="5dp"
+                            android:text="@string/back"
+                            android:textColor="@color/white"
+                            android:textSize="16sp"
+                            tools:ignore="RtlCompat"
+                            android:clickable="false"
+                            android:longClickable="false"
+                            />
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+            </android.support.v7.widget.Toolbar>
+
+
+        </android.support.design.widget.CollapsingToolbarLayout>
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:fillViewport="true"
+        android:fitsSystemWindows="true"
+        android:scrollbars="none"
+        >
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                >
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="10dp"
+
+                    >
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/user"
+                        android:tint="@color/colorPrimary"
+                        android:padding="4dp"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="16sp"
+                        android:text="@string/personal_information"
+                        />
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/edt_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/edt_sign_up_bg"
+                    android:inputType="text"
+                    android:textColorHint="@color/gray4"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:hint="@string/full_name"
+                    />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/edt_sign_up_bg"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="8dp"
+
+                    >
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="match_parent"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="16sp"
+                        android:gravity="center"
+                        android:src="@drawable/ic_mail"
+                        android:tint="@color/colorPrimary"
+                        android:padding="10dp"
+                        />
+                    <EditText
+                        android:id="@+id/edt_email"
+                        android:layout_width="match_parent"
+                        android:layout_height="37dp"
+                        android:layout_gravity="center_vertical"
+                        android:background="@color/white"
+                        android:hint="@string/email_address"
+                        android:textColorHint="@color/gray4"
+                        android:paddingLeft="8dp"
+                        android:paddingRight="8dp"
+                        android:inputType="textEmailAddress"
+                        android:textColor="@color/black"
+                        android:singleLine="true"
+                        android:gravity="center_vertical"
+                        android:layout_marginEnd="15dp"
+                        android:textSize="14sp"
+                        tools:ignore="RtlCompat" />
+                </LinearLayout>
+
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+
+                    >
+                    <co.ceryle.segmentedbutton.SegmentedButtonGroup
+                        android:id="@+id/segmentGroup"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:sbg_animateSelector="anticipateOvershoot"
+                        app:sbg_borderSize="1dp"
+                        app:sbg_borderColor="@color/colorPrimary"
+                        app:sbg_dividerColor="@color/white"
+                        app:sbg_animateSelectorDuration="700"
+                        app:sbg_dividerPadding="8dp"
+                        app:sbg_ripple="true"
+                        app:sbg_position="0"
+                        app:sbg_selectorColor="@color/colorPrimary"
+                        app:sbg_backgroundColor="@color/white"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:sbg_radius="2dp"
+                        >
+                        <co.ceryle.segmentedbutton.SegmentedButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:sb_textColor="@color/black"
+                            app:sb_textColor_onSelection="@color/white"
+                            app:sb_textSize="15sp"
+                            app:sb_text="@string/male"
+                            app:sb_textFillSpace="true"
+                            android:paddingLeft="8dp"
+                            android:paddingRight="8dp"
+                            android:minHeight="10dp"
+                            android:paddingTop="4dp"
+                            android:paddingBottom="4dp"
+                            />
+
+                        <co.ceryle.segmentedbutton.SegmentedButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:sb_textColor="@color/black"
+                            app:sb_textColor_onSelection="@color/white"
+                            app:sb_textSize="15sp"
+                            app:sb_text="@string/female"
+                            app:sb_textFillSpace="true"
+                            android:paddingLeft="8dp"
+                            android:paddingRight="8dp"
+                            android:minHeight="10dp"
+                            android:paddingTop="4dp"
+                            android:paddingBottom="4dp"
+                            />
+                    </co.ceryle.segmentedbutton.SegmentedButtonGroup>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toTopOf="@id/segmentGroup"
+                        app:layout_constraintBottom_toBottomOf="@id/segmentGroup"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:textColor="@color/gray4"
+                        android:textSize="15sp"
+                        android:text="@string/gender"
+                        />
+
+                </android.support.constraint.ConstraintLayout>
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/fab"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="50dp"
+                    app:borderWidth="5dp"
+                    app:elevation="0dp"
+                    app:fabCustomSize="50dp"
+                    android:src="@drawable/ic_correct"
+                    android:tint="@color/white"
+                    />
+
+
+            </LinearLayout>
+
+
+
+        </android.support.constraint.ConstraintLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
+</android.support.design.widget.CoordinatorLayout>

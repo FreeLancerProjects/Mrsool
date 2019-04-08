@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 27
     defaultConfig {
-        applicationId "com.appzone.mrsool"
+        applicationId "com.creativeshare.mrsool"
         minSdkVersion 16
         targetSdkVersion 27
         versionCode 1
@@ -57,7 +57,11 @@ dependencies {
     implementation 'com.google.maps.android:android-maps-utils:0.5'
     implementation 'com.balysv:material-ripple:1.0.2'
     implementation 'com.github.ceryle:SegmentedButton:v2.0.2'
-
+    implementation 'com.google.firebase:firebase-core:16.0.8'
+    implementation 'com.google.firebase:firebase-messaging:17.6.0'
+    implementation 'com.wdullaer:materialdatetimepicker:3.6.4'
 
 
 }
+
+apply plugin: 'com.google.gms.google-services'
