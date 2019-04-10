@@ -63,7 +63,8 @@ public class Fragment_Map extends Fragment implements OnMapReadyCallback {
     private GoogleMap mMap;
     private Marker marker;
     private float zoom = 15.6f;
-    private boolean isFirstTime = true;
+    private boolean stop = false;
+
 
 
     public static Fragment_Map newInstance(double lat, double lng) {
@@ -154,6 +155,69 @@ public class Fragment_Map extends Fragment implements OnMapReadyCallback {
 
     }
 
+
+
+    private void updateUI() {
+
+        SupportMapFragment fragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+        fragment.getMapAsync(this);
+
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+
+        if (googleMap != null) {
+            mMap = googleMap;
+            mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(activity, R.raw.maps));
+            mMap.setTrafficEnabled(false);
+            mMap.setBuildingsEnabled(false);
+            mMap.setIndoorEnabled(true);
+            //getGeoData(lat,lng);
+
+            AddMarker(lat, lng,true);
+
+
+
+            mMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
+                @Override
+                public void onCameraIdle() {
+
+
+                    if (!stop)
+                    {
+                        edt_search.setText("");
+                        double lat = mMap.getCameraPosition().target.latitude;
+                        double lng = mMap.getCameraPosition().target.longitude;
+                        getGeoData(lat,lng);
+                    }
+
+                    stop = false;
+
+
+
+
+
+                }
+            });
+
+
+
+            mMap.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
+                @Override
+                public void onCameraMove() {
+                    lat = mMap.getCameraPosition().target.latitude;
+                    lng =  mMap.getCameraPosition().target.longitude;
+                    AddMarker(lat,lng,true);
+
+
+
+                }
+            });
+
+        }
+    }
+
     private void Search(String query) {
 
         image_pin.setVisibility(View.GONE);
@@ -175,12 +239,11 @@ public class Fragment_Map extends Fragment implements OnMapReadyCallback {
 
                                 address = response.body().getCandidates().get(0).getFormatted_address().replace("Unnamed Road,","");
                                 tv_address.setText(address+"");
-
-                                AddMarker(response.body().getCandidates().get(0).getGeometry().getLocation().getLat(),response.body().getCandidates().get(0).getGeometry().getLocation().getLng());
+                                AddMarker(response.body().getCandidates().get(0).getGeometry().getLocation().getLat(),response.body().getCandidates().get(0).getGeometry().getLocation().getLng(),false);
                             }
                         }
                         else
-                            {
+                        {
 
                             image_pin.setVisibility(View.VISIBLE);
                             progBar.setVisibility(View.GONE);
@@ -229,6 +292,8 @@ public class Fragment_Map extends Fragment implements OnMapReadyCallback {
                             {
                                 address =response.body().getResults().get(0).getFormatted_address().replace("Unnamed Road,","");
                                 tv_address.setText(address+"");
+                                stop = true;
+                                AddMarker(response.body().getResults().get(0).getGeometry().getLocation().getLat(),response.body().getResults().get(0).getGeometry().getLocation().getLng(),true);
                             }
                         }
                         else
@@ -261,63 +326,7 @@ public class Fragment_Map extends Fragment implements OnMapReadyCallback {
                 });
     }
 
-    private void updateUI() {
-
-        SupportMapFragment fragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
-        fragment.getMapAsync(this);
-
-    }
-
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-
-        if (googleMap != null) {
-            mMap = googleMap;
-            mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(activity, R.raw.maps));
-            mMap.setTrafficEnabled(false);
-            mMap.setBuildingsEnabled(false);
-            mMap.setIndoorEnabled(true);
-            getGeoData(lat,lng);
-            AddMarker(lat, lng);
-
-
-
-            mMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
-                @Override
-                public void onCameraIdle() {
-
-                    if (!isFirstTime)
-                    {
-                        edt_search.setText("");
-                        double lat = mMap.getCameraPosition().target.latitude;
-                        double lng = mMap.getCameraPosition().target.longitude;
-                        getGeoData(lat,lng);
-
-                    }
-
-                }
-            });
-
-
-
-            mMap.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
-                @Override
-                public void onCameraMove() {
-
-                    if (!isFirstTime)
-                    {
-                        AddMarker(mMap.getCameraPosition().target.latitude,mMap.getCameraPosition().target.longitude);
-
-                    }
-
-
-                }
-            });
-
-        }
-    }
-
-    private void AddMarker(double lat, double lng) {
+    private void AddMarker(double lat, double lng,boolean isMove) {
 
         this.lat = lat;
         this.lng = lng;
@@ -328,11 +337,11 @@ public class Fragment_Map extends Fragment implements OnMapReadyCallback {
             View view = LayoutInflater.from(activity).inflate(R.layout.search_map_icon, null);
             iconGenerator.setContentView(view);
             marker = mMap.addMarker(new MarkerOptions().position(new LatLng(lat, lng)).icon(BitmapDescriptorFactory.fromBitmap(iconGenerator.makeIcon())).anchor(iconGenerator.getAnchorU(), iconGenerator.getAnchorV()));
-
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat,lng),zoom));
-            isFirstTime = false;
         } else {
             marker.setPosition(new LatLng(lat, lng));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat,lng),zoom));
+
 
         }
     }

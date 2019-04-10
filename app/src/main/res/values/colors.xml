@@ -18,5 +18,7 @@
     <color name="active">#43A047</color>
     <color name="distance">#FFFF00</color>
     <color name="rating">#FBC02D</color>
+    <color name="press_color">#791576</color>
+
 
 </resources>

@@ -50,6 +50,7 @@
                         android:layout_marginTop="20dp"
                         android:layout_gravity="center_horizontal"
                         android:src="@drawable/user_avatar"
+                        app:civ_fill_color="@color/white"
                         />
                     <com.iarcuschin.simpleratingbar.SimpleRatingBar
                         android:id="@+id/rateBar"

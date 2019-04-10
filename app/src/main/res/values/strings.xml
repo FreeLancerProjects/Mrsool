@@ -41,7 +41,7 @@
     <string name="phone_number_not_exists">Phone number not exists</string>
     <string name="sgin_out">Signing out...</string>
     <string name="sign_out">Sign Out</string>
-    <string name="order_sent_successfully">Order sent successfully</string>
+    <string name="order_sent_successfully">Order sent successfully!</string>
     <string name="updating_phone">Updating phone number...</string>
     <string name="incorrect_old_password">incorrect old password</string>
     <string name="sign_up_with_your_phone">Sign up with your phone</string>
@@ -79,7 +79,7 @@
     <string name="active">Open</string>
     <string name="inactive">Closed</string>
     <string name="im_a_courier">I\'m a Courier</string>
-    <string name="courier_in">Courier in (show)</string>
+    <string name="courier_in">Courier in</string>
     <string name="state">State</string>
     <string name="away">Km away</string>
     <string name="shop_info">Shop Info</string>
@@ -146,5 +146,17 @@
     <string name="date_of_birth">Date of Birth</string>
     <string name="no_courier_available">No courier available near you</string>
     <string name="couriers">Couriers</string>
+    <string name="go_to_order">Follow order</string>
+    <string name="order_sent_successfully_order_number_is">Order sent successfully order number is</string>
+    <string name="national_number">National number</string>
+    <string name="address">Address</string>
+    <string name="identity_card_image">Identity card image</string>
+    <string name="license_image">License image</string>
+    <string name="choose_identity_card_image">Choose identity card image</string>
+    <string name="choose_license_image">Choose license image</string>
+    <string name="suc">Success !</string>
+    <string name="succ_be_courier">You have been successfully be a Courier. You can now receive orders from clients</string>
+    <string name="serv_aval_client">This service is available to clients</string>
+    <string name="already_courier">You are already a courier.</string>
 
 </resources>

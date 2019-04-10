@@ -138,4 +138,13 @@ public class UpdateLocationService extends Service implements LocationListener ,
         return START_STICKY;
 
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (googleApiClient!=null)
+        {
+            googleApiClient.disconnect();
+        }
+    }
 }

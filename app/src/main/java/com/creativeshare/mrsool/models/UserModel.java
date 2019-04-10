@@ -13,6 +13,7 @@ public class UserModel implements Serializable {
     public class Data implements Serializable {
         private String user_id;
         private String user_phone;
+        private String user_phone_code;
         private String user_type;
         private String user_full_name;
         private String user_email;
@@ -27,7 +28,7 @@ public class UserModel implements Serializable {
         private double rate;
         private int num_orders;
         private int num_comments;
-        private int account_balance;
+        private double account_balance;
 
         public String getUser_id() {
             return user_id;
@@ -93,10 +94,12 @@ public class UserModel implements Serializable {
             return num_comments;
         }
 
-        public int getAccount_balance() {
+        public double getAccount_balance() {
             return account_balance;
         }
 
-
+        public String getUser_phone_code() {
+            return user_phone_code;
+        }
     }
 }

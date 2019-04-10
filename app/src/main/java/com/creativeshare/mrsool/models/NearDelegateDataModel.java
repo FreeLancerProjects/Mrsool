@@ -18,16 +18,18 @@ public class NearDelegateDataModel implements Serializable {
 
     public class DelegateModel implements Serializable
     {
-        private String user_id;
+        private String driver_id;
         private String user_phone;
+        private String user_phone_code;
         private String user_full_name;
         private String user_image;
         private String user_google_lat;
         private String user_google_long;
-        private String distance;
+        private double distance;
+        private double rate;
 
-        public String getUser_id() {
-            return user_id;
+        public String getDriver_id() {
+            return driver_id;
         }
 
         public String getUser_phone() {
@@ -50,8 +52,16 @@ public class NearDelegateDataModel implements Serializable {
             return user_google_long;
         }
 
-        public String getDistance() {
+        public double getDistance() {
             return distance;
+        }
+
+        public String getUser_phone_code() {
+            return user_phone_code;
+        }
+
+        public double getRate() {
+            return rate;
         }
     }
 

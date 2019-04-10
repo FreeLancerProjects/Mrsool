@@ -230,6 +230,20 @@ public class Preferences {
        ClearFavoriteLocation(context);
     }
 
+    public void saveVisitTime(Context context,String time)
+    {
+        SharedPreferences preferences = context.getSharedPreferences("visit",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("time",time);
+        editor.apply();
+    }
+
+    public String getVisitTime(Context context)
+    {
+        SharedPreferences preferences = context.getSharedPreferences("visit",Context.MODE_PRIVATE);
+        return preferences.getString("time","");
+    }
+
     public void ClearUserData(Context context)
     {
         SharedPreferences preferences1 = context.getSharedPreferences("user",Context.MODE_PRIVATE);
@@ -247,4 +261,5 @@ public class Preferences {
         editor5.clear();
         editor5.apply();
     }
+
 }

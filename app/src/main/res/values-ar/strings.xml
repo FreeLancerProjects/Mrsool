@@ -44,7 +44,7 @@
     <string name="phone_number_not_exists">لم يتم التسجيل برقم الجوال من قبل</string>
     <string name="sgin_out">جار تسجيل الخروج...</string>
     <string name="sign_out">تسجيل الخروج</string>
-    <string name="order_sent_successfully">تم إرسال الطلب بنجاح</string>
+    <string name="order_sent_successfully">تم إرسال الطلب بنجاح!</string>
     <string name="updating_phone">جار تعديل رقم الجوال...</string>
     <string name="incorrect_old_password">كلمة المرور القديمة غير صحيحة</string>
     <string name="sign_up_with_your_phone">التسجيل برقم الجوال</string>
@@ -78,7 +78,7 @@
     <string name="active">مفتوح</string>
     <string name="inactive">مغلق</string>
     <string name="im_a_courier">سجلني كمرسول</string>
-    <string name="courier_in">مرسول متواجد (عرض)</string>
+    <string name="courier_in">مرسول متواجد</string>
     <string name="state">الحالة</string>
     <string name="away"> كم يبعد عنك</string>
     <string name="shop_info">معلومات المتجر</string>
@@ -146,5 +146,17 @@
     <string name="date_of_birth">تاريخ الميلاد</string>
     <string name="no_courier_available">لا يوجد مرسول قريب منك</string>
     <string name="couriers">مرسول</string>
+    <string name="go_to_order">متابعة طلبك</string>
+    <string name="order_sent_successfully_order_number_is">تم إرسال طلبك بنجاح رقم طلبك هو</string>
+    <string name="national_number">الرقم القومي</string>
+    <string name="address">العنوان</string>
+    <string name="identity_card_image">صورة البطاقة الشخصية</string>
+    <string name="license_image">صورة رخصة القيادة</string>
+    <string name="choose_identity_card_image">إختر صورة البطاقة الشخصية</string>
+    <string name="choose_license_image">إختر صورة رخصة القيادة</string>
+    <string name="suc">تم بنجاح !</string>
+    <string name="succ_be_courier"> لقد اصبحت مرسول بنجاح يمكنك الان استقبال الطلبات من العملاء</string>
+    <string name="serv_aval_client">هذه الخدمة متاحة للعملاء فقط</string>
+    <string name="already_courier">تم تسجيلك كمرسول من قبل.</string>
 
 </resources>

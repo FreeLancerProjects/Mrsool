@@ -25,8 +25,10 @@ import com.creativeshare.mrsool.activities_fragments.activity_home.client_home.a
 import com.creativeshare.mrsool.models.NearDelegateDataModel;
 import com.creativeshare.mrsool.models.PlaceDetailsModel;
 import com.creativeshare.mrsool.models.PlaceModel;
+import com.creativeshare.mrsool.models.UserModel;
 import com.creativeshare.mrsool.remote.Api;
 import com.creativeshare.mrsool.share.Common;
+import com.creativeshare.mrsool.singletone.UserSingleTone;
 import com.creativeshare.mrsool.tags.Tags;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -74,6 +76,8 @@ public class Fragment_Details extends Fragment implements OnMapReadyCallback {
     private ProgressDialog dialog;
     private String current_language;
     private int delegate_count = 0;
+    private UserSingleTone userSingleTone;
+    private UserModel userModel;
 
     public static Fragment_Details newInstance(PlaceModel placeModel, double lat, double lng)
     {
@@ -99,6 +103,8 @@ public class Fragment_Details extends Fragment implements OnMapReadyCallback {
 
         activity = (ClientHomeActivity) getActivity();
         Paper.init(activity);
+        userSingleTone = UserSingleTone.getInstance();
+        userModel = userSingleTone.getUserModel();
         current_language = Paper.book().read("lang", Locale.getDefault().getLanguage());
         ll_map = view.findViewById(R.id.ll_map);
         ll_delegate = view.findViewById(R.id.ll_delegate);
@@ -213,18 +219,7 @@ public class Fragment_Details extends Fragment implements OnMapReadyCallback {
             }
         });
 
-        ll_delegate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (delegate_count>0)
-                {
-                }else
-                    {
-                        Common.CreateSignAlertDialog(activity,getString(R.string.no_courier_available));
 
-                    }
-            }
-        });
         getDelegateCount();
 
     }
@@ -232,7 +227,7 @@ public class Fragment_Details extends Fragment implements OnMapReadyCallback {
     private void getDelegateCount()
     {
         Api.getService(Tags.base_url)
-                .getDelegate(lat,lng,1)
+                .getDelegate(placeModel.getLat(),placeModel.getLng(),1)
                 .enqueue(new Callback<NearDelegateDataModel>() {
                     @Override
                     public void onResponse(Call<NearDelegateDataModel> call, Response<NearDelegateDataModel> response) {

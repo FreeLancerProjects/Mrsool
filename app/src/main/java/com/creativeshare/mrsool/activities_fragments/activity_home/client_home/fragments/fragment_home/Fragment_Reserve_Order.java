@@ -1,6 +1,7 @@
 package com.creativeshare.mrsool.activities_fragments.activity_home.client_home.fragments.fragment_home;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,21 +20,31 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.creativeshare.mrsool.R;
 import com.creativeshare.mrsool.activities_fragments.activity_home.client_home.activity.ClientHomeActivity;
 import com.creativeshare.mrsool.models.Favourite_location;
+import com.creativeshare.mrsool.models.OrderIdDataModel;
 import com.creativeshare.mrsool.models.PlaceModel;
+import com.creativeshare.mrsool.models.UserModel;
 import com.creativeshare.mrsool.preferences.Preferences;
+import com.creativeshare.mrsool.remote.Api;
 import com.creativeshare.mrsool.share.Common;
+import com.creativeshare.mrsool.singletone.UserSingleTone;
+import com.creativeshare.mrsool.tags.Tags;
 import com.squareup.picasso.Picasso;
 
 import net.cachapa.expandablelayout.ExpandableLayout;
 
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.Locale;
 
 import io.paperdb.Paper;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class Fragment_Reserve_Order extends Fragment {
     private static final String TAG = "DATA";
@@ -49,9 +61,14 @@ public class Fragment_Reserve_Order extends Fragment {
     private Preferences preferences;
     private Favourite_location favourite_location;
     private String [] timesList;
+    private UserSingleTone userSingleTone;
+    private UserModel userModel;
+
+
     ////////////////////////////////////////////////
     private Favourite_location selected_location = null;
-    private double selected_time;
+    private long selected_time=0;
+    private String order_details,delegate_id="";
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -73,6 +90,8 @@ public class Fragment_Reserve_Order extends Fragment {
 
         activity = (ClientHomeActivity) getActivity();
         preferences = Preferences.getInstance();
+        userSingleTone = UserSingleTone.getInstance();
+        userModel = userSingleTone.getUserModel();
         Paper.init(activity);
         current_language = Paper.book().read("lang", Locale.getDefault().getLanguage());
 
@@ -197,9 +216,63 @@ public class Fragment_Reserve_Order extends Fragment {
             placeModel = (PlaceModel) bundle.getSerializable(TAG);
             updateUI(placeModel);
         }
+
+        image_reserve.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CheckData();
+            }
+        });
     }
 
+    private void CheckData() {
+        order_details = edt_order_details.getText().toString().trim();
+        if(!TextUtils.isEmpty(order_details)&&selected_location!=null&&selected_time!=0)
+        {
+            edt_order_details.setError(null);
+            tv_delivery_time.setError(null);
+            tv_address.setError(null);
+            Common.CloseKeyBoard(activity,edt_order_details);
+            if (TextUtils.isEmpty(delegate_id))
+            {
+                activity.DisplayFragmentDelegates(placeModel.getLat(),placeModel.getLng());
 
+            }else
+                {
+                    sendOrder(delegate_id);
+                }
+
+        }else
+            {
+                if (TextUtils.isEmpty(order_details))
+                {
+                    edt_order_details.setError(getString(R.string.field_req));
+
+                }else
+                    {
+                        edt_order_details.setError(null);
+                    }
+
+                if (selected_time == 0)
+                {
+                    tv_delivery_time.setError(getString(R.string.field_req));
+
+                }else
+                {
+                    tv_delivery_time.setError(null);
+                }
+
+                if (selected_location == null)
+                {
+                    tv_address.setError(getString(R.string.field_req));
+
+                }else
+                {
+                    tv_address.setError(null);
+                }
+            }
+
+    }
 
 
     private void updateUI(PlaceModel placeModel) {
@@ -309,7 +382,53 @@ public class Fragment_Reserve_Order extends Fragment {
     public void updateSelectedLocation(Favourite_location favourite_location)
     {
         this.selected_location = favourite_location;
+        tv_address.setError(null);
         updateSelectedAddress(favourite_location,false);
+    }
+
+    public void sendOrder(String delegate_id)
+    {
+        this.delegate_id = delegate_id;
+        Log.e("delegate_id",delegate_id);
+        Log.e("user_id",userModel.getData().getUser_id()+"_");
+        Log.e("address",selected_location.getAddress()+"_");
+        Log.e("street",selected_location.getStreet()+"_");
+        Log.e("lat",selected_location.getLat()+"_");
+        Log.e("lng",selected_location.getLng()+"_");
+        Log.e("selected_time",selected_time+"_");
+
+        final ProgressDialog dialog = Common.createProgressDialog(activity,getString(R.string.wait));
+        dialog.show();
+        Api.getService(Tags.base_url)
+                .sendOrder(userModel.getData().getUser_id(),selected_location.getAddress()+" "+selected_location.getStreet(),selected_location.getLat(),selected_location.getLng(),delegate_id,order_details,placeModel.getId(),placeModel.getLat(),placeModel.getLng(),selected_time)
+                .enqueue(new Callback<OrderIdDataModel>() {
+                    @Override
+                    public void onResponse(Call<OrderIdDataModel> call, Response<OrderIdDataModel> response) {
+                        dialog.dismiss();
+                        if (response.isSuccessful()&&response.body()!=null&&response.body().getData()!=null)
+                        {
+                            CreateAlertDialog(response.body().getData().getOrder_id());
+                        }else
+                            {
+                                try {
+                                    Log.e("Error_code",response.code()+""+response.errorBody().string());
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                                Toast.makeText(activity, R.string.failed, Toast.LENGTH_SHORT).show();
+                            }
+                    }
+
+                    @Override
+                    public void onFailure(Call<OrderIdDataModel> call, Throwable t) {
+                        try {
+                            dialog.dismiss();
+                            Toast.makeText(activity, getString(R.string.something), Toast.LENGTH_SHORT).show();
+                            Log.e("Error",t.getMessage());
+                        }catch (Exception e){}
+                    }
+                });
+
     }
 
     private void CreateTimeDialog()
@@ -383,6 +502,50 @@ public class Fragment_Reserve_Order extends Fragment {
                 break;
         }
 
-        selected_time = calendar.getTimeInMillis()/1000.0;
+        selected_time = calendar.getTimeInMillis()/1000;
+    }
+
+    public  void CreateAlertDialog(String order_id)
+    {
+
+
+        final AlertDialog dialog = new AlertDialog.Builder(activity)
+                .setCancelable(true)
+                .create();
+
+
+        View view = LayoutInflater.from(activity).inflate(R.layout.dialog_order_id,null);
+        Button btn_follow = view.findViewById(R.id.btn_follow);
+        Button btn_cancel = view.findViewById(R.id.btn_cancel);
+
+        TextView tv_msg = view.findViewById(R.id.tv_msg);
+        tv_msg.setText(getString(R.string.order_sent_successfully_order_number_is)+" #"+order_id);
+        btn_follow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                activity.FollowOrder();
+
+
+
+
+
+            }
+        });
+
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                activity.Back();
+
+
+            }
+        });
+
+        dialog.getWindow().getAttributes().windowAnimations= R.style.dialog_congratulation_animation;
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setView(view);
+        dialog.show();
     }
 }

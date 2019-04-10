@@ -36,6 +36,7 @@ import com.creativeshare.mrsool.share.Common;
 import com.creativeshare.mrsool.singletone.UserSingleTone;
 import com.creativeshare.mrsool.tags.Tags;
 import com.iarcuschin.simpleratingbar.SimpleRatingBar;
+import com.squareup.picasso.Picasso;
 
 import java.util.Locale;
 
@@ -165,6 +166,20 @@ public class Fragment_Edit_Profile extends Fragment {
 
         if (userModel!=null)
         {
+            Picasso.with(activity).load(Uri.parse(Tags.IMAGE_URL+userModel.getData().getUser_image())).fit().placeholder(R.drawable.logo_only).into(image);
+            edt_name.setText(userModel.getData().getUser_full_name());
+            edt_email.setText(userModel.getData().getUser_email());
+            if(userModel.getData().getUser_gender().equals(String.valueOf(Tags.MALE)))
+            {
+                segmentGroup.setPosition(0);
+                gender = Tags.MALE;
+            }else
+                {
+                    segmentGroup.setPosition(1);
+                    gender = Tags.FEMALE;
+
+                }
+                segmentGroup.setVisibility(View.VISIBLE);
             SimpleRatingBar.AnimationBuilder builder = rateBar.getAnimationBuilder()
                     .setDuration(1000)
                     .setRatingTarget(0.0f)

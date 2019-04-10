@@ -3,6 +3,7 @@ package com.creativeshare.mrsool.services;
 import com.creativeshare.mrsool.models.AppDataModel;
 import com.creativeshare.mrsool.models.NearDelegateDataModel;
 import com.creativeshare.mrsool.models.NearbyStoreDataModel;
+import com.creativeshare.mrsool.models.OrderIdDataModel;
 import com.creativeshare.mrsool.models.PlaceDetailsModel;
 import com.creativeshare.mrsool.models.PlaceGeocodeData;
 import com.creativeshare.mrsool.models.PlaceMapDetailsData;
@@ -65,6 +66,7 @@ public interface Service {
     @POST("/Api/signup")
     Call<UserModel> signUpWithoutImage(@Field("user_email") String user_email,
                                        @Field("user_phone") String user_phone,
+                                       @Field("user_phone_code") String user_phone_code,
                                        @Field("user_full_name") String user_full_name,
                                        @Field("user_gender") String user_gender,
                                        @Field("user_country") String user_country,
@@ -77,6 +79,7 @@ public interface Service {
     @POST("/Api/signup")
     Call<UserModel> signUpWithImage(@Part("user_email") RequestBody user_email,
                                     @Part("user_phone") RequestBody user_phone,
+                                    @Part("user_phone_code") RequestBody user_phone_code,
                                     @Part("user_full_name") RequestBody user_full_name,
                                     @Part("user_gender") RequestBody user_gender,
                                     @Part("user_country") RequestBody user_country,
@@ -87,7 +90,10 @@ public interface Service {
 
     @FormUrlEncoded
     @POST("/Api/login")
-    Call<UserModel> signIn(@Field("user_phone") String user_phone);
+    Call<UserModel> signIn(@Field("user_phone") String user_phone,
+                           @Field("user_phone_code") String user_phone_code
+
+                           );
 
     @GET("/Api/appDetails")
     Call<AppDataModel> getAppData(@Query("type") int  type);
@@ -115,5 +121,32 @@ public interface Service {
     @FormUrlEncoded
     @POST("/Api/logout")
     Call<ResponseBody> logOut(@Field("user_id") String user_id);
+
+    @FormUrlEncoded
+    @POST("/Api/addOrder")
+    Call<OrderIdDataModel> sendOrder(@Field("client_id") String client_id,
+                                     @Field("client_address") String client_address,
+                                     @Field("client_lat") double client_lat,
+                                     @Field("client_long") double client_long,
+                                     @Field("driver_id") String driver_id,
+                                     @Field("order_details") String order_details,
+                                     @Field("place_google_id") String place_google_id,
+                                     @Field("place_lat") double place_lat,
+                                     @Field("place_long") double place_long,
+                                     @Field("order_time_arrival") long order_time_arrival
+                                 );
+
+    @FormUrlEncoded
+    @POST("/Api/visit")
+    Call<ResponseBody> updateVisit(@Field("type") String type,@Field("day_date") String day_date);
+
+    @Multipart
+    @POST("/Api/beDriver")
+    Call<UserModel> registerDelegate(@Part("user_id") RequestBody user_id,
+                                  @Part("user_card_id") RequestBody user_card_id,
+                                  @Part("user_address") RequestBody user_address,
+                                  @Part MultipartBody.Part user_card_id_image,
+                                  @Part MultipartBody.Part user_driving_license
+                                  );
 }
 

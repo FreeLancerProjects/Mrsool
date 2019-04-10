@@ -42,6 +42,7 @@ public class Fragment_Phone extends Fragment implements OnCountryPickerListener 
     private String code = "";
     private String country_code="";
 
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -109,8 +110,7 @@ public class Fragment_Phone extends Fragment implements OnCountryPickerListener 
         if (!TextUtils.isEmpty(phone) && phone.matches(phone_regex)) {
             edt_phone.setError(null);
             Common.CloseKeyBoard(activity, edt_phone);
-            String m_phone = code.replace("+","00")+phone;
-            activity.signIn(m_phone,country_code);
+            activity.signIn(phone,country_code,code);
         } else {
             if (TextUtils.isEmpty(phone)) {
                 edt_phone.setError(getString(R.string.field_req));

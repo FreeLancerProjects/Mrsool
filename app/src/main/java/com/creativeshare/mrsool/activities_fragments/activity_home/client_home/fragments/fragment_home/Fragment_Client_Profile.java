@@ -20,16 +20,17 @@ import com.creativeshare.mrsool.tags.Tags;
 import com.iarcuschin.simpleratingbar.SimpleRatingBar;
 import com.squareup.picasso.Picasso;
 
+import java.util.Currency;
 import java.util.Locale;
 
 import io.paperdb.Paper;
 
 public class Fragment_Client_Profile extends Fragment{
 
-    private ImageView image_setting,image,arrow;
+    private ImageView image_setting,image,arrow,arrow2;
     private TextView tv_name,tv_balance,tv_order_count,tv_feedback;
     private SimpleRatingBar rateBar;
-    private ConstraintLayout cons_logout;
+    private ConstraintLayout cons_logout,cons_register_delegate;
     private String current_language;
     private ClientHomeActivity activity;
     private UserModel userModel;
@@ -57,13 +58,17 @@ public class Fragment_Client_Profile extends Fragment{
         current_language = Paper.book().read("lang", Locale.getDefault().getLanguage());
 
         arrow = view.findViewById(R.id.arrow);
+        arrow2 = view.findViewById(R.id.arrow2);
+
         if (current_language.equals("ar"))
         {
             arrow.setImageResource(R.drawable.ic_left_arrow);
+            arrow2.setImageResource(R.drawable.ic_left_arrow);
 
         }else
             {
                 arrow.setImageResource(R.drawable.ic_right_arrow);
+                arrow2.setImageResource(R.drawable.ic_right_arrow);
 
 
             }
@@ -75,6 +80,7 @@ public class Fragment_Client_Profile extends Fragment{
         tv_order_count = view.findViewById(R.id.tv_order_count);
         tv_feedback = view.findViewById(R.id.tv_feedback);
         rateBar = view.findViewById(R.id.rateBar);
+        cons_register_delegate = view.findViewById(R.id.cons_register_delegate);
         cons_logout = view.findViewById(R.id.cons_logout);
 
         image_setting.setOnClickListener(new View.OnClickListener() {
@@ -92,6 +98,13 @@ public class Fragment_Client_Profile extends Fragment{
             }
         });
 
+        cons_register_delegate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                activity.DisplayFragmentRegisterDelegate();
+            }
+        });
+
         updateUI(userModel);
 
     }
@@ -104,10 +117,11 @@ public class Fragment_Client_Profile extends Fragment{
             tv_name.setText(userModel.getData().getUser_full_name());
             tv_order_count.setText(String.valueOf(userModel.getData().getNum_orders()));
             Picasso.with(activity).load(Uri.parse(Tags.IMAGE_URL+userModel.getData().getUser_image())).placeholder(R.drawable.logo_only).into(image);
+            Currency currency = Currency.getInstance(new Locale(current_language,userModel.getData().getUser_country()));
+            tv_balance.setText(String.valueOf(userModel.getData().getAccount_balance())+" "+currency.getSymbol());
 
             if(userModel.getData().getUser_type().equals(Tags.TYPE_DELEGATE))
             {
-                tv_balance.setText(String.valueOf(userModel.getData().getAccount_balance()));
                 tv_feedback.setText(String.valueOf(userModel.getData().getNum_comments()));
 
                 SimpleRatingBar.AnimationBuilder builder = rateBar.getAnimationBuilder()
@@ -121,4 +135,10 @@ public class Fragment_Client_Profile extends Fragment{
         }
     }
 
+    public void updateUserData(UserModel userModel)
+    {
+        this.userModel = userModel;
+        userSingleTone.setUserModel(userModel);
+        updateUI(userModel);
+    }
 }

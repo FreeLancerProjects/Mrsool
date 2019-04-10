@@ -43,7 +43,7 @@ public class SignInActivity extends AppCompatActivity {
     private Fragment_Sign_Up fragment_signUp;
     private Preferences preferences;
     private String phone = "";
-    private String countrycode="";
+    private String countrycode="",phone_code="";
     private String current_lang;
     private UserSingleTone userSingleTone;
 
@@ -238,16 +238,16 @@ public class SignInActivity extends AppCompatActivity {
 
     }
 
-    public void signIn(String m_phone, String country_code) {
+    public void signIn(String m_phone, String country_code,String phone_code) {
 
         this.phone = m_phone;
         this.countrycode = country_code;
-        Log.e("phone",m_phone);
+        this.phone_code = phone_code.replace("+","00");
 
         final ProgressDialog dialog = Common.createProgressDialog(this,getString(R.string.wait));
         dialog.show();
         Api.getService(Tags.base_url)
-                .signIn(phone)
+                .signIn(phone,this.phone_code)
                 .enqueue(new Callback<UserModel>() {
                     @Override
                     public void onResponse(Call<UserModel> call, Response<UserModel> response) {
@@ -288,9 +288,11 @@ public class SignInActivity extends AppCompatActivity {
     public void signUpWithImage(String m_name, String m_email, int gender, Uri uri, long date_of_birth) {
         RequestBody email_part = Common.getRequestBodyText(m_email);
         RequestBody phone_part = Common.getRequestBodyText(phone);
+        RequestBody phone_code_part = Common.getRequestBodyText(this.phone_code);
         RequestBody name_part = Common.getRequestBodyText(m_name);
         RequestBody gender_part = Common.getRequestBodyText(String.valueOf(gender));
         RequestBody country_code_part = Common.getRequestBodyText(countrycode);
+
         RequestBody date_birth_part = Common.getRequestBodyText(String.valueOf(date_of_birth));
 
         MultipartBody.Part image_part = Common.getMultiPart(this,uri,"user_image");
@@ -299,7 +301,7 @@ public class SignInActivity extends AppCompatActivity {
         final ProgressDialog dialog = Common.createProgressDialog(this,getString(R.string.wait));
         dialog.show();
         Api.getService(Tags.base_url)
-                .signUpWithImage(email_part,phone_part,name_part,gender_part,country_code_part,date_birth_part,image_part)
+                .signUpWithImage(email_part,phone_part,phone_code_part,name_part,gender_part,country_code_part,date_birth_part,image_part)
                 .enqueue(new Callback<UserModel>() {
                     @Override
                     public void onResponse(Call<UserModel> call, Response<UserModel> response) {
@@ -345,7 +347,7 @@ public class SignInActivity extends AppCompatActivity {
         final ProgressDialog dialog = Common.createProgressDialog(this,getString(R.string.wait));
         dialog.show();
         Api.getService(Tags.base_url)
-                .signUpWithoutImage(m_email,phone,m_name,String.valueOf(gender),countrycode,date_of_birth)
+                .signUpWithoutImage(m_email,phone,this.phone_code,m_name,String.valueOf(gender),countrycode,date_of_birth)
                 .enqueue(new Callback<UserModel>() {
                     @Override
                     public void onResponse(Call<UserModel> call, Response<UserModel> response) {

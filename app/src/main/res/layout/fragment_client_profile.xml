@@ -82,6 +82,7 @@
                 app:contentInsetStart="0dp"
                 app:contentInsetEnd="0dp"
                 app:layout_collapseMode="pin"
+                android:background="@color/colorPrimary"
                 >
                 <android.support.constraint.ConstraintLayout
                     android:layout_width="match_parent"
@@ -257,6 +258,44 @@
                 android:background="@color/gray5"/>
 
             <android.support.constraint.ConstraintLayout
+                android:id="@+id/cons_register_delegate"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:paddingStart="16dp"
+                tools:ignore="RtlCompat,RtlSymmetry">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:text="@string/im_a_courier"
+                    android:clickable="false"
+                    android:longClickable="false"
+                    />
+
+                <ImageView
+                    android:id="@+id/arrow2"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:src="@drawable/ic_right_arrow"
+                    android:clickable="false"
+                    android:longClickable="false"
+                    android:padding="13dp"
+                    />
+
+            </android.support.constraint.ConstraintLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/gray5"/>
+
+            <android.support.constraint.ConstraintLayout
                 android:id="@+id/cons_logout"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -293,6 +332,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="1px"
                 android:background="@color/gray5"/>
+
+
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 </android.support.design.widget.CoordinatorLayout>
