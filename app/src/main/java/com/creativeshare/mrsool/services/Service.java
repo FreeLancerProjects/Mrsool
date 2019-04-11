@@ -10,6 +10,7 @@ import com.creativeshare.mrsool.models.PlaceMapDetailsData;
 import com.creativeshare.mrsool.models.SearchDataModel;
 import com.creativeshare.mrsool.models.SliderModel;
 import com.creativeshare.mrsool.models.UserModel;
+import com.creativeshare.mrsool.models.WatingOrderData;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -84,8 +85,8 @@ public interface Service {
                                     @Part("user_gender") RequestBody user_gender,
                                     @Part("user_country") RequestBody user_country,
                                     @Part("user_age") RequestBody user_age,
-                                    @Part  MultipartBody.Part image
-                                    );
+                                    @Part MultipartBody.Part image
+    );
 
 
     @FormUrlEncoded
@@ -93,22 +94,22 @@ public interface Service {
     Call<UserModel> signIn(@Field("user_phone") String user_phone,
                            @Field("user_phone_code") String user_phone_code
 
-                           );
+    );
 
     @GET("/Api/appDetails")
-    Call<AppDataModel> getAppData(@Query("type") int  type);
+    Call<AppDataModel> getAppData(@Query("type") int type);
 
     @FormUrlEncoded
     @POST("/Api/updateLocation")
     Call<ResponseBody> updateLocation(@Field("user_id") String user_id,
                                       @Field("user_google_lat") double user_google_lat,
                                       @Field("user_google_long") double user_google_long
-                                      );
+    );
 
     @FormUrlEncoded
     @POST("/Api/updateToken")
     Call<ResponseBody> updateToken(@Field("user_id") String user_id,
-                                      @Field("user_token_id") String user_token_id
+                                   @Field("user_token_id") String user_token_id
 
     );
 
@@ -116,7 +117,7 @@ public interface Service {
     Call<SliderModel> getAds();
 
     @GET("/Api/driverList")
-    Call<NearDelegateDataModel> getDelegate(@Query("mylat") double lat,@Query("mylong") double lng,@Query("page") int page_index);
+    Call<NearDelegateDataModel> getDelegate(@Query("mylat") double lat, @Query("mylong") double lng, @Query("page") int page_index);
 
     @FormUrlEncoded
     @POST("/Api/logout")
@@ -134,19 +135,51 @@ public interface Service {
                                      @Field("place_lat") double place_lat,
                                      @Field("place_long") double place_long,
                                      @Field("order_time_arrival") long order_time_arrival
-                                 );
+    );
 
     @FormUrlEncoded
     @POST("/Api/visit")
-    Call<ResponseBody> updateVisit(@Field("type") String type,@Field("day_date") String day_date);
+    Call<ResponseBody> updateVisit(@Field("type") String type, @Field("day_date") String day_date);
 
     @Multipart
     @POST("/Api/beDriver")
     Call<UserModel> registerDelegate(@Part("user_id") RequestBody user_id,
-                                  @Part("user_card_id") RequestBody user_card_id,
+                                     @Part("user_card_id") RequestBody user_card_id,
+                                     @Part("user_address") RequestBody user_address,
+                                     @Part MultipartBody.Part user_card_id_image,
+                                     @Part MultipartBody.Part user_driving_license
+    );
+
+    @Multipart
+    @POST("/Api/profile")
+    Call<UserModel> updateImage(@Part("user_id") RequestBody user_id,
+                                @Part("user_email") RequestBody user_email,
+                                @Part("user_full_name") RequestBody user_full_name,
+                                @Part("user_country") RequestBody user_country,
+                                @Part("user_gender") RequestBody user_gender,
+                                @Part("user_age") RequestBody user_age,
+                                @Part("user_address") RequestBody user_address,
+                                @Part("user_phone_code") RequestBody user_phone_code,
+                                @Part("user_phone") RequestBody user_phone,
+
+                                @Part MultipartBody.Part user_image
+    );
+
+    @Multipart
+    @POST("/Api/profile")
+    Call<UserModel> updateProfile(@Part("user_id") RequestBody user_id,
+                                  @Part("user_email") RequestBody user_email,
+                                  @Part("user_full_name") RequestBody user_full_name,
+                                  @Part("user_country") RequestBody user_country,
+                                  @Part("user_gender") RequestBody user_gender,
+                                  @Part("user_age") RequestBody user_age,
                                   @Part("user_address") RequestBody user_address,
-                                  @Part MultipartBody.Part user_card_id_image,
-                                  @Part MultipartBody.Part user_driving_license
+                                  @Part("user_phone_code") RequestBody user_phone_code,
+                                  @Part("user_phone") RequestBody user_phone
                                   );
+
+    @GET("/Api/placeOrders")
+    Call<WatingOrderData> getWaitingOrders(@Query("place_id") String place_id,@Query("page") int page);
 }
+
 

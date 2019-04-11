@@ -237,7 +237,6 @@ public class Fragment_Client_Store extends Fragment {
                         public void onResponse(Call<NearbyStoreDataModel> call, Response<NearbyStoreDataModel> response) {
                             if (response.isSuccessful()&&response.body()!=null)
                             {
-                                Log.e("size",response.body().getResults().size()+"_");
                                 progBar.setVisibility(View.GONE);
                                 if (response.body().getResults().size()>0)
                                 {
@@ -289,7 +288,7 @@ public class Fragment_Client_Store extends Fragment {
 
         if (mainNearbyModelList.size()==0)
         {
-
+            mainNearbyModelList.clear();
             mainNearbyModelList.addAll(getPlaceModelFromResult(nearbyStoreDataModel.getResults()));
 
         }

@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
@@ -19,6 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.creativeshare.mrsool.R;
+import com.creativeshare.mrsool.activities_fragments.activity_home.client_home.activity.ClientHomeActivity;
 import com.creativeshare.mrsool.activities_fragments.activity_sign_in.activity.SignInActivity;
 import com.creativeshare.mrsool.share.Common;
 import com.mukesh.countrypicker.Country;
@@ -30,17 +32,19 @@ import java.util.Locale;
 import io.paperdb.Paper;
 
 public class Fragment_Phone extends Fragment implements OnCountryPickerListener {
-
+    private static final String TAG = "TYPE";
     private ImageView arrow;
     private LinearLayout ll_country;
     private TextView tv_country,tv_code,tv_note;
     private EditText edt_phone;
     private FloatingActionButton fab;
-    private SignInActivity activity;
+    private FragmentActivity activity;
     private CountryPicker picker;
     private String current_language="";
     private String code = "";
     private String country_code="";
+    // from where , access from fragment chooser , fragment edit profile
+    private String type;
 
 
     @Nullable
@@ -51,12 +55,32 @@ public class Fragment_Phone extends Fragment implements OnCountryPickerListener 
         return view;
     }
 
-    public static Fragment_Phone newInstance()
+    public static Fragment_Phone newInstance(String type)
     {
-        return new Fragment_Phone();
+        Bundle bundle = new Bundle();
+        bundle.putString(TAG,type);
+        Fragment_Phone fragment_phone = new Fragment_Phone();
+        fragment_phone.setArguments(bundle);
+        return fragment_phone;
     }
     private void initView(View view) {
-        activity = (SignInActivity) getActivity();
+        Bundle bundle = getArguments();
+        if (bundle!=null)
+        {
+            type = bundle.getString(TAG);
+
+            if (type.equals("signup"))
+            {
+                activity =  getActivity();
+
+            }else if (type.equals("edit_profile"))
+            {
+                activity = getActivity();
+
+            }
+
+        }
+
         Paper.init(activity);
         current_language = Paper.book().read("lang", Locale.getDefault().getLanguage());
         arrow = view.findViewById(R.id.arrow);
@@ -99,6 +123,7 @@ public class Fragment_Phone extends Fragment implements OnCountryPickerListener 
             }
         });
 
+
     }
 
 
@@ -110,7 +135,14 @@ public class Fragment_Phone extends Fragment implements OnCountryPickerListener 
         if (!TextUtils.isEmpty(phone) && phone.matches(phone_regex)) {
             edt_phone.setError(null);
             Common.CloseKeyBoard(activity, edt_phone);
-            activity.signIn(phone,country_code,code);
+            if (type.equals("signup"))
+            {
+                ((SignInActivity)activity).signIn(phone,country_code,code);
+
+            }else if (type.equals("edit_profile"))
+            {
+                ((ClientHomeActivity)activity).setPhoneData(code,country_code,phone);
+            }
         } else {
             if (TextUtils.isEmpty(phone)) {
                 edt_phone.setError(getString(R.string.field_req));

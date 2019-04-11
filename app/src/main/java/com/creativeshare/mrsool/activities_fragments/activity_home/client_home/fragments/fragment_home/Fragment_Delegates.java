@@ -48,6 +48,7 @@ public class Fragment_Delegates extends Fragment {
     private double lat = 0.0, lng = 0.0;
     private String current_language;
     private int current_page = 0;
+    private boolean isLoading = false;
 
 
     @Nullable
@@ -91,6 +92,9 @@ public class Fragment_Delegates extends Fragment {
         ll_back = view.findViewById(R.id.ll_back);
 
         recView = view.findViewById(R.id.recView);
+        recView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
+        recView.setDrawingCacheEnabled(true);
+        recView.setItemViewCacheSize(25);
         manager = new LinearLayoutManager(activity);
         recView.setLayoutManager(manager);
         adapter = new DelegatesAdapter(delegateModelList, activity, this);
@@ -105,9 +109,12 @@ public class Fragment_Delegates extends Fragment {
                     int lastVisibleItemPos = manager.findLastCompletelyVisibleItemPosition();
                     int total_item = recView.getAdapter().getItemCount();
 
-                    if (lastVisibleItemPos >= (total_item-5))
+                    if (lastVisibleItemPos >= (total_item-5)&& !isLoading)
                     {
+                        isLoading = true;
                         int next_page = current_page+1;
+                        delegateModelList.add(null);
+                        adapter.notifyItemInserted(delegateModelList.size()-1);
                         loadMore(next_page);
                     }
                 }
@@ -172,14 +179,13 @@ public class Fragment_Delegates extends Fragment {
                         progBar.setVisibility(View.GONE);
                         if (response.isSuccessful() && response.body() != null && response.body().getData() != null) {
                             delegateModelList.remove(delegateModelList.size() - 1);
-                            int old_pos = delegateModelList.size() - 1;
 
                             if (response.body().getData().size() > 0) {
 
                                 current_page = response.body().getMeta().getCurrent_page();
                                 delegateModelList.addAll(response.body().getData());
+                                adapter.notifyDataSetChanged();
 
-                                adapter.notifyItemRangeInserted(old_pos,delegateModelList.size());
                             }else
                                 {
                                     adapter.notifyDataSetChanged();

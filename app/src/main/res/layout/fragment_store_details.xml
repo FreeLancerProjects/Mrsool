@@ -95,6 +95,26 @@
                 >
 
             </android.support.design.widget.TabLayout>
+
+           <!-- <com.rahimlis.badgedtablayout.BadgedTabLayout
+                android:id="@+id/tab"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/toolBar"
+                app:tabMaxWidth="0dp"
+                app:tabIndicatorHeight="2dp"
+                app:tabMode="fixed"
+                app:tabIndicatorColor="@color/white"
+                app:tabTextSize="6sp"
+                app:tabTextColor="@color/white"
+                app:tabSelectedTextColor="@color/white"
+                app:badgeBackgroundColor="@color/golden_stars"
+                app:badgeTextColor="@color/colorPrimary"
+                app:badgeTextSize="12sp"
+
+                >
+
+            </com.rahimlis.badgedtablayout.BadgedTabLayout>-->
         </android.support.constraint.ConstraintLayout>
 
 

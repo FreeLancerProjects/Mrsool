@@ -45,6 +45,7 @@ public class Fragment_Store_Details extends Fragment {
     private List<String> titleList;
     private List<Fragment> fragmentList;
     private ViewPagerAdapter viewPagerAdapter;
+    private TextView tv_counter;
 
 
 
@@ -117,6 +118,8 @@ public class Fragment_Store_Details extends Fragment {
 
     }
 
+
+
     private void updateUI(PlaceModel placeModel, double lat, double lng) {
         tv_name.setText(placeModel.getName());
         double distance = SphericalUtil.computeDistanceBetween(new LatLng(lat, lng), new LatLng(placeModel.getLat(), placeModel.getLng()));
@@ -131,10 +134,23 @@ public class Fragment_Store_Details extends Fragment {
         viewPagerAdapter.AddTitles(titleList);
         pager.setAdapter(viewPagerAdapter);
 
+        AddBudget();
+
 
     }
 
+    private void AddBudget() {
+        View view = LayoutInflater.from(activity).inflate(R.layout.tab_budget_layout,null);
+        tv_counter = view.findViewById(R.id.tv_counter);
+        TextView tv_title = view.findViewById(R.id.tv_title);
+        tv_title.setText(getString(R.string.pending_order));
+        tab.getTabAt(1).setCustomView(view);
 
-
+    }
+    public void AddCounter(int counter)
+    {
+        tv_counter.setText(counter+"");
+        tv_counter.setVisibility(View.VISIBLE);
+    }
 
 }

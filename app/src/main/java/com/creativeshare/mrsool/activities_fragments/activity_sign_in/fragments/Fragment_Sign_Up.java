@@ -295,7 +295,7 @@ public class Fragment_Sign_Up extends Fragment implements DatePickerDialog.OnDat
 
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-        tv_birth_date.setText(date_of_birth+"/"+(monthOfYear+1)+"-"+year);
+        tv_birth_date.setText(dayOfMonth+"/"+(monthOfYear+1)+"/"+year);
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.YEAR,year);
         calendar.set(Calendar.DAY_OF_MONTH,dayOfMonth);

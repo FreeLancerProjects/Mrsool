@@ -232,6 +232,9 @@ public class Fragment_Details extends Fragment implements OnMapReadyCallback {
                     @Override
                     public void onResponse(Call<NearDelegateDataModel> call, Response<NearDelegateDataModel> response) {
                         progBar.setVisibility(View.GONE);
+
+                        Log.e("dddd","ddd");
+                        Log.e("respons_code",response.code()+"");
                         if (response.isSuccessful()&&response.body()!=null&&response.body().getMeta()!=null)
                         {
                             delegate_count = response.body().getMeta().getTotal_drivers();
@@ -255,7 +258,9 @@ public class Fragment_Details extends Fragment implements OnMapReadyCallback {
                         try {
                             progBar.setVisibility(View.GONE);
                             tv_delegate_count.setText("0");
-                            Log.e("Error",t.getMessage());
+                            Log.e("Error_count",t.getMessage());
+                            Log.e("Error_count",t.getLocalizedMessage()+"_");
+
                         }catch (Exception e)
                         {
 

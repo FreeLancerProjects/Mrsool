@@ -18,6 +18,7 @@ public class UserModel implements Serializable {
         private String user_full_name;
         private String user_email;
         private String user_image;
+        private String user_address;
         private String user_token_id;
         private String user_country;
         private String user_gender;
@@ -25,6 +26,7 @@ public class UserModel implements Serializable {
         private String user_card_id;
         private String user_card_id_image;
         private String user_driving_license;
+
         private double rate;
         private int num_orders;
         private int num_comments;
@@ -100,6 +102,10 @@ public class UserModel implements Serializable {
 
         public String getUser_phone_code() {
             return user_phone_code;
+        }
+
+        public String getUser_address() {
+            return user_address;
         }
     }
 }

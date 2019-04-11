@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/gray0"
+    android:layout_height="match_parent"
+    android:background="@color/gray1"
     android:focusable="true"
     android:clickable="true"
     >
@@ -23,7 +23,7 @@
             >
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="240dp"
+                android:layout_height="200dp"
                 android:layout_marginTop="56dp"
                 >
                 <LinearLayout
@@ -147,7 +147,7 @@
 
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:orientation="vertical"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
@@ -155,6 +155,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 >
 
                 <LinearLayout
@@ -169,7 +170,7 @@
                         android:layout_height="30dp"
                         android:src="@drawable/user"
                         android:tint="@color/colorPrimary"
-                        android:padding="4dp"
+                        android:padding="5dp"
                         />
                     <TextView
                         android:layout_width="wrap_content"
@@ -227,6 +228,135 @@
                         android:paddingLeft="8dp"
                         android:paddingRight="8dp"
                         android:inputType="textEmailAddress"
+                        android:textColor="@color/black"
+                        android:singleLine="true"
+                        android:gravity="center_vertical"
+                        android:layout_marginEnd="15dp"
+                        android:textSize="14sp"
+                        tools:ignore="RtlCompat" />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/ll_phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/edt_sign_up_bg"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="8dp"
+
+                    >
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="match_parent"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="16sp"
+                        android:gravity="center"
+                        android:src="@drawable/ic_phone"
+                        android:tint="@color/colorPrimary"
+                        android:padding="10dp"
+                        android:clickable="false"
+                        android:longClickable="false"
+                        />
+                    <TextView
+                        android:id="@+id/tv_phone"
+                        android:layout_width="match_parent"
+                        android:layout_height="37dp"
+                        android:layout_gravity="center_vertical"
+                        android:background="@color/white"
+                        android:hint="@string/mobile_number"
+                        android:textColorHint="@color/gray4"
+                        android:paddingLeft="8dp"
+                        android:paddingRight="8dp"
+                        android:textColor="@color/black"
+                        android:singleLine="true"
+                        android:gravity="center_vertical"
+                        android:layout_marginEnd="15dp"
+                        android:textSize="14sp"
+                        tools:ignore="RtlCompat"
+                        android:clickable="false"
+                        android:longClickable="false"
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_birth_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/edt_sign_up_bg"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="8dp"
+
+                    >
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="match_parent"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="16sp"
+                        android:gravity="center"
+                        android:src="@drawable/ic_calendar"
+                        android:tint="@color/colorPrimary"
+                        android:padding="10dp"
+                        android:clickable="false"
+                        android:longClickable="false"
+                        />
+                    <TextView
+                        android:id="@+id/tv_birth_date"
+                        android:layout_width="match_parent"
+                        android:layout_height="37dp"
+                        android:layout_gravity="center_vertical"
+                        android:background="@color/white"
+                        android:hint="@string/date_of_birth"
+                        android:textColorHint="@color/gray4"
+                        android:paddingLeft="8dp"
+                        android:paddingRight="8dp"
+                        android:textColor="@color/black"
+                        android:singleLine="true"
+                        android:gravity="center_vertical"
+                        android:layout_marginEnd="15dp"
+                        android:textSize="14sp"
+                        tools:ignore="RtlCompat"
+                        android:clickable="false"
+                        android:longClickable="false"
+                        />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/ll_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/edt_sign_up_bg"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="8dp"
+                    android:visibility="gone"
+
+                    >
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="match_parent"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="16sp"
+                        android:gravity="center"
+                        android:src="@drawable/ic_map"
+                        android:tint="@color/colorPrimary"
+                        android:padding="10dp"
+                        />
+                    <EditText
+                        android:id="@+id/edt_address"
+                        android:layout_width="match_parent"
+                        android:layout_height="37dp"
+                        android:layout_gravity="center_vertical"
+                        android:background="@color/white"
+                        android:hint="@string/address"
+                        android:textColorHint="@color/gray4"
+                        android:paddingLeft="8dp"
+                        android:paddingRight="8dp"
                         android:textColor="@color/black"
                         android:singleLine="true"
                         android:gravity="center_vertical"

@@ -126,7 +126,7 @@ public class SignInActivity extends AppCompatActivity {
         }
         if (fragment_phone == null)
         {
-            fragment_phone = Fragment_Phone.newInstance();
+            fragment_phone = Fragment_Phone.newInstance("signup");
         }
 
         if (fragment_phone.isAdded())

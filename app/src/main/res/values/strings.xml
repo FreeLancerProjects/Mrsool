@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">MRSOOLK</string>
+    <!--AIzaSyArjmbYWTWZhDFFtPOLRLKYwjtBDkOEGrY-->
+
     <string name="map_api_key">AIzaSyCbc2Y5AIwZ8uUeHRUXiozGN3CnpjKT0oI</string>
     <string name="notifications">Notifications</string>
     <string name="si_su">Please Sign in or sign up .</string>
@@ -158,5 +160,7 @@
     <string name="succ_be_courier">You have been successfully be a Courier. You can now receive orders from clients</string>
     <string name="serv_aval_client">This service is available to clients</string>
     <string name="already_courier">You are already a courier.</string>
+    <string name="order_number">Order number #</string>
+    <string name="no_waiting_orders">No waiting orders</string>
 
 </resources>

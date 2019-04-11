@@ -38,6 +38,7 @@ import com.creativeshare.mrsool.activities_fragments.activity_home.client_home.f
 import com.creativeshare.mrsool.activities_fragments.activity_home.client_home.fragments.fragment_orders.Fragment_Client_Orders;
 import com.creativeshare.mrsool.activities_fragments.activity_home.client_home.fragments.fragment_store_details.Fragment_Store_Details;
 import com.creativeshare.mrsool.activities_fragments.activity_sign_in.activity.SignInActivity;
+import com.creativeshare.mrsool.activities_fragments.activity_sign_in.fragments.Fragment_Phone;
 import com.creativeshare.mrsool.activities_fragments.terms_conditions.TermsConditionsActivity;
 import com.creativeshare.mrsool.language.Language_Helper;
 import com.creativeshare.mrsool.models.Favourite_location;
@@ -92,6 +93,7 @@ public class ClientHomeActivity extends AppCompatActivity {
     private Fragment_Delegate_Register fragment_delegate_register;
     private Fragment_Map fragment_map;
     private Fragment_Delegates fragment_delegates;
+    private Fragment_Phone fragment_phone;
     private UserSingleTone userSingleTone;
     private UserModel userModel;
     private Preferences preferences;
@@ -438,6 +440,22 @@ public class ClientHomeActivity extends AppCompatActivity {
         }
 
     }
+    public void DisplayFragmentPhone()
+    {
+
+        fragment_count+=1;
+        fragment_phone = Fragment_Phone.newInstance("edit_profile");
+
+        if (fragment_phone.isAdded()) {
+            fragmentManager.beginTransaction().show(fragment_phone).commit();
+
+        } else {
+            fragmentManager.beginTransaction().add(R.id.fragment_app_container, fragment_phone, "fragment_phone").addToBackStack("fragment_phone").commit();
+        }
+
+
+
+    }
     public void DisplayFragmentSearch()
     {
 
@@ -537,7 +555,7 @@ public class ClientHomeActivity extends AppCompatActivity {
     {
 
         fragment_count+=1;
-
+        Log.e("user_address",userModel.getData().getUser_address()+"__");
         fragment_edit_profile = Fragment_Edit_Profile.newInstance(this.userModel);
 
 
@@ -583,7 +601,6 @@ public class ClientHomeActivity extends AppCompatActivity {
                     },1);
         }
     }
-
     public void DisplayFragmentDelegates(double place_lat,double place_lng)
     {
         fragment_count+=1;
@@ -724,6 +741,23 @@ public class ClientHomeActivity extends AppCompatActivity {
 
 
     }
+
+    // from fragment phone
+    public void setPhoneData(String code, String country_code, String phone) {
+        if (fragment_edit_profile!=null&&fragment_edit_profile.isAdded())
+        {
+            fragment_edit_profile.updatePhoneData(country_code,code,phone);
+            fragment_count-=1;
+            super.onBackPressed();
+        }
+    }
+
+    //from pending fragment to fragment store details
+    public void AddWaitOrderCount(int order_counter)
+    {
+        fragment_store_details.AddCounter(order_counter);
+    }
+
     public void RefreshActivity(String lang)
     {
         Paper.book().write("lang",lang);
@@ -1000,7 +1034,6 @@ public class ClientHomeActivity extends AppCompatActivity {
             EventBus.getDefault().unregister(this);
         }
     }
-
 
 
 
