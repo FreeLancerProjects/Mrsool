@@ -30,7 +30,7 @@ public class Fragment_Client_Profile extends Fragment{
     private ImageView image_setting,image,arrow,arrow2;
     private TextView tv_name,tv_balance,tv_order_count,tv_feedback;
     private SimpleRatingBar rateBar;
-    private ConstraintLayout cons_logout,cons_register_delegate;
+    private ConstraintLayout cons_logout,cons_register_delegate,cons_comment;
     private String current_language;
     private ClientHomeActivity activity;
     private UserModel userModel;
@@ -81,6 +81,7 @@ public class Fragment_Client_Profile extends Fragment{
         tv_feedback = view.findViewById(R.id.tv_feedback);
         rateBar = view.findViewById(R.id.rateBar);
         cons_register_delegate = view.findViewById(R.id.cons_register_delegate);
+        cons_comment = view.findViewById(R.id.cons_comment);
         cons_logout = view.findViewById(R.id.cons_logout);
 
         image_setting.setOnClickListener(new View.OnClickListener() {
@@ -102,6 +103,16 @@ public class Fragment_Client_Profile extends Fragment{
             @Override
             public void onClick(View v) {
                 activity.DisplayFragmentRegisterDelegate();
+            }
+        });
+        cons_comment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (userModel.getData().getUser_type().equals(Tags.TYPE_DELEGATE))
+                {
+                    activity.DisplayFragmentDelegateComment();
+
+                }
             }
         });
 

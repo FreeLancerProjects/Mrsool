@@ -9,7 +9,6 @@ import android.database.Cursor;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
@@ -134,6 +133,7 @@ public class Common {
         dialog.setView(view);
         dialog.show();
     }
+
 
     public static void CreateSuccessDialog(Context context, String msg)
     {

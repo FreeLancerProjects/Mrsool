@@ -19,6 +19,10 @@
     <color name="distance">#FFFF00</color>
     <color name="rating">#FBC02D</color>
     <color name="press_color">#791576</color>
-
-
+    <color name="gradient_start_color">#7ec242</color>
+    <color name="gradient_center_color">#a0cc36</color>
+    <color name="gradient_end_color">#e7e01c</color>
+    <color name="delete_color">#E21B1B</color>
+    <color name="green_text">#93c83a</color>
+    <color name="gray_text">#cccccc</color>
 </resources>

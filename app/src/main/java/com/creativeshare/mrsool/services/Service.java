@@ -1,8 +1,12 @@
 package com.creativeshare.mrsool.services;
 
 import com.creativeshare.mrsool.models.AppDataModel;
+import com.creativeshare.mrsool.models.CommentDataModel;
 import com.creativeshare.mrsool.models.NearDelegateDataModel;
 import com.creativeshare.mrsool.models.NearbyStoreDataModel;
+import com.creativeshare.mrsool.models.NotificationCountModel;
+import com.creativeshare.mrsool.models.NotificationDataModel;
+import com.creativeshare.mrsool.models.OrderDataModel;
 import com.creativeshare.mrsool.models.OrderIdDataModel;
 import com.creativeshare.mrsool.models.PlaceDetailsModel;
 import com.creativeshare.mrsool.models.PlaceGeocodeData;
@@ -176,10 +180,76 @@ public interface Service {
                                   @Part("user_address") RequestBody user_address,
                                   @Part("user_phone_code") RequestBody user_phone_code,
                                   @Part("user_phone") RequestBody user_phone
-                                  );
+    );
 
     @GET("/Api/placeOrders")
-    Call<WatingOrderData> getWaitingOrders(@Query("place_id") String place_id,@Query("page") int page);
+    Call<WatingOrderData> getWaitingOrders(@Query("place_id") String place_id, @Query("page") int page);
+
+    @GET("/Api/clientOrders")
+    Call<OrderDataModel> getClientOrders(@Query("user_id") String user_id, @Query("order_type") String order_type, @Query("page") int page);
+
+
+    @GET("/Api/driverOrders")
+    Call<OrderDataModel> getDelegateOrders(@Query("user_id") String user_id, @Query("order_type") String order_type, @Query("page") int page);
+
+    @FormUrlEncoded
+    @POST("/Api/alerts")
+    Call<NotificationCountModel> getNotificationCount(@Field("user_id") String user_id, @Field("type") String type);
+
+    @FormUrlEncoded
+    @POST("/Api/alerts")
+    Call<ResponseBody> readNotification(@Field("user_id") String user_id, @Field("type") String type);
+
+
+    @GET("/Api/notification")
+    Call<NotificationDataModel> getNotification(@Query("user_id") String user_id, @Query("user_type") String user_type, @Query("page") int page);
+
+
+    @FormUrlEncoded
+    @POST("/Api/driverAction")
+    Call<ResponseBody> delegateAccept(@Field("driver_id") String driver_id,
+                                      @Field("client_id") String client_id,
+                                      @Field("order_id") String order_id,
+                                      @Field("type") String type,
+                                      @Field("driver_offer") String driver_offer
+    );
+
+    @FormUrlEncoded
+    @POST("/Api/driverAction")
+    Call<ResponseBody> delegateRefuse_Finish(@Field("driver_id") String driver_id,
+                                             @Field("client_id") String client_id,
+                                             @Field("order_id") String order_id,
+                                             @Field("type") String type
+    );
+
+    @FormUrlEncoded
+    @POST("/Api/clientAction")
+    Call<ResponseBody> clientAccept_Refuse(@Field("client_id") String client_id,
+                                           @Field("driver_id") String driver_id,
+                                           @Field("order_id") String order_id,
+                                           @Field("type") String type
+    );
+
+    @GET("/Api/comment")
+    Call<CommentDataModel> getDelegateComment(@Query("user_id") String user_id, @Query("user_type") String user_type, @Query("page") int page);
+
+    @FormUrlEncoded
+    @POST("/Api/cancelOrder")
+    Call<ResponseBody> clientCancelOrder(@Field("driver_id") String driver_id
+    );
+
+    @FormUrlEncoded
+    @POST("/Api/changeDriver")
+    Call<ResponseBody> resendOrderToDifferentDelegate(@Field("client_id") String client_id,
+                                                      @Field("driver_id") String driver_id,
+                                                      @Field("order_id") String order_id
+    );
+
+    @FormUrlEncoded
+    @POST("/Api/moveOrder")
+    Call<ResponseBody> movementDelegate(@Field("order_id") String order_id,
+                                        @Field("order_movement") String order_movement
+    );
 }
 
 

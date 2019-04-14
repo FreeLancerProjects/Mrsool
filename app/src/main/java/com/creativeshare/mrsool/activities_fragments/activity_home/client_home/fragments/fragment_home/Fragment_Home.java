@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.aurelhubert.ahbottomnavigation.notification.AHNotification;
 import com.creativeshare.mrsool.R;
 import com.creativeshare.mrsool.activities_fragments.activity_home.client_home.activity.ClientHomeActivity;
 import com.creativeshare.mrsool.models.UserModel;
@@ -128,4 +129,19 @@ public class Fragment_Home extends Fragment {
         ah_bottom_nav.setCurrentItem(pos,false);
     }
 
+    public void updateNotificationCount(int count)
+    {
+        AHNotification.Builder builder = new AHNotification.Builder();
+        builder.setTextColor(ContextCompat.getColor(activity,R.color.white));
+        builder.setBackgroundColor(ContextCompat.getColor(activity,R.color.golden_stars));
+        if (count>0)
+        {
+            builder.setText(count+"");
+            ah_bottom_nav.setNotification(builder.build(),2);
+        }else
+            {
+                builder.setText("");
+                ah_bottom_nav.setNotification(builder.build(),2);
+            }
+    }
 }

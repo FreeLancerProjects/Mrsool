@@ -235,7 +235,7 @@ public class Fragment_Reserve_Order extends Fragment {
             Common.CloseKeyBoard(activity,edt_order_details);
             if (TextUtils.isEmpty(delegate_id))
             {
-                activity.DisplayFragmentDelegates(placeModel.getLat(),placeModel.getLng());
+                activity.DisplayFragmentDelegates(placeModel.getLat(),placeModel.getLng(),"reserve_order","","");
 
             }else
                 {

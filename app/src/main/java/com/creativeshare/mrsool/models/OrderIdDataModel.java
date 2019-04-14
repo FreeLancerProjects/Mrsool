@@ -4,13 +4,13 @@ import java.io.Serializable;
 
 public class OrderIdDataModel implements Serializable {
 
-    private OrdrIdModel data;
+    private OrderIdModel data;
 
-    public OrdrIdModel getData() {
+    public OrderIdModel getData() {
         return data;
     }
 
-    public class OrdrIdModel implements Serializable
+    public class OrderIdModel implements Serializable
     {
         private String order_id;
 

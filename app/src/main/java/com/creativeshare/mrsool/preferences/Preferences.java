@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.creativeshare.mrsool.models.ChatUserModel;
 import com.creativeshare.mrsool.models.Favourite_location;
 import com.creativeshare.mrsool.models.QueryModel;
 import com.creativeshare.mrsool.models.UserModel;
@@ -199,37 +200,6 @@ public class Preferences {
         editor.apply();
     }
 
-    public void ClearPreference(Context context)
-    {
-        SharedPreferences preferences1 = context.getSharedPreferences("user",Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor1 = preferences1.edit();
-        editor1.clear();
-        editor1.apply();
-
-        SharedPreferences preferences2 = context.getSharedPreferences("session",Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor2 = preferences2.edit();
-        editor2.clear();
-        editor2.apply();
-
-        SharedPreferences preferences3 = context.getSharedPreferences("fragment_state",Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor3 = preferences3.edit();
-        editor3.clear();
-        editor3.apply();
-
-        SharedPreferences preferences4 = context.getSharedPreferences("language",Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor4 = preferences4.edit();
-        editor4.clear();
-        editor4.apply();
-
-        SharedPreferences preferences5 = context.getSharedPreferences("search",Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor5 = preferences5.edit();
-        editor5.clear();
-        editor5.apply();
-
-
-       ClearFavoriteLocation(context);
-    }
-
     public void saveVisitTime(Context context,String time)
     {
         SharedPreferences preferences = context.getSharedPreferences("visit",Context.MODE_PRIVATE);
@@ -238,10 +208,43 @@ public class Preferences {
         editor.apply();
     }
 
+
+
     public String getVisitTime(Context context)
     {
         SharedPreferences preferences = context.getSharedPreferences("visit",Context.MODE_PRIVATE);
         return preferences.getString("time","");
+    }
+
+
+    public void saveChatUserData(Context context, ChatUserModel chatUserModel)
+    {
+        SharedPreferences preferences = context.getSharedPreferences("chat_user",Context.MODE_PRIVATE);
+
+        Gson gson = new Gson();
+        String  chat_model = gson.toJson(chatUserModel);
+
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("chat_data",chat_model);
+        editor.apply();
+
+    }
+
+
+
+    public ChatUserModel getChatUserData(Context context)
+    {
+        SharedPreferences preferences = context.getSharedPreferences("chat_user",Context.MODE_PRIVATE);
+        Gson gson = new Gson();
+        return gson.fromJson(preferences.getString("chat_data",""),ChatUserModel.class);
+    }
+
+    public void clearChatUserData(Context context)
+    {
+        SharedPreferences preferences = context.getSharedPreferences("chat_user",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.clear();
+        editor.apply();
     }
 
     public void ClearUserData(Context context)

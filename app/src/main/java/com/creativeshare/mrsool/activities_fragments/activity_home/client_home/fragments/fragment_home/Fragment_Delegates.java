@@ -35,8 +35,12 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class Fragment_Delegates extends Fragment {
-    private static final String TAG2 = "LAT";
-    private static final String TAG3 = "LNG";
+    private static final String TAG1 = "LAT";
+    private static final String TAG2 = "LNG";
+    private static final String TAG3 = "TYPE";
+    private static final String TAG4 = "ORDER_ID";
+    private static final String TAG5 = "CLIENT_ID";
+
     private ClientHomeActivity activity;
     private ImageView arrow;
     private LinearLayout ll_back;
@@ -45,6 +49,7 @@ public class Fragment_Delegates extends Fragment {
     private List<NearDelegateDataModel.DelegateModel> delegateModelList;
     private DelegatesAdapter adapter;
     private ProgressBar progBar;
+    private String type="",order_id="",client_id="";
     private double lat = 0.0, lng = 0.0;
     private String current_language;
     private int current_page = 0;
@@ -59,11 +64,15 @@ public class Fragment_Delegates extends Fragment {
         return view;
     }
 
-    public static Fragment_Delegates newInstance(double lat, double lng) {
+    public static Fragment_Delegates newInstance(double lat, double lng, String type,String order_id,String client_id) {
         Fragment_Delegates fragment_delegates = new Fragment_Delegates();
         Bundle bundle = new Bundle();
-        bundle.putDouble(TAG2, lat);
-        bundle.putDouble(TAG3, lng);
+        bundle.putDouble(TAG1, lat);
+        bundle.putDouble(TAG2, lng);
+        bundle.putString(TAG3, type);
+        bundle.putString(TAG4, order_id);
+        bundle.putString(TAG5, client_id);
+
         fragment_delegates.setArguments(bundle);
         return fragment_delegates;
     }
@@ -76,8 +85,13 @@ public class Fragment_Delegates extends Fragment {
 
         Bundle bundle = getArguments();
         if (bundle != null) {
-            lat = bundle.getDouble(TAG2);
-            lng = bundle.getDouble(TAG3);
+            lat = bundle.getDouble(TAG1);
+            lng = bundle.getDouble(TAG2);
+            type = bundle.getString(TAG3);
+            order_id = bundle.getString(TAG4);
+            client_id = bundle.getString(TAG5);
+
+
         }
 
         arrow = view.findViewById(R.id.arrow);
@@ -218,6 +232,7 @@ public class Fragment_Delegates extends Fragment {
     }
 
     public void setItemData(NearDelegateDataModel.DelegateModel delegateModel) {
-        activity.setDelegate_id(delegateModel.getDriver_id());
+        activity.setDelegate_id(delegateModel.getDriver_id(),client_id,order_id,type);
+
     }
 }
