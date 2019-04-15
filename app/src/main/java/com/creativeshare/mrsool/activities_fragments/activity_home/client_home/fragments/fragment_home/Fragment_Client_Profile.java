@@ -1,5 +1,6 @@
 package com.creativeshare.mrsool.activities_fragments.activity_home.client_home.fragments.fragment_home;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.creativeshare.mrsool.R;
@@ -31,6 +33,7 @@ public class Fragment_Client_Profile extends Fragment{
     private TextView tv_name,tv_balance,tv_order_count,tv_feedback;
     private SimpleRatingBar rateBar;
     private ConstraintLayout cons_logout,cons_register_delegate,cons_comment;
+    private LinearLayout ll_telegram;
     private String current_language;
     private ClientHomeActivity activity;
     private UserModel userModel;
@@ -84,6 +87,8 @@ public class Fragment_Client_Profile extends Fragment{
         cons_comment = view.findViewById(R.id.cons_comment);
         cons_logout = view.findViewById(R.id.cons_logout);
 
+        ll_telegram = view.findViewById(R.id.ll_telegram);
+
         image_setting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -113,6 +118,13 @@ public class Fragment_Client_Profile extends Fragment{
                     activity.DisplayFragmentDelegateComment();
 
                 }
+            }
+        });
+        ll_telegram.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_VIEW,Uri.parse(""));
+                startActivity(intent);
             }
         });
 

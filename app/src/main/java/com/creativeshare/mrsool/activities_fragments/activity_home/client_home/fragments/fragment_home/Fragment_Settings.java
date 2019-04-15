@@ -147,6 +147,12 @@ public class Fragment_Settings extends Fragment{
                 activity.DisplayFragmentEditProfile();
             }
         });
+        cons_complains.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                activity.DisplayFragmentDelegateComment();
+            }
+        });
     }
 
 

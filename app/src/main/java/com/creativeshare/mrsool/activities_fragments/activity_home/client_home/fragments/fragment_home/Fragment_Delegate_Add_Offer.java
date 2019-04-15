@@ -31,9 +31,9 @@ public class Fragment_Delegate_Add_Offer extends Fragment{
 
     private final static  String TAG = "Data";
     private ImageView image_back;
-    private LinearLayout ll_back,ll_client_container;
+    private LinearLayout ll_back,ll_client_container,ll_address,ll_shipment;
     private CircleImageView image;
-    private TextView tv_client_name,tv_order_details,tv_order_address;
+    private TextView tv_client_name,tv_order_details,tv_order_address,tv_location_pickup,tv_location_dropoff;
     private EditText edt_delivery_cost;
     private Button btn_accept,btn_refused;
     private OrderDataModel.OrderModel orderModel;
@@ -86,6 +86,12 @@ public class Fragment_Delegate_Add_Offer extends Fragment{
         btn_accept = view.findViewById(R.id.btn_accept);
         btn_refused = view.findViewById(R.id.btn_refused);
         ll_client_container = view.findViewById(R.id.ll_client_container);
+
+        ll_address = view.findViewById(R.id.ll_address);
+
+        ll_shipment = view.findViewById(R.id.ll_shipment);
+        tv_location_pickup = view.findViewById(R.id.tv_location_pickup);
+        tv_location_dropoff = view.findViewById(R.id.tv_location_dropoff);
 
         app_bar = view.findViewById(R.id.app_bar);
 
@@ -147,7 +153,24 @@ public class Fragment_Delegate_Add_Offer extends Fragment{
             Picasso.with(activity).load(Tags.IMAGE_URL+orderModel.getClient_user_image()).placeholder(R.drawable.logo_only).fit().into(image);
             tv_client_name.setText(orderModel.getClient_user_full_name());
             tv_order_details.setText(orderModel.getOrder_details());
-            tv_order_address.setText(orderModel.getClient_address());
+
+            if (orderModel.getOrder_type().equals("1"))
+            {
+                tv_order_address.setText(orderModel.getClient_address());
+                tv_order_address.setVisibility(View.VISIBLE);
+                ll_address.setVisibility(View.VISIBLE);
+
+                ll_shipment.setVisibility(View.GONE);
+            }else if (orderModel.getOrder_type().equals("2"))
+            {
+                tv_order_address.setVisibility(View.GONE);
+                ll_address.setVisibility(View.GONE);
+
+                tv_location_pickup.setText(orderModel.getPlace_address());
+                tv_location_dropoff.setText(orderModel.getClient_address());
+                ll_shipment.setVisibility(View.VISIBLE);
+
+            }
 
         }
 

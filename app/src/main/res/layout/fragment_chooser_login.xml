@@ -25,9 +25,9 @@
             >
 
             <ImageView
-                android:layout_width="170dp"
-                android:layout_height="150dp"
-                android:src="@drawable/logo2" />
+                android:layout_width="190dp"
+                android:layout_height="170dp"
+                android:src="@drawable/logo" />
 
             <LinearLayout
                 android:id="@+id/ll_phone_sign_up"

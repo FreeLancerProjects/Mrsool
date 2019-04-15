@@ -49,7 +49,7 @@
                         app:civ_border_color="@color/white"
                         android:layout_marginTop="20dp"
                         android:layout_gravity="center_horizontal"
-                        android:src="@drawable/user_avatar"
+                        android:src="@drawable/logo_only"
                         app:civ_fill_color="@color/white"
                         />
                     <com.iarcuschin.simpleratingbar.SimpleRatingBar

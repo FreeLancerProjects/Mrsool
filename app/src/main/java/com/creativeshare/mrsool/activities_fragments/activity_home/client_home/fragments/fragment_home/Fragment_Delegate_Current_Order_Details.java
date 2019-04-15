@@ -29,14 +29,14 @@ public class Fragment_Delegate_Current_Order_Details extends Fragment {
     private static final String TAG = "ORDER";
     private ClientHomeActivity activity;
     private ImageView image_back,image_arrow,image_arrow2,image_chat;
-    private LinearLayout ll_back;
+    private LinearLayout ll_back,ll_address,ll_shipment;
     private String current_lang;
-    private TextView tv_client_name,tv_address,tv_order_details,tv_order_state,tv_order_next_state;
+    private TextView tv_client_name,tv_address,tv_order_details,tv_order_state,tv_order_next_state,tv_location_pickup,tv_location_dropoff;
     private FrameLayout fl_map,fl_update_order_state;
     private OrderDataModel.OrderModel order;
     private UserSingleTone userSingleTone;
     private UserModel userModel;
-    private int order_state;
+    private int order_state,order_movement;
 
 
 
@@ -93,6 +93,14 @@ public class Fragment_Delegate_Current_Order_Details extends Fragment {
         fl_map = view.findViewById(R.id.fl_map);
         fl_update_order_state = view.findViewById(R.id.fl_update_order_state);
 
+
+        ll_address = view.findViewById(R.id.ll_address);
+        ll_shipment = view.findViewById(R.id.ll_shipment);
+        tv_location_pickup = view.findViewById(R.id.tv_location_pickup);
+        tv_location_dropoff = view.findViewById(R.id.tv_location_dropoff);
+
+
+
         Bundle bundle = getArguments();
         if (bundle!=null)
         {
@@ -120,7 +128,7 @@ public class Fragment_Delegate_Current_Order_Details extends Fragment {
             public void onClick(View v) {
 
                 ChatUserModel chatUserModel = new ChatUserModel(order.getClient_user_full_name(),order.getClient_user_image(),order.getClient_id(),order.getRoom_id_fk(),order.getClient_user_phone_code(),order.getClient_user_phone());
-                activity.DisplayFragmentChat(chatUserModel);
+                activity.NavigateToChatActivity(chatUserModel,"from_fragment");
             }
         });
 
@@ -128,7 +136,7 @@ public class Fragment_Delegate_Current_Order_Details extends Fragment {
             @Override
             public void onClick(View v) {
 
-                activity.UpdateOrderMovement(order.getClient_id(),order.getDriver_id(),order.getOrder_id(),order_state);
+                activity.UpdateOrderMovement(order.getClient_id(),order.getDriver_id(),order.getOrder_id(),order_movement);
 
             }
         });
@@ -140,34 +148,61 @@ public class Fragment_Delegate_Current_Order_Details extends Fragment {
     private void UpdateUI(OrderDataModel.OrderModel order)
     {
         Currency currency = Currency.getInstance(new Locale(current_lang,userModel.getData().getUser_country()));
-        tv_address.setText(order.getClient_address());
         tv_client_name.setText(order.getClient_user_full_name());
         tv_order_details.setText(order.getOrder_details()+"\n"+getString(R.string.delivery_cost)+":"+order.getDriver_offer()+currency.getSymbol());
 
-        order_state = Integer.parseInt(order.getOrder_movement());
-        updateOrderState(order_state);
+        if (order.getOrder_type().equals("1"))
+        {
+            tv_address.setText(order.getClient_address());
+            ll_address.setVisibility(View.VISIBLE);
+            ll_shipment.setVisibility(View.GONE);
+        }else if (order.getOrder_type().equals("2"))
+        {
+            tv_location_pickup.setText(order.getPlace_address());
+            tv_location_dropoff.setText(order.getClient_address());
+            ll_address.setVisibility(View.GONE);
+            ll_shipment.setVisibility(View.VISIBLE);
+        }
+
+
+        order_state = Integer.parseInt(order.getOrder_status());
+        order_movement = Integer.parseInt(order.getOrder_movement());
+        updateOrderState(order_movement);
 
     }
 
-    private void updateOrderState(int state)
+
+    public void updateOrderState(int state)
     {
 
-        switch (state)
-        {
-            case 0:
-                tv_order_state.setText(getString(R.string.accepted));
-                tv_order_next_state.setText(getString(R.string.collect_order));
-                break;
-            case Tags.STATE_DELEGATE_COLLECTED_ORDER:
-                tv_order_state.setText(getString(R.string.collected_order));
-                tv_order_next_state.setText(getString(R.string.deliver_order));
-                break;
-            case Tags.STATE_DELEGATE_DELIVERED_ORDER:
-                tv_order_state.setText(getString(R.string.delivered_order));
-                fl_update_order_state.setVisibility(View.INVISIBLE);
-                break;
 
+        this.order_movement = state;
+        if (order_state == Integer.parseInt(Tags.CLIENT_ACCEPT_ORDER))
+        {
+
+            switch (order_movement)
+            {
+                case 1:
+                    tv_order_state.setText(getString(R.string.accepted));
+                    tv_order_next_state.setText(getString(R.string.collect_order));
+                    break;
+                case Tags.STATE_DELEGATE_COLLECTING_ORDER:
+                    tv_order_state.setText(getString(R.string.collecting_order));
+                    tv_order_next_state.setText(getString(R.string.collected_order));
+                    break;
+                case Tags.STATE_DELEGATE_COLLECTED_ORDER:
+                    tv_order_state.setText(getString(R.string.collected_order));
+                    tv_order_next_state.setText(getString(R.string.deliver_order));
+                    break;
+                case Tags.STATE_DELEGATE_DELIVERED_ORDER:
+                    tv_order_state.setText(getString(R.string.delivered_order));
+                    fl_update_order_state.setVisibility(View.VISIBLE);
+                    break;
+
+            }
         }
+
+
 
     }
 

@@ -14,8 +14,8 @@
 
         <ImageView
             android:id="@+id/image_logo"
-            android:layout_width="180dp"
-            android:layout_height="130dp"
+            android:layout_width="190dp"
+            android:layout_height="160dp"
             android:layout_gravity="center_horizontal"
             android:src="@drawable/logo"
             android:layout_marginTop="20dp"
@@ -23,21 +23,6 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            />
-        <TextView
-            android:id="@+id/tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="5dp"
-            android:textColor="@color/colorPrimary"
-            android:text="MRSOOLK"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="10dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/image_logo"
             />
         <LinearLayout
             android:id="@+id/ll_country"
@@ -48,7 +33,7 @@
             android:layout_marginRight="20dp"
             android:background="@color/gray3"
             android:orientation="horizontal"
-            app:layout_constraintTop_toBottomOf="@id/tv"
+            app:layout_constraintTop_toBottomOf="@id/image_logo"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             >

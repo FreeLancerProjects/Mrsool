@@ -22,6 +22,8 @@ public class NotificationModel implements Serializable {
     private String client_id;
     private String place_lat;
     private String place_long;
+    private String place_address;
+    private String order_type;
 
 
 
@@ -95,5 +97,13 @@ public class NotificationModel implements Serializable {
 
     public String getPlace_long() {
         return place_long;
+    }
+
+    public String getPlace_address() {
+        return place_address;
+    }
+
+    public String getOrder_type() {
+        return order_type;
     }
 }

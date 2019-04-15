@@ -338,6 +338,32 @@
                 android:layout_height="1px"
                 android:background="@color/gray5"/>
 
+            <LinearLayout
+                android:id="@+id/ll_telegram"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                >
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/telegram"
+                    android:clickable="false"
+                    android:longClickable="false"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:text="@string/contact_us_on_telegram"
+                    android:clickable="false"
+                    android:longClickable="false"
+                    />
+            </LinearLayout>
 
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>

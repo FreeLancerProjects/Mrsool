@@ -185,11 +185,11 @@
     <string name="refuse">Refuse</string>
     <string name="order_details">Order details</string>
     <string name="delivery_cost">Delivery cost</string>
-    <string name="delegate_accept_order">Delegate accept order</string>
+    <string name="delegate_accept_order">Courier accept order</string>
     <string name="collecting_order">Collecting order</string>
-    <string name="delegate_collecting_order">Delegate collecting order</string>
+    <string name="delegate_collecting_order">Courier collecting order</string>
     <string name="order_collected">Order collected</string>
-    <string name="delegate_collected_order">Delegate collected order</string>
+    <string name="delegate_collected_order">Courier collected order</string>
     <string name="delivering_order">Delivering order</string>
     <string name="delivering_order_to_your_destination">delivering order to your destination</string>
     <string name="order_delivered_successfully">Order delivered successfully</string>
@@ -205,4 +205,19 @@
     <string name="delivered_order">Delivered order</string>
     <string name="send_order_to_another_courier">Send order to another courier ?</string>
     <string name="type_a_message">Type a message</string>
+    <string name="new_order_sent">New order sent</string>
+    <string name="offer_accepted">Offer accepted</string>
+    <string name="shipment">MRSOOLk package</string>
+    <string name="do_you_have_a_purpose_that_you_want_to_be_assigned_to_any_place_in_your_city_the_shipment_provide_this_service">Got a small package that you want to send somewhere in your city? MARSOOLK package allows you to do just that!</string>
+    <string name="receiving_and_delivery_location">Dropoff &amp; Pickup</string>
+    <string name="receiving_location">Pickup location</string>
+    <string name="choose">Choose</string>
+    <string name="order_description">Order description</string>
+    <string name="dropoff_location">Dropoff Location</string>
+    <string name="deliver_within">Deliver within</string>
+    <string name="write_package_details">Write here the details about your package. What is it that you want to send how it should be handled Do not user this service to order from restaurants please.</string>
+    <string name="contact_us_on_telegram">Contact us on Telegram</string>
+    <string name="rate_of_courier">Rate of courier</string>
+    <string name="comment">Comment</string>
+    <string name="add_rate">Add Rate</string>
 </resources>

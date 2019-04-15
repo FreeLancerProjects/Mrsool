@@ -2,6 +2,8 @@ package com.creativeshare.mrsool.services;
 
 import com.creativeshare.mrsool.models.AppDataModel;
 import com.creativeshare.mrsool.models.CommentDataModel;
+import com.creativeshare.mrsool.models.MessageDataModel;
+import com.creativeshare.mrsool.models.MessageModel;
 import com.creativeshare.mrsool.models.NearDelegateDataModel;
 import com.creativeshare.mrsool.models.NearbyStoreDataModel;
 import com.creativeshare.mrsool.models.NotificationCountModel;
@@ -34,6 +36,7 @@ public interface Service {
     Call<NearbyStoreDataModel> getNearbyStores(@Query(value = "location") String location,
                                                @Query(value = "radius") int radius,
                                                @Query(value = "type") String type,
+                                               @Query(value = "language") String language,
                                                @Query(value = "key") String key
     );
 
@@ -136,6 +139,8 @@ public interface Service {
                                      @Field("driver_id") String driver_id,
                                      @Field("order_details") String order_details,
                                      @Field("place_google_id") String place_google_id,
+                                     @Field("place_address") String place_address,
+                                     @Field("order_type") String order_type,
                                      @Field("place_lat") double place_lat,
                                      @Field("place_long") double place_long,
                                      @Field("order_time_arrival") long order_time_arrival
@@ -249,6 +254,28 @@ public interface Service {
     @POST("/Api/moveOrder")
     Call<ResponseBody> movementDelegate(@Field("order_id") String order_id,
                                         @Field("order_movement") String order_movement
+    );
+
+    @GET("/Api/chat")
+    Call<MessageDataModel> getChatMessages(@Query("room_id") String room_id, @Query("page") int page);
+
+
+    @FormUrlEncoded
+    @POST("/Api/chating")
+    Call<MessageModel> sendMessage(@Field("room_id_fk") String room_id_fk,
+                                   @Field("from_user") String from_user_id,
+                                   @Field("to_user") String to_user_id,
+                                   @Field("message") String message
+
+                                   );
+
+    @FormUrlEncoded
+    @POST("/Api/Typing")
+    Call<MessageModel> typing(@Field("room_id_fk") String room_id_fk,
+                                   @Field("from_user") String from_user_id,
+                                   @Field("to_user") String to_user_id,
+                                   @Field("typing_value") int typing_value
+
     );
 }
 

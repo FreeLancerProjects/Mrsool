@@ -202,5 +202,20 @@
     <string name="delivered_order">تم التوصيل</string>
     <string name="send_order_to_another_courier">إرسال الطلب لمرسول آخر ؟</string>
     <string name="type_a_message">اكتب رسالتك</string>
+    <string name="new_order_sent">تم إرسال طلب جديد</string>
+    <string name="offer_accepted">تم الموافقة على عرض التوصيل</string>
+    <string name="shipment">طرد مرسولك</string>
+    <string name="do_you_have_a_purpose_that_you_want_to_be_assigned_to_any_place_in_your_city_the_shipment_provide_this_service">عندك غرض ودك ترسلة لاي مكان في مدينتك ؟ طرد مرسلوك يقدم لك هالخدمة</string>
+    <string name="receiving_and_delivery_location">موقع الاستلام والتسليم</string>
+    <string name="receiving_location">موقع الاستلام</string>
+    <string name="choose">إختر</string>
+    <string name="order_description">وصف الطلب</string>
+    <string name="dropoff_location">موقع التسليم</string>
+    <string name="deliver_within">مدة التوصيل</string>
+    <string name="write_package_details">إكتب هنا تفاصيل الغرض اللي ترغب في إرسالة. مثلا ماهو، وكيف حجمة، واذا محتاج سيارة مخصصة لنقلة. ملاحظة: لاتستخدم هذه الخدمة للطلب من المطاعم. </string>
+    <string name="contact_us_on_telegram">إتصل بنا على حسابنا في تيلجرام.</string>
+    <string name="rate_of_courier">تقييم المرسول</string>
+    <string name="comment">تعليقك</string>
+    <string name="add_rate">إضافة تقييم</string>
 
 </resources>

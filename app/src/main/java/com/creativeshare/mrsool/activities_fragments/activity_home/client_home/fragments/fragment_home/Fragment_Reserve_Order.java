@@ -159,7 +159,7 @@ public class Fragment_Reserve_Order extends Fragment {
                     {
                         if (!checkbox.isChecked())
                         {
-                            activity.DisplayFragmentMap();
+                            activity.DisplayFragmentMap("fragment_reserve_order");
 
                         }
                     }
@@ -169,7 +169,7 @@ public class Fragment_Reserve_Order extends Fragment {
         ll_fav_map_loc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                activity.DisplayFragmentMap();
+                activity.DisplayFragmentMap("fragment_reserve_order");
 
             }
         });
@@ -181,7 +181,7 @@ public class Fragment_Reserve_Order extends Fragment {
                 if (favourite_location!=null)
                 {
                     expandLayout.collapse(true);
-                    selected_location = new Favourite_location(favourite_location.getName(),favourite_location.getStreet(),favourite_location.getAddress(),favourite_location.getLat(),favourite_location.getLng());
+                    selected_location = new Favourite_location(favourite_location.getPlace_id(),favourite_location.getName(),favourite_location.getStreet(),favourite_location.getAddress(),favourite_location.getLat(),favourite_location.getLng());
                     updateSelectedAddress(favourite_location,true);
 
                 }
@@ -344,7 +344,7 @@ public class Fragment_Reserve_Order extends Fragment {
                     edt_name.setError(null);
                     Common.CloseKeyBoard(activity,edt_name);
 
-                    Favourite_location favourite_location = new Favourite_location(name,selected_location.getStreet(),selected_location.getAddress(),selected_location.getLat(),selected_location.getLng());
+                    Favourite_location favourite_location = new Favourite_location(selected_location.getPlace_id(),name,selected_location.getStreet(),selected_location.getAddress(),selected_location.getLat(),selected_location.getLng());
                     Fragment_Reserve_Order.this.favourite_location =favourite_location;
                     preferences.SaveFavouriteLocation(activity,favourite_location);
                     if (!selected_location.getStreet().isEmpty())
@@ -400,7 +400,7 @@ public class Fragment_Reserve_Order extends Fragment {
         final ProgressDialog dialog = Common.createProgressDialog(activity,getString(R.string.wait));
         dialog.show();
         Api.getService(Tags.base_url)
-                .sendOrder(userModel.getData().getUser_id(),selected_location.getAddress()+" "+selected_location.getStreet(),selected_location.getLat(),selected_location.getLng(),delegate_id,order_details,placeModel.getId(),placeModel.getLat(),placeModel.getLng(),selected_time)
+                .sendOrder(userModel.getData().getUser_id(),selected_location.getAddress()+" "+selected_location.getStreet(),selected_location.getLat(),selected_location.getLng(),delegate_id,order_details,placeModel.getId(),placeModel.getAddress(),"1",placeModel.getLat(),placeModel.getLng(),selected_time)
                 .enqueue(new Callback<OrderIdDataModel>() {
                     @Override
                     public void onResponse(Call<OrderIdDataModel> call, Response<OrderIdDataModel> response) {

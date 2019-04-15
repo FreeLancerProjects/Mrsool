@@ -24,7 +24,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.creativeshare.mrsool.R;
-import com.creativeshare.mrsool.activities_fragments.activity_home.client_home.fragments.fragment_home.Fragment_Chat;
+import com.creativeshare.mrsool.activities_fragments.activity_chat.ChatActivity;
 import com.creativeshare.mrsool.activities_fragments.activity_home.client_home.fragments.fragment_home.Fragment_Client_Delegate_Offer;
 import com.creativeshare.mrsool.activities_fragments.activity_home.client_home.fragments.fragment_home.Fragment_Client_Notifications;
 import com.creativeshare.mrsool.activities_fragments.activity_home.client_home.fragments.fragment_home.Fragment_Client_Order_Details;
@@ -42,6 +42,7 @@ import com.creativeshare.mrsool.activities_fragments.activity_home.client_home.f
 import com.creativeshare.mrsool.activities_fragments.activity_home.client_home.fragments.fragment_home.Fragment_Reserve_Order;
 import com.creativeshare.mrsool.activities_fragments.activity_home.client_home.fragments.fragment_home.Fragment_Search;
 import com.creativeshare.mrsool.activities_fragments.activity_home.client_home.fragments.fragment_home.Fragment_Settings;
+import com.creativeshare.mrsool.activities_fragments.activity_home.client_home.fragments.fragment_home.Fragment_Shipment;
 import com.creativeshare.mrsool.activities_fragments.activity_home.client_home.fragments.fragment_orders.Fragment_Client_Orders;
 import com.creativeshare.mrsool.activities_fragments.activity_home.client_home.fragments.fragment_store_details.Fragment_Store_Details;
 import com.creativeshare.mrsool.activities_fragments.activity_sign_in.activity.SignInActivity;
@@ -53,6 +54,7 @@ import com.creativeshare.mrsool.models.Favourite_location;
 import com.creativeshare.mrsool.models.LocationError;
 import com.creativeshare.mrsool.models.NotificationCountModel;
 import com.creativeshare.mrsool.models.NotificationModel;
+import com.creativeshare.mrsool.models.NotificationStateModel;
 import com.creativeshare.mrsool.models.OrderDataModel;
 import com.creativeshare.mrsool.models.PlaceModel;
 import com.creativeshare.mrsool.models.UserModel;
@@ -97,6 +99,7 @@ public class ClientHomeActivity extends AppCompatActivity {
     private Fragment_Client_Notifications fragment_client_notifications;
     private Fragment_Client_Profile fragment_client_profile;
     private Fragment_Store_Details fragment_store_details;
+    private Fragment_Shipment fragment_shipment;
     private Fragment_Reserve_Order fragment_reserve_order;
     private Fragment_Search fragment_search;
     private Fragment_Settings fragment_settings;
@@ -111,7 +114,6 @@ public class ClientHomeActivity extends AppCompatActivity {
     private Fragment_Delegate_Comments fragment_delegate_comments;
     private Fragment_Delegate_Current_Order_Details fragment_delegate_current_order_details;
     private Fragment_Map_Location_Details fragment_map_location_details;
-    private Fragment_Chat fragment_chat;
     private UserSingleTone userSingleTone;
     private UserModel userModel;
     private Preferences preferences;
@@ -138,7 +140,7 @@ public class ClientHomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_client_home);
 
         initView();
-
+        getDataFromIntent();
         if (savedInstanceState == null) {
             CheckPermission();
             DisplayFragmentHome();
@@ -148,6 +150,104 @@ public class ClientHomeActivity extends AppCompatActivity {
             }
         }
     }
+
+    private void getDataFromIntent()
+    {
+        Intent intent = getIntent();
+        if (intent!=null)
+        {
+            if (intent.hasExtra("status"))
+            {
+                int status = intent.getIntExtra("status",-1);
+
+                if (status==0)
+                {
+
+                    DisplayFragmentMyOrders();
+
+                    new Handler()
+                            .postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    fragment_client_orders.NavigateToFragmentRefresh(0);
+                                }
+                            },1000);
+
+                }else if (status == 1)
+                {
+                    new Handler()
+                            .postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    DisplayFragmentNotification();
+
+                                }
+                            },1000);
+                }else if (status == 2)
+                {
+                    DisplayFragmentMyOrders();
+
+                    new Handler()
+                            .postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    fragment_client_orders.NavigateToFragmentRefresh(0);
+
+                                }
+                            },1000);
+                }else if (status == 3)
+                {
+                    new Handler()
+                            .postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    DisplayFragmentNotification();
+
+                                }
+                            },1000);
+
+                }else if (status == 4)
+                {
+                    DisplayFragmentMyOrders();
+
+                    new Handler()
+                            .postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    fragment_client_orders.NavigateToFragmentRefresh(2);
+
+                                }
+                            },1000);
+                }
+                else if (status == 5 || status == 6 || status == 7)
+                {
+                    DisplayFragmentMyOrders();
+
+                    new Handler()
+                            .postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    fragment_client_orders.NavigateToFragmentRefresh(1);
+
+                                }
+                            },1000);
+                }else if (status == 8)
+                {
+                    DisplayFragmentMyOrders();
+
+                    new Handler()
+                            .postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    fragment_client_orders.NavigateToFragmentRefresh(2);
+
+                                }
+                            },1000);
+                }
+            }
+        }
+    }
+
     private void initView()
     {
         Paper.init(this);
@@ -257,6 +357,82 @@ public class ClientHomeActivity extends AppCompatActivity {
         {
             StartService(LocationRequest.PRIORITY_LOW_POWER);
 
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void ListenToNotification(NotificationStateModel notificationStateModel){
+
+        if (notificationStateModel.getNotification_state().equals(Tags.CLIENT_ACCEPT_ORDER))
+        {
+            if (notificationStateModel.getOrder_movement().equals("0"))
+            {
+                // تم قبول الطلب
+                if (fragment_client_order_details!=null&&fragment_client_order_details.isAdded())
+                {
+                    new Handler()
+                            .postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    fragment_client_order_details.updateStepView(Tags.STATE_DELEGATE_ACCEPT_ORDER);
+                                }
+                            },1);
+                }
+            }else if (notificationStateModel.getOrder_movement().equals("1"))
+            {
+                // جار تجميع الطلب
+                if (fragment_client_order_details!=null&&fragment_client_order_details.isAdded())
+                {
+                    new Handler()
+                            .postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    fragment_client_order_details.updateStepView(Tags.STATE_DELEGATE_COLLECTING_ORDER);
+                                }
+                            },1);
+                }
+            }
+            else if (notificationStateModel.getOrder_movement().equals("2"))
+            {
+                if (fragment_client_order_details!=null&&fragment_client_order_details.isAdded())
+                {
+                    new Handler()
+                            .postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    fragment_client_order_details.updateStepView(Tags.STATE_DELEGATE_COLLECTED_ORDER);
+                                }
+                            },1);
+                }
+                // تم تجميع الطلب
+            }else if (notificationStateModel.getOrder_movement().equals("3"))
+            {
+                // جار توصيل الطلب
+                if (fragment_client_order_details!=null&&fragment_client_order_details.isAdded())
+                {
+                    new Handler()
+                            .postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    fragment_client_order_details.updateStepView(Tags.STATE_DELEGATE_DELIVERING_ORDER);
+                                }
+                            },1);
+                }
+            }
+            else if (notificationStateModel.getOrder_movement().equals("4"))
+            {
+                if (fragment_client_order_details!=null&&fragment_client_order_details.isAdded())
+                {
+                    new Handler()
+                            .postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    fragment_client_order_details.updateStepView(Tags.STATE_DELEGATE_DELIVERED_ORDER);
+                                }
+                            },1);
+                }
+                // تم  توصيل الطلب
+            }
         }
     }
 
@@ -447,6 +623,9 @@ public class ClientHomeActivity extends AppCompatActivity {
         if (fragment_home != null && fragment_home.isAdded()) {
             fragment_home.updateBottomNavigationPosition(0);
         }
+        if (fragment_shipment != null && fragment_shipment.isAdded()) {
+            fragmentManager.beginTransaction().hide(fragment_shipment).commit();
+        }
         if (fragment_client_orders != null && fragment_client_orders.isAdded()) {
             fragmentManager.beginTransaction().hide(fragment_client_orders).commit();
         }
@@ -469,7 +648,7 @@ public class ClientHomeActivity extends AppCompatActivity {
         }
 
     }
-    public void DisplayFragmentMyOrders()
+    public void DisplayFragmentShipment()
     {
         if (fragment_home != null && fragment_home.isAdded()) {
             fragment_home.updateBottomNavigationPosition(1);
@@ -477,6 +656,41 @@ public class ClientHomeActivity extends AppCompatActivity {
 
         if (fragment_client_store != null && fragment_client_store.isAdded()) {
             fragmentManager.beginTransaction().hide(fragment_client_store).commit();
+        }
+        if (fragment_client_notifications != null && fragment_client_notifications.isAdded()) {
+            fragmentManager.beginTransaction().hide(fragment_client_notifications).commit();
+        }
+        if (fragment_client_profile != null && fragment_client_profile.isAdded()) {
+            fragmentManager.beginTransaction().hide(fragment_client_profile).commit();
+        }
+
+        if (fragment_client_orders != null && fragment_client_orders.isAdded()) {
+            fragmentManager.beginTransaction().hide(fragment_client_orders).commit();
+        }
+
+        if (fragment_shipment == null) {
+            fragment_shipment = Fragment_Shipment.newInstance();
+        }
+
+        if (fragment_shipment.isAdded()) {
+            fragmentManager.beginTransaction().show(fragment_shipment).commit();
+
+        } else {
+            fragmentManager.beginTransaction().add(R.id.fragment_home_container, fragment_shipment, "fragment_shipment").addToBackStack("fragment_shipment").commit();
+        }
+
+    }
+    public void DisplayFragmentMyOrders()
+    {
+        if (fragment_home != null && fragment_home.isAdded()) {
+            fragment_home.updateBottomNavigationPosition(2);
+        }
+
+        if (fragment_client_store != null && fragment_client_store.isAdded()) {
+            fragmentManager.beginTransaction().hide(fragment_client_store).commit();
+        }
+        if (fragment_shipment != null && fragment_shipment.isAdded()) {
+            fragmentManager.beginTransaction().hide(fragment_shipment).commit();
         }
         if (fragment_client_notifications != null && fragment_client_notifications.isAdded()) {
             fragmentManager.beginTransaction().hide(fragment_client_notifications).commit();
@@ -502,10 +716,13 @@ public class ClientHomeActivity extends AppCompatActivity {
         readNotification();
 
         if (fragment_home != null && fragment_home.isAdded()) {
-            fragment_home.updateBottomNavigationPosition(2);
+            fragment_home.updateBottomNavigationPosition(3);
         }
         if (fragment_client_store != null && fragment_client_store.isAdded()) {
             fragmentManager.beginTransaction().hide(fragment_client_store).commit();
+        }
+        if (fragment_shipment != null && fragment_shipment.isAdded()) {
+            fragmentManager.beginTransaction().hide(fragment_shipment).commit();
         }
         if (fragment_client_orders != null && fragment_client_orders.isAdded()) {
             fragmentManager.beginTransaction().hide(fragment_client_orders).commit();
@@ -529,10 +746,13 @@ public class ClientHomeActivity extends AppCompatActivity {
     public void DisplayFragmentProfile()
     {
         if (fragment_home != null && fragment_home.isAdded()) {
-            fragment_home.updateBottomNavigationPosition(3);
+            fragment_home.updateBottomNavigationPosition(4);
         }
         if (fragment_client_store != null && fragment_client_store.isAdded()) {
             fragmentManager.beginTransaction().hide(fragment_client_store).commit();
+        }
+        if (fragment_shipment != null && fragment_shipment.isAdded()) {
+            fragmentManager.beginTransaction().hide(fragment_shipment).commit();
         }
         if (fragment_client_orders != null && fragment_client_orders.isAdded()) {
             fragmentManager.beginTransaction().hide(fragment_client_orders).commit();
@@ -640,17 +860,17 @@ public class ClientHomeActivity extends AppCompatActivity {
 
 
     }
-    public void DisplayFragmentMap()
+    public void DisplayFragmentMap(String from)
     {
         fragment_count+=1;
 
         if (location!=null)
         {
-            fragment_map = Fragment_Map.newInstance(location.getLatitude(),location.getLongitude());
+            fragment_map = Fragment_Map.newInstance(location.getLatitude(),location.getLongitude(),from);
 
         }else
             {
-                fragment_map = Fragment_Map.newInstance(0.0,0.0);
+                fragment_map = Fragment_Map.newInstance(0.0,0.0,from);
 
             }
 
@@ -699,20 +919,54 @@ public class ClientHomeActivity extends AppCompatActivity {
         }
 
     }
-    public void getAddressFromMapListener(final Favourite_location favourite_location)
+    public void getAddressFromMapListener(final Favourite_location favourite_location,String from)
     {
 
-        if (fragment_reserve_order!=null&&fragment_reserve_order.isAdded())
+        if (from.equals("fragment_reserve_order"))
         {
-            new Handler()
-                    .postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            fragment_reserve_order.updateSelectedLocation(favourite_location);
-                            fragmentManager.popBackStack("fragment_map",FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                        }
-                    },1);
+            if (fragment_reserve_order!=null&&fragment_reserve_order.isAdded())
+            {
+                new Handler()
+                        .postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                fragment_reserve_order.updateSelectedLocation(favourite_location);
+                                fragmentManager.popBackStack("fragment_map",FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                                fragment_count-=1;
+                            }
+                        },1);
+            }
+        }else if (from.equals("fragment_shipment_pickup_location"))
+            {
+                if (fragment_shipment!=null&&fragment_shipment.isAdded())
+                {
+                    new Handler()
+                            .postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    fragment_shipment.setLocationData(favourite_location.getPlace_id(),favourite_location.getStreet()+" "+favourite_location.getAddress(),favourite_location.getLat(),favourite_location.getLng(),"pickup_location");
+                                    fragmentManager.popBackStack("fragment_map",FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                                    fragment_count-=1;
+                                }
+                            },1);
+                }
+            }
+        else if (from.equals("fragment_shipment_dropoff_location"))
+        {
+            if (fragment_shipment!=null&&fragment_shipment.isAdded())
+            {
+                new Handler()
+                        .postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                fragment_shipment.setLocationData(favourite_location.getPlace_id(),favourite_location.getStreet()+" "+favourite_location.getAddress(),favourite_location.getLat(),favourite_location.getLng(),"dropoff_location");
+                                fragmentManager.popBackStack("fragment_map",FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                                fragment_count-=1;
+                            }
+                        },1);
+            }
         }
+
     }
     public void DisplayFragmentDelegates(double place_lat,double place_lng,String type,String client_id,String order_id)
     {
@@ -853,21 +1107,12 @@ public class ClientHomeActivity extends AppCompatActivity {
 
     }
 
-    public void DisplayFragmentChat(ChatUserModel chatUserModel)
+    public void NavigateToChatActivity(ChatUserModel chatUserModel,String from)
     {
-
-        fragment_count+=1;
-        fragment_chat = Fragment_Chat.newInstance(chatUserModel);
-
-        if (fragment_chat.isAdded()) {
-            fragmentManager.beginTransaction().show(fragment_chat).commit();
-
-        } else {
-            fragmentManager.beginTransaction().add(R.id.fragment_app_container, fragment_chat, "fragment_chat").addToBackStack("fragment_chat").commit();
-        }
-
-
-
+        Intent intent = new Intent(this, ChatActivity.class);
+        intent.putExtra("data",chatUserModel);
+        intent.putExtra("from",from);
+        startActivity(intent);
     }
     public void delegateAcceptOrder(String driver_id,String client_id,String order_id,String driver_offer)
     {
@@ -1117,7 +1362,18 @@ public class ClientHomeActivity extends AppCompatActivity {
             ClientHomeActivity.super.onBackPressed();
             fragment_count-=1;
             ResendOrder(client_id,delegate_id,order_id);
-        }
+        }else if (type.equals("reserve_shipment"))
+            {
+                new Handler()
+                        .postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                ClientHomeActivity.super.onBackPressed();
+                                fragment_count-=1;
+                                fragment_shipment.sendOrder(delegate_id);
+                            }
+                        },1);
+            }
 
 
     }
@@ -1262,36 +1518,37 @@ public class ClientHomeActivity extends AppCompatActivity {
         fragment_store_details.AddCounter(order_counter);
     }
 
-    public void UpdateOrderMovement(final String client_id, final String driver_id, final String order_id, int order_state) {
+    public void UpdateOrderMovement(final String client_id, final String driver_id, final String order_id, int order_movement) {
 
         final ProgressDialog dialog = Common.createProgressDialog(this,getString(R.string.wait));
         dialog.setCancelable(false);
         dialog.show();
 
-        if (order_state == Tags.STATE_DELEGATE_NOT_APPROVED_ORDER)
+        if (order_movement == Tags.STATE_DELEGATE_ACCEPT_ORDER)
         {
-            state = "1";
+            Log.e("ddd","ddddd");
+            state = "2";
             call = Api.getService(Tags.base_url).movementDelegate(order_id,state);
             // تجميع الطلب
-        }else if (order_state == Tags.STATE_DELEGATE_COLLECTING_ORDER)
-        {
-            state = "2";
-
-            call = Api.getService(Tags.base_url).movementDelegate(order_id,state);
-
-            // تم التجميع
-        }
-        else if (order_state == Tags.STATE_DELEGATE_COLLECTED_ORDER)
+        }else if (order_movement == Tags.STATE_DELEGATE_COLLECTING_ORDER)
         {
             state = "3";
 
             call = Api.getService(Tags.base_url).movementDelegate(order_id,state);
 
-            // جار التوصيل
+            // تم التجميع
         }
-        else if (order_state == Tags.STATE_DELEGATE_DELIVERING_ORDER)
+        else if (order_movement == Tags.STATE_DELEGATE_COLLECTED_ORDER)
         {
             state = "4";
+
+            call = Api.getService(Tags.base_url).movementDelegate(order_id,state);
+
+            // جار التوصيل
+        }
+        else if (order_movement == Tags.STATE_DELEGATE_DELIVERING_ORDER)
+        {
+            state = "5";
 
             call = Api.getService(Tags.base_url).movementDelegate(order_id,state);
 
@@ -1304,7 +1561,19 @@ public class ClientHomeActivity extends AppCompatActivity {
                 dialog.dismiss();
                 if (response.isSuccessful())
                 {
-                    if (state.equals("4"))
+                    if (state.equals("2"))
+                    {
+                        fragment_delegate_current_order_details.updateOrderState(Tags.STATE_DELEGATE_COLLECTED_ORDER);
+                    }else if (state.equals("3"))
+                    {
+                        fragment_delegate_current_order_details.updateOrderState(Tags.STATE_DELEGATE_COLLECTING_ORDER);
+
+                    }else if (state.equals("4"))
+                    {
+                        fragment_delegate_current_order_details.updateOrderState(Tags.STATE_DELEGATE_COLLECTED_ORDER);
+
+                    }
+                    else if (state.equals("5"))
                     {
                         delegateRefuse_FinishOrder(client_id,driver_id,order_id,"end");
 
@@ -1522,7 +1791,6 @@ public class ClientHomeActivity extends AppCompatActivity {
         }
 
     }
-
     public void Logout()
     {
         final ProgressDialog dialog =Common.createProgressDialog(this,getString(R.string.wait));
@@ -1626,7 +1894,6 @@ public class ClientHomeActivity extends AppCompatActivity {
         Back();
     }
 
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -1642,4 +1909,134 @@ public class ClientHomeActivity extends AppCompatActivity {
     }
 
 
+    /*public void CreateAddRateAlertDialog(final NotificationRateModel notificationRateModel)
+    {
+        final AlertDialog dialog = new AlertDialog.Builder(this)
+                .setCancelable(true)
+                .create();
+
+        View view = LayoutInflater.from(this).inflate(R.layout.dialog_rate,null);
+        ImageView img_close = view.findViewById(R.id.img_close);
+        CircleImageView image = view.findViewById(R.id.image);
+        TextView tv_name = view.findViewById(R.id.tv_name);
+        final ImageView image_love = view.findViewById(R.id.image_love);
+        final ImageView image_smile = view.findViewById(R.id.image_smile);
+        final ImageView image_angry = view.findViewById(R.id.image_angry);
+        final LinearLayout ll_comment = view.findViewById(R.id.ll_comment);
+        final EditText edt_comment = view.findViewById(R.id.edt_comment);
+        final TextView tv_rate = view.findViewById(R.id.tv_rate);
+        final Button btn_rate = view.findViewById(R.id.btn_rate);
+        Picasso.with(this).load(Uri.parse(Tags.IMAGE_URL+notificationRateModel.getDelegate_avatar())).fit().into(image);
+        tv_name.setText(notificationRateModel.getDelegate_name());
+
+
+
+
+        image_love.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rate = 5.0;
+                image_love.setImageResource(R.drawable.emoji_love_sel);
+                image_smile.setImageResource(R.drawable.emoji_smile_unsel);
+                image_angry.setImageResource(R.drawable.emoji_ang_unsel);
+                tv_rate.setText(R.string.excellent);
+                ll_comment.setVisibility(View.GONE);
+                btn_rate.setVisibility(View.VISIBLE);
+            }
+        });
+
+        image_smile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rate = 3.0;
+
+                image_love.setImageResource(R.drawable.emoji_love_unsel);
+                image_smile.setImageResource(R.drawable.emoji_smile_sel);
+                image_angry.setImageResource(R.drawable.emoji_ang_unsel);
+                tv_rate.setText(R.string.moderate);
+                ll_comment.setVisibility(View.VISIBLE);
+                btn_rate.setVisibility(View.VISIBLE);
+            }
+        });
+
+        image_angry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rate = 1.5;
+
+                image_love.setImageResource(R.drawable.emoji_love_unsel);
+                image_smile.setImageResource(R.drawable.emoji_smile_unsel);
+                image_angry.setImageResource(R.drawable.emoji_ang_sel);
+                tv_rate.setText(R.string.bad);
+                ll_comment.setVisibility(View.VISIBLE);
+                btn_rate.setVisibility(View.VISIBLE);
+            }
+        });
+
+        btn_rate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                comment = edt_comment.getText().toString().trim();
+                AddRate(dialog,notificationRateModel.getReceiver_id(),notificationRateModel.getDelegate_id(),rate,comment);
+            }
+        });
+
+        img_close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.getWindow().getAttributes().windowAnimations=R.style.dialog_congratulation_animation;
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.getWindow().setBackgroundDrawableResource(R.drawable.dialog_window_bg);
+        dialog.setView(view);
+        dialog.show();
+    }
+
+    private void AddRate(final AlertDialog alertDialog, int client_id, int delegate_id, double rate, String comment) {
+
+        final ProgressDialog dialog = Common.createProgressDialog(this,getString(R.string.wait));
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+        Api.getService()
+                .addRate(client_id,delegate_id,rate,comment)
+                .enqueue(new Callback<ResponseModel>() {
+                    @Override
+                    public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
+                        if (response.isSuccessful())
+                        {
+                            alertDialog.dismiss();
+                            dialog.dismiss();
+                            NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+                            if (manager!=null)
+                            {
+                                manager.cancelAll();
+                            }
+                        }else
+                        {
+                            try {
+                                Log.e("error_code",response.errorBody().string());
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            dialog.dismiss();
+                            Toast.makeText(HomeActivity.this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseModel> call, Throwable t) {
+
+                        try {
+                            dialog.dismiss();
+                            Log.e("Error",t.getMessage());
+                            Toast.makeText(HomeActivity.this,getString(R.string.something), Toast.LENGTH_SHORT).show();
+                        }catch (Exception re){}
+                    }
+                });
+    }
+*/
 }

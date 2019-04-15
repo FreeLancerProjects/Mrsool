@@ -180,10 +180,12 @@
                                 />
                         </LinearLayout>
                         <LinearLayout
+                            android:id="@+id/ll_address"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
                             android:weightSum="3"
+
                             >
                             <LinearLayout
                                 android:layout_width="0dp"
@@ -220,6 +222,103 @@
                                 android:layout_gravity="center_vertical"
                                 />
                         </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/ll_shipment"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+
+                            android:orientation="vertical"
+                            android:visibility="gone"
+                            >
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:weightSum="3"
+
+                                >
+                                <LinearLayout
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1.2"
+                                    >
+                                    <ImageView
+                                        android:layout_width="35dp"
+                                        android:layout_height="35dp"
+                                        android:src="@drawable/ic_map"
+                                        android:padding="8dp"
+                                        android:tint="@color/colorPrimary"
+                                        />
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:textColor="@color/colorPrimary"
+                                        android:textStyle="bold"
+                                        android:textSize="13sp"
+                                        android:text="@string/receiving_location"
+                                        android:layout_gravity="center_vertical"
+
+                                        />
+                                </LinearLayout>
+
+                                <TextView
+                                    android:id="@+id/tv_location_pickup"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1.8"
+                                    android:textColor="@color/gray4"
+                                    android:textStyle="bold"
+                                    android:textSize="13sp"
+                                    android:layout_gravity="center_vertical"
+                                    />
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:weightSum="3"
+
+                                >
+                                <LinearLayout
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1.2"
+                                    >
+                                    <ImageView
+                                        android:layout_width="35dp"
+                                        android:layout_height="35dp"
+                                        android:src="@drawable/ic_map"
+                                        android:padding="8dp"
+                                        android:tint="@color/colorPrimary"
+                                        />
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:textColor="@color/colorPrimary"
+                                        android:textStyle="bold"
+                                        android:textSize="13sp"
+                                        android:text="@string/dropoff_location"
+                                        android:layout_gravity="center_vertical"
+
+                                        />
+                                </LinearLayout>
+
+                                <TextView
+                                    android:id="@+id/tv_location_dropoff"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1.8"
+                                    android:textColor="@color/gray4"
+                                    android:textStyle="bold"
+                                    android:textSize="13sp"
+                                    android:layout_gravity="center_vertical"
+                                    />
+                            </LinearLayout>
+
+
+                        </LinearLayout>
+
                         <FrameLayout
                             android:id="@+id/fl_map"
                             android:layout_width="match_parent"

@@ -48,6 +48,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class Fragment_Map extends Fragment implements OnMapReadyCallback {
+    private static final String TAG1 = "FROM";
     private static final String TAG2 = "LAT";
     private static final String TAG3 = "LNG";
     private ClientHomeActivity activity;
@@ -59,17 +60,19 @@ public class Fragment_Map extends Fragment implements OnMapReadyCallback {
     private FloatingActionButton fab;
     private String current_language;
     private double lat = 0.0, lng = 0.0;
-    private String address="";
+    private String address="",place_id;
     private GoogleMap mMap;
     private Marker marker;
     private float zoom = 15.6f;
     private boolean stop = false;
+    private String from="";
 
 
 
-    public static Fragment_Map newInstance(double lat, double lng) {
+    public static Fragment_Map newInstance(double lat, double lng,String from) {
         Fragment_Map fragment_map = new Fragment_Map();
         Bundle bundle = new Bundle();
+        bundle.putString(TAG1, from);
         bundle.putDouble(TAG2, lat);
         bundle.putDouble(TAG3, lng);
         fragment_map.setArguments(bundle);
@@ -119,8 +122,8 @@ public class Fragment_Map extends Fragment implements OnMapReadyCallback {
                 {
                     Common.CloseKeyBoard(activity,edt_search);
                     String floor = edt_floor.getText().toString().trim();
-                    Favourite_location favourite_location = new Favourite_location("",floor,address,lat,lng);
-                    activity.getAddressFromMapListener(favourite_location);
+                    Favourite_location favourite_location = new Favourite_location(place_id,"",floor,address,lat,lng);
+                    activity.getAddressFromMapListener(favourite_location,from);
                 }
             }
         });
@@ -147,6 +150,7 @@ public class Fragment_Map extends Fragment implements OnMapReadyCallback {
 
         Bundle bundle = getArguments();
         if (bundle != null) {
+            from = bundle.getString(TAG1);
             lat = bundle.getDouble(TAG2);
             lng = bundle.getDouble(TAG3);
             updateUI();
@@ -238,6 +242,7 @@ public class Fragment_Map extends Fragment implements OnMapReadyCallback {
                             if (response.body().getCandidates().size() > 0) {
 
                                 address = response.body().getCandidates().get(0).getFormatted_address().replace("Unnamed Road,","");
+                                place_id = response.body().getCandidates().get(0).getPlace_id();
                                 tv_address.setText(address+"");
                                 AddMarker(response.body().getCandidates().get(0).getGeometry().getLocation().getLat(),response.body().getCandidates().get(0).getGeometry().getLocation().getLng(),false);
                             }
@@ -291,6 +296,7 @@ public class Fragment_Map extends Fragment implements OnMapReadyCallback {
                             if (response.body().getResults().size()>0)
                             {
                                 address =response.body().getResults().get(0).getFormatted_address().replace("Unnamed Road,","");
+                                place_id = response.body().getResults().get(0).getPlace_id();
                                 tv_address.setText(address+"");
                                 stop = true;
                                 AddMarker(response.body().getResults().get(0).getGeometry().getLocation().getLat(),response.body().getResults().get(0).getGeometry().getLocation().getLng(),true);

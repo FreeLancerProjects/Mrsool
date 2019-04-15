@@ -34,12 +34,12 @@ public class Fragment_Client_Order_Details extends Fragment {
     private static final String TAG = "ORDER";
     private ClientHomeActivity activity;
     private ImageView image_back, image_chat, image_call;
-    private LinearLayout ll_back, ll_delegate_data_container;
+    private LinearLayout ll_back, ll_delegate_data_container,ll_shipment;
     private CircleImageView image;
     private TextView tv_delegate_name, tv_rate;
     private SimpleRatingBar rateBar;
     private String current_lang;
-    private TextView tv_not_approved, tv_order_details;
+    private TextView tv_not_approved, tv_order_details,tv_location_pickup,tv_location_dropoff;
     private RelativeLayout rl;
     private LinearLayout ll;
     private AppBarLayout app_bar;
@@ -80,6 +80,10 @@ public class Fragment_Client_Order_Details extends Fragment {
 
         }
         ll_delegate_data_container = view.findViewById(R.id.ll_delegate_data_container);
+        ll_shipment = view.findViewById(R.id.ll_shipment);
+        tv_location_pickup = view.findViewById(R.id.tv_location_pickup);
+        tv_location_dropoff = view.findViewById(R.id.tv_location_dropoff);
+
         tv_not_approved = view.findViewById(R.id.tv_not_approved);
         tv_order_details = view.findViewById(R.id.tv_order_details);
 
@@ -141,7 +145,7 @@ public class Fragment_Client_Order_Details extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent();
                 intent.setAction(Intent.ACTION_DIAL);
-                intent.setData(Uri.parse("tel:" + order.getDriver_user_phone_code() + order.getDriver_user_phone()));
+                intent.setData(Uri.parse("tel:" + order.getDriver_user_phone()));
                 activity.startActivity(intent);
             }
         });
@@ -157,7 +161,7 @@ public class Fragment_Client_Order_Details extends Fragment {
             @Override
             public void onClick(View v) {
                 ChatUserModel chatUserModel = new ChatUserModel(order.getDriver_user_full_name(),order.getDriver_user_image(),order.getDriver_id(),order.getRoom_id_fk(),order.getDriver_user_phone_code(),order.getDriver_user_phone());
-                activity.DisplayFragmentChat(chatUserModel);
+                activity.NavigateToChatActivity(chatUserModel,"from_fragment");
             }
         });
 
@@ -171,6 +175,18 @@ public class Fragment_Client_Order_Details extends Fragment {
             Picasso.with(activity).load(Uri.parse(Tags.IMAGE_URL + order.getDriver_user_image())).placeholder(R.drawable.logo_only).fit().into(image);
             tv_rate.setText("(" + order.getRate() + ")");
             tv_order_details.setText(order.getOrder_details());
+
+            if (order.getOrder_type().equals("1"))
+            {
+                ll_shipment.setVisibility(View.GONE);
+            }else if (order.getOrder_type().equals("2"))
+            {
+                tv_location_pickup.setText(order.getPlace_address());
+                tv_location_dropoff.setText(order.getClient_address());
+                ll_shipment.setVisibility(View.VISIBLE);
+
+            }
+
 
             SimpleRatingBar.AnimationBuilder builder = rateBar.getAnimationBuilder();
             builder.setDuration(1500);

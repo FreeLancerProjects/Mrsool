@@ -13,6 +13,7 @@ public class PlaceGeocodeData implements Serializable {
     public class Geocode implements Serializable
     {
         private String formatted_address;
+        private String place_id;
         private Geometry geometry;
 
         public String getFormatted_address() {
@@ -21,6 +22,10 @@ public class PlaceGeocodeData implements Serializable {
 
         public Geometry getGeometry() {
             return geometry;
+        }
+
+        public String getPlace_id() {
+            return place_id;
         }
     }
 

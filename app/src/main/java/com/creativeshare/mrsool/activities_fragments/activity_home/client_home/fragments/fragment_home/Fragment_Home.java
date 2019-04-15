@@ -68,7 +68,7 @@ public class Fragment_Home extends Fragment {
                             Common.CreateUserNotSignInAlertDialog(activity);
                         }else
                         {
-                            activity.DisplayFragmentMyOrders();
+                            activity.DisplayFragmentShipment();
 
                         }
                         break;
@@ -78,11 +78,27 @@ public class Fragment_Home extends Fragment {
                             Common.CreateUserNotSignInAlertDialog(activity);
                         }else
                         {
+                            activity.DisplayFragmentMyOrders();
+
+                        }
+
+
+                        break;
+                    case 3:
+
+                        if (userModel==null)
+                        {
+                            Common.CreateUserNotSignInAlertDialog(activity);
+                        }else
+                        {
                             activity.DisplayFragmentNotification();
 
                         }
+
+
+
                         break;
-                    case 3:
+                    case 4:
                         if (userModel==null)
                         {
                             Common.CreateUserNotSignInAlertDialog(activity);
@@ -91,8 +107,6 @@ public class Fragment_Home extends Fragment {
                             activity.DisplayFragmentProfile();
 
                         }
-
-
                         break;
                 }
                 return false;
@@ -105,9 +119,10 @@ public class Fragment_Home extends Fragment {
     {
 
         AHBottomNavigationItem item1 = new AHBottomNavigationItem(getString(R.string.stores),R.drawable.ic_nav_store);
-        AHBottomNavigationItem item2 = new AHBottomNavigationItem(getString(R.string.my_orders),R.drawable.ic_nav_order);
-        AHBottomNavigationItem item3 = new AHBottomNavigationItem(getString(R.string.notifications),R.drawable.ic_nav_notification);
-        AHBottomNavigationItem item4 = new AHBottomNavigationItem(getString(R.string.profile),R.drawable.ic_nav_user);
+        AHBottomNavigationItem item2 = new AHBottomNavigationItem(getString(R.string.shipment),R.drawable.ic_box);
+        AHBottomNavigationItem item3 = new AHBottomNavigationItem(getString(R.string.my_orders),R.drawable.ic_nav_order);
+        AHBottomNavigationItem item4 = new AHBottomNavigationItem(getString(R.string.notifications),R.drawable.ic_nav_notification);
+        AHBottomNavigationItem item5 = new AHBottomNavigationItem(getString(R.string.profile),R.drawable.ic_nav_user);
 
         ah_bottom_nav.setTitleState(AHBottomNavigation.TitleState.ALWAYS_SHOW);
         ah_bottom_nav.setDefaultBackgroundColor(ContextCompat.getColor(activity,R.color.white));
@@ -120,6 +135,7 @@ public class Fragment_Home extends Fragment {
         ah_bottom_nav.addItem(item2);
         ah_bottom_nav.addItem(item3);
         ah_bottom_nav.addItem(item4);
+        ah_bottom_nav.addItem(item5);
 
 
     }
@@ -137,11 +153,11 @@ public class Fragment_Home extends Fragment {
         if (count>0)
         {
             builder.setText(count+"");
-            ah_bottom_nav.setNotification(builder.build(),2);
+            ah_bottom_nav.setNotification(builder.build(),3);
         }else
             {
                 builder.setText("");
-                ah_bottom_nav.setNotification(builder.build(),2);
+                ah_bottom_nav.setNotification(builder.build(),3);
             }
     }
 }

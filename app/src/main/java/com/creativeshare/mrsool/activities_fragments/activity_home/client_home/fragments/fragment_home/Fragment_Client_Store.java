@@ -37,9 +37,11 @@ import com.creativeshare.mrsool.tags.Tags;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import io.paperdb.Paper;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -62,7 +64,7 @@ public class Fragment_Client_Store extends Fragment {
     private Timer timer;
     private TimerTask timerTask;
     private SliderAdapter sliderAdapter;
-    private List<SliderModel> sliderModelList;
+    private String current_language;
 
 
 
@@ -81,8 +83,8 @@ public class Fragment_Client_Store extends Fragment {
 
     private void initView(View view) {
         activity = (ClientHomeActivity) getActivity();
-
-        sliderModelList = new ArrayList<>();
+        Paper.init(activity);
+        current_language = Paper.book().read("lang", Locale.getDefault().getLanguage());
         nearbyModelList = new ArrayList<>();
         mainNearbyModelList = new ArrayList<>();
         queriesList = new ArrayList<>();
@@ -191,7 +193,7 @@ public class Fragment_Client_Store extends Fragment {
         {
             fl_slider.setVisibility(View.VISIBLE);
 
-            if (sliderModelList.size()>1)
+            if (sliderModel.getData().size()>1)
             {
                 timer = new Timer();
                 timerTask = new MyTimerTask();
@@ -199,6 +201,15 @@ public class Fragment_Client_Store extends Fragment {
             }
             sliderAdapter = new SliderAdapter(sliderModel.getData(),activity);
             pager.setAdapter(sliderAdapter);
+
+            for (int i=0;i<tab.getTabCount()-1;i++)
+            {
+                View view = ((ViewGroup)tab.getChildAt(0)).getChildAt(i);
+                ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
+                params.setMargins(5,0,5,0);
+                tab.requestLayout();
+            }
+
 
         }else
             {
@@ -231,7 +242,7 @@ public class Fragment_Client_Store extends Fragment {
             String loc = location.getLatitude()+","+location.getLongitude();
 
             Api.getService("https://maps.googleapis.com/maps/api/")
-                    .getNearbyStores(loc,15000,query,getString(R.string.map_api_key))
+                    .getNearbyStores(loc,15000,query,current_language,getString(R.string.map_api_key))
                     .enqueue(new Callback<NearbyStoreDataModel>() {
                         @Override
                         public void onResponse(Call<NearbyStoreDataModel> call, Response<NearbyStoreDataModel> response) {
