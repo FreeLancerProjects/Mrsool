@@ -240,7 +240,7 @@ public interface Service {
 
     @FormUrlEncoded
     @POST("/Api/cancelOrder")
-    Call<ResponseBody> clientCancelOrder(@Field("driver_id") String driver_id
+    Call<ResponseBody> clientCancelOrder(@Field("order_id") String order_id
     );
 
     @FormUrlEncoded

@@ -7,7 +7,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -50,21 +50,23 @@ import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.paperdb.Paper;
+import pl.tajchert.waitingdots.DotsTextView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ChatActivity extends AppCompatActivity {
 
+    private DotsTextView tv_wait_dot;
     private TextView tv_name;
-    private CircleImageView image;
+    private CircleImageView image,image_chat_user;
     private ImageView image_call,image_send,image_back;
     private EditText edt_msg_content;
-    private LinearLayout ll_back,ll_user_data_container;
-    private AppBarLayout app_bar;
+    private ConstraintLayout cons_typing;
+    private LinearLayout ll_back;
     private RecyclerView recView;
     private LinearLayoutManager manager;
-    private ProgressBar progBar;
+    private ProgressBar progBar,progBarLoadMore;
     private List<MessageModel> messageModelList;
     private ChatAdapter adapter;
     private int current_page = 1;
@@ -127,12 +129,13 @@ public class ChatActivity extends AppCompatActivity {
 
         }
 
-        ll_user_data_container = findViewById(R.id.ll_user_data_container);
-        app_bar = findViewById(R.id.app_bar);
-
 
         progBar = findViewById(R.id.progBar);
         progBar.getIndeterminateDrawable().setColorFilter(ContextCompat.getColor(this, R.color.colorPrimary), PorterDuff.Mode.SRC_IN);
+
+        progBarLoadMore = findViewById(R.id.progBarLoadMore);
+        progBarLoadMore.getIndeterminateDrawable().setColorFilter(ContextCompat.getColor(this, R.color.colorPrimary), PorterDuff.Mode.SRC_IN);
+
 
         tv_name = findViewById(R.id.tv_name);
         image = findViewById(R.id.image);
@@ -140,6 +143,11 @@ public class ChatActivity extends AppCompatActivity {
         image_send =findViewById(R.id.image_send);
         edt_msg_content = findViewById(R.id.edt_msg_content);
         ll_back = findViewById(R.id.ll_back);
+
+        cons_typing = findViewById(R.id.cons_typing);
+        tv_wait_dot = findViewById(R.id.tv_wait_dot);
+        tv_wait_dot.setPeriod(1500);
+        image_chat_user = findViewById(R.id.image_chat_user);
 
 
         recView = findViewById(R.id.recView);
@@ -154,7 +162,7 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                if (dy>0)
+                if (dy<0)
                 {
 
                     int lastVisibleItemPos = manager.findLastCompletelyVisibleItemPosition();
@@ -162,9 +170,8 @@ public class ChatActivity extends AppCompatActivity {
 
                     if (lastVisibleItemPos >= (total_item-5)&&!isLoading)
                     {
+                        progBarLoadMore.setVisibility(View.VISIBLE);
                         int next_page = current_page+1;
-                        messageModelList.add(null);
-                        adapter.notifyItemInserted(messageModelList.size()-1);
                         isLoading = true;
                         loadMore(next_page);
                     }
@@ -234,23 +241,6 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
-        app_bar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-            @Override
-            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                int totalRang = appBarLayout.getTotalScrollRange();
-
-                if ((totalRang + verticalOffset) <= 50) {
-
-                    ll_user_data_container.setVisibility(View.GONE);
-                    image_call.setVisibility(View.GONE);
-                } else {
-
-                    ll_user_data_container.setVisibility(View.VISIBLE);
-                    image_call.setVisibility(View.VISIBLE);
-
-                }
-            }
-        });
 
 
 
@@ -260,27 +250,17 @@ public class ChatActivity extends AppCompatActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void ListenToTyping(TypingModel typingModel)
     {
+        Log.e("typingModel",typingModel.getTyping_value());
         if (typingModel.getTyping_value().equals("1"))
         {
-            if (adapter==null)
-            {
-                adapter = new ChatAdapter(messageModelList,userModel.getData().getUser_id(),chatUserModel.getImage(),ChatActivity.this);
+            cons_typing.setVisibility(View.VISIBLE);
 
-                recView.setAdapter(adapter);
-            }
-            adapter.startTyping(true);
             new MyAsyncTask().execute();
 
         }else if (typingModel.getTyping_value().equals("2"))
         {
-            if (adapter==null)
-            {
-                adapter = new ChatAdapter(messageModelList,userModel.getData().getUser_id(),chatUserModel.getImage(),ChatActivity.this);
-                recView.setAdapter(adapter);
 
-            }
-
-            adapter.endTyping();
+            cons_typing.setVisibility(View.GONE);
             if (mp!=null)
             {
                 mp.release();
@@ -290,18 +270,19 @@ public class ChatActivity extends AppCompatActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void ListenToNewMessage(MessageModel messageModel)
-    {
-        if (adapter==null)
+    { if (adapter==null)
         {
             messageModelList.add(messageModel);
             adapter = new ChatAdapter(messageModelList,userModel.getData().getUser_id(),chatUserModel.getImage(),ChatActivity.this);
             recView.setAdapter(adapter);
+            recView.smoothScrollToPosition(messageModelList.size()-1);
 
 
         }else
             {
                 messageModelList.add(messageModel);
                 adapter.notifyItemInserted(messageModelList.size()-1);
+                recView.smoothScrollToPosition(messageModelList.size()-1);
 
             }
     }
@@ -342,6 +323,7 @@ public class ChatActivity extends AppCompatActivity {
         preferences.saveChatUserData(this,chatUserModel);
         tv_name.setText(chatUserModel.getName());
         Picasso.with(this).load(Uri.parse(Tags.IMAGE_URL+chatUserModel.getImage())).placeholder(R.drawable.logo_only).fit().into(image);
+        Picasso.with(this).load(Uri.parse(Tags.IMAGE_URL+chatUserModel.getImage())).placeholder(R.drawable.logo_only).fit().into(image_chat_user);
 
         getChatMessages();
     }
@@ -359,11 +341,14 @@ public class ChatActivity extends AppCompatActivity {
                             {
                                 messageModelList.add(response.body());
                                 adapter.notifyItemInserted(messageModelList.size()-1);
+                                recView.setAdapter(adapter);
+                                recView.smoothScrollToPosition(messageModelList.size()-1);
 
                             }else
                                 {
                                     messageModelList.add(response.body());
                                     adapter.notifyItemInserted(messageModelList.size()-1);
+                                    recView.smoothScrollToPosition(messageModelList.size()-1);
 
                                 }
 
@@ -402,6 +387,7 @@ public class ChatActivity extends AppCompatActivity {
                                 messageModelList.addAll(response.body().getData());
                                 adapter = new ChatAdapter(messageModelList,userModel.getData().getUser_id(),chatUserModel.getImage(),ChatActivity.this);
                                 recView.setAdapter(adapter);
+                                recView.smoothScrollToPosition(messageModelList.size()-1);
 
 
                             }
@@ -436,16 +422,16 @@ public class ChatActivity extends AppCompatActivity {
                     public void onResponse(Call<MessageDataModel> call, Response<MessageDataModel> response) {
                         if (response.isSuccessful())
                         {
-                            messageModelList.remove(messageModelList.size()-1);
-                            adapter.notifyDataSetChanged();
+                            progBarLoadMore.setVisibility(View.GONE);
+
                             if (response.body()!=null&&response.body().getData().size()>0)
                             {
 
                                 int old_lastPos = messageModelList.size()-1;
 
-
                                 messageModelList.addAll(response.body().getData());
                                 current_page = response.body().getMeta().getCurrent_page();
+                                Log.e("page",response.body().getMeta().getCurrent_page()+"__");
 
                                 adapter.notifyItemRangeInserted(old_lastPos,messageModelList.size()-1);
 
@@ -456,8 +442,8 @@ public class ChatActivity extends AppCompatActivity {
                         }else
                         {
                             isLoading = false;
-                            messageModelList.remove(messageModelList.size()-1);
-                            adapter.notifyDataSetChanged();
+                            progBarLoadMore.setVisibility(View.VISIBLE);
+
 
                             try {
                                 Log.e("Error_code",response.code()+"_"+response.errorBody().string());
@@ -471,8 +457,7 @@ public class ChatActivity extends AppCompatActivity {
                     public void onFailure(Call<MessageDataModel> call, Throwable t) {
                         try {
                             isLoading = false;
-                            messageModelList.remove(messageModelList.size()-1);
-                            adapter.notifyDataSetChanged();
+                            progBarLoadMore.setVisibility(View.VISIBLE);
                             Toast.makeText(ChatActivity.this, getString(R.string.something), Toast.LENGTH_SHORT).show();
                             Log.e("Error",t.getMessage());
                         }catch (Exception e){}
@@ -514,12 +499,11 @@ public class ChatActivity extends AppCompatActivity {
 
 
     public class MyAsyncTask extends AsyncTask<Void,Void,Void>{
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            String sound_typing_path = "android.resource://"+getPackageName()+"/"+R.raw.typing;
 
-            mp = MediaPlayer.create(ChatActivity.this,Uri.parse(sound_typing_path));
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            mp = MediaPlayer.create(ChatActivity.this,R.raw.typing);
 
         }
 

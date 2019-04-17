@@ -63,6 +63,22 @@ public class Fragment_Client_Orders extends Fragment{
     public void NavigateToFragmentRefresh(int pos)
     {
         pager.setCurrentItem(pos,true);
+        if (pos==0)
+        {
+            Fragment_Client_New_Orders fragment_client_new_orders = (Fragment_Client_New_Orders) fragmentList.get(0);
+            fragment_client_new_orders.getOrders();
+
+        }else if (pos==1)
+        {
+            Fragment_Client_Current_Orders  fragment_client_current_orders = (Fragment_Client_Current_Orders) fragmentList.get(1);
+            fragment_client_current_orders.getOrders();
+
+        }else if (pos ==2)
+        {
+            Fragment_Client_Previous_Orders fragment_client_previous_orders = (Fragment_Client_Previous_Orders) fragmentList.get(2);
+            fragment_client_previous_orders.getOrders();
+
+        }
     }
 
     public void RefreshOrderFragments()

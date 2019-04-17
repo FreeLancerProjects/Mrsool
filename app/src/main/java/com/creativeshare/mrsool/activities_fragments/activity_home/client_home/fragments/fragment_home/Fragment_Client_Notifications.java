@@ -34,7 +34,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class Fragment_Client_Notifications extends Fragment{
+public class Fragment_Client_Notifications extends Fragment {
 
     private ProgressBar progBar;
     private RecyclerView recView;
@@ -49,14 +49,13 @@ public class Fragment_Client_Notifications extends Fragment{
     private int current_page = 1;
     private Call<NotificationDataModel> call;
     private boolean isFirstTime = true;
+    private int lastSelectedItem = -1;
 
 
     @Override
-    public void onStart()
-    {
+    public void onStart() {
         super.onStart();
-        if (!isFirstTime&&adapter!=null)
-        {
+        if (!isFirstTime && adapter != null) {
             adapter.notifyDataSetChanged();
         }
     }
@@ -64,16 +63,16 @@ public class Fragment_Client_Notifications extends Fragment{
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_client_notifications,container,false);
+        View view = inflater.inflate(R.layout.fragment_client_notifications, container, false);
         initView(view);
         return view;
     }
 
 
-    public static Fragment_Client_Notifications newInstance()
-    {
+    public static Fragment_Client_Notifications newInstance() {
         return new Fragment_Client_Notifications();
     }
+
     private void initView(View view) {
         notificationModelList = new ArrayList<>();
 
@@ -83,9 +82,9 @@ public class Fragment_Client_Notifications extends Fragment{
         ll_not = view.findViewById(R.id.ll_not);
 
         progBar = view.findViewById(R.id.progBar);
-        progBar.getIndeterminateDrawable().setColorFilter(ContextCompat.getColor(activity,R.color.colorPrimary), PorterDuff.Mode.SRC_IN);
+        progBar.getIndeterminateDrawable().setColorFilter(ContextCompat.getColor(activity, R.color.colorPrimary), PorterDuff.Mode.SRC_IN);
         recView = view.findViewById(R.id.recView);
-        adapter = new NotificationsAdapter(notificationModelList,activity,this,userModel.getData().getUser_type());
+        adapter = new NotificationsAdapter(notificationModelList, activity, this, userModel.getData().getUser_type());
         recView.setAdapter(adapter);
 
         recView.setDrawingCacheEnabled(true);
@@ -93,21 +92,20 @@ public class Fragment_Client_Notifications extends Fragment{
         recView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
 
         manager = new LinearLayoutManager(activity);
-        recView.setLayoutManager(manager); recView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        recView.setLayoutManager(manager);
+        recView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                if (dy>0)
-                {
-                    int lastVisibleItem = ((LinearLayoutManager)manager).findLastCompletelyVisibleItemPosition();
+                if (dy > 0) {
+                    int lastVisibleItem = ((LinearLayoutManager) manager).findLastCompletelyVisibleItemPosition();
                     int totalItems = manager.getItemCount();
 
-                    if (lastVisibleItem>=(totalItems-5)&&!isLoading)
-                    {
+                    if (lastVisibleItem >= (totalItems - 5) && !isLoading) {
                         isLoading = true;
                         notificationModelList.add(null);
-                        adapter.notifyItemInserted(notificationModelList.size()-1);
-                        int next_page = current_page+1;
+                        adapter.notifyItemInserted(notificationModelList.size() - 1);
+                        int next_page = current_page + 1;
                         loadMore(next_page);
                     }
                 }
@@ -117,17 +115,25 @@ public class Fragment_Client_Notifications extends Fragment{
 
     }
 
-    public void getNotification()
-    {
-        notificationModelList.clear();
+    public void getNotification() {
 
 
-        if (userModel.getData().getUser_type().equals(Tags.TYPE_CLIENT))
-        {
-            call  = Api.getService(Tags.base_url).getNotification(userModel.getData().getUser_id(),"client", 1);
-        }else if (userModel.getData().getUser_type().equals(Tags.TYPE_DELEGATE))
-        {
-            call  = Api.getService(Tags.base_url).getNotification(userModel.getData().getUser_id(),"driver", 1);
+
+        if (userModel.getData().getUser_type().equals(Tags.TYPE_CLIENT)) {
+            call = Api.getService(Tags.base_url).getNotification(userModel.getData().getUser_id(), "client", 1);
+            if (lastSelectedItem!=-1)
+            {
+                if (notificationModelList.size()>0)
+                {
+                    notificationModelList.remove(lastSelectedItem);
+                    adapter.notifyItemRemoved(lastSelectedItem);
+                    lastSelectedItem = -1;
+
+
+                }
+            }
+        } else if (userModel.getData().getUser_type().equals(Tags.TYPE_DELEGATE)) {
+            call = Api.getService(Tags.base_url).getNotification(userModel.getData().getUser_id(), "driver", 1);
 
         }
 
@@ -136,26 +142,26 @@ public class Fragment_Client_Notifications extends Fragment{
             @Override
             public void onResponse(Call<NotificationDataModel> call, Response<NotificationDataModel> response) {
                 progBar.setVisibility(View.GONE);
-                if (response.isSuccessful())
-                {
+                if (response.isSuccessful()) {
 
-                    if (response.body()!=null&&response.body().getData().size()>0)
-                    {
+                    notificationModelList.clear();
+
+                    if (response.body() != null && response.body().getData().size() > 0) {
                         ll_not.setVisibility(View.GONE);
                         notificationModelList.addAll(response.body().getData());
                         adapter.notifyDataSetChanged();
                         isFirstTime = false;
-                    }else
-                    {
+                    } else {
                         ll_not.setVisibility(View.VISIBLE);
+                        adapter.notifyDataSetChanged();
+
 
                     }
-                }else
-                {
+                } else {
 
-                    Toast.makeText(activity,R.string.failed, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity, R.string.failed, Toast.LENGTH_SHORT).show();
                     try {
-                        Log.e("Error_code",response.code()+"_"+response.errorBody().string());
+                        Log.e("Error_code", response.code() + "_" + response.errorBody().string());
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -167,23 +173,21 @@ public class Fragment_Client_Notifications extends Fragment{
                 try {
                     progBar.setVisibility(View.GONE);
                     Toast.makeText(activity, getString(R.string.something), Toast.LENGTH_SHORT).show();
-                    Log.e("Error",t.getMessage());
-                }catch (Exception e){}
+                    Log.e("Error", t.getMessage());
+                } catch (Exception e) {
+                }
             }
         });
 
 
     }
 
-    private void loadMore(int page_index)
-    {
+    private void loadMore(int page_index) {
 
-        if (userModel.getData().getUser_type().equals(Tags.TYPE_CLIENT))
-        {
-            call  = Api.getService(Tags.base_url).getNotification(userModel.getData().getUser_id(),"client", page_index);
-        }else if (userModel.getData().getUser_type().equals(Tags.TYPE_DELEGATE))
-        {
-            call  = Api.getService(Tags.base_url).getNotification(userModel.getData().getUser_id(),"driver", page_index);
+        if (userModel.getData().getUser_type().equals(Tags.TYPE_CLIENT)) {
+            call = Api.getService(Tags.base_url).getNotification(userModel.getData().getUser_id(), "client", page_index);
+        } else if (userModel.getData().getUser_type().equals(Tags.TYPE_DELEGATE)) {
+            call = Api.getService(Tags.base_url).getNotification(userModel.getData().getUser_id(), "driver", page_index);
 
         }
 
@@ -191,28 +195,25 @@ public class Fragment_Client_Notifications extends Fragment{
         call.enqueue(new Callback<NotificationDataModel>() {
             @Override
             public void onResponse(Call<NotificationDataModel> call, Response<NotificationDataModel> response) {
-                notificationModelList.remove(notificationModelList.size()-1);
+                notificationModelList.remove(notificationModelList.size() - 1);
                 adapter.notifyDataSetChanged();
                 isLoading = false;
 
-                if (response.isSuccessful())
-                {
+                if (response.isSuccessful()) {
 
-                    if (response.body()!=null&&response.body().getData().size()>0)
-                    {
+                    if (response.body() != null && response.body().getData().size() > 0) {
                         notificationModelList.addAll(response.body().getData());
                         adapter.notifyDataSetChanged();
                         current_page = response.body().getMeta().getCurrent_page();
 
 
                     }
-                }else
-                {
+                } else {
 
 
-                    Toast.makeText(activity,R.string.failed, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity, R.string.failed, Toast.LENGTH_SHORT).show();
                     try {
-                        Log.e("Error_code",response.code()+"_"+response.errorBody().string());
+                        Log.e("Error_code", response.code() + "_" + response.errorBody().string());
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -223,21 +224,28 @@ public class Fragment_Client_Notifications extends Fragment{
             public void onFailure(Call<NotificationDataModel> call, Throwable t) {
                 try {
                     isLoading = false;
-                    if (notificationModelList.get(notificationModelList.size()-1)==null)
-                    {
-                        notificationModelList.remove(notificationModelList.size()-1);
+                    if (notificationModelList.get(notificationModelList.size() - 1) == null) {
+                        notificationModelList.remove(notificationModelList.size() - 1);
                         adapter.notifyDataSetChanged();
                     }
                     progBar.setVisibility(View.GONE);
                     Toast.makeText(activity, getString(R.string.something), Toast.LENGTH_SHORT).show();
-                    Log.e("Error",t.getMessage());
-                }catch (Exception e){}
+                    Log.e("Error", t.getMessage());
+                } catch (Exception e) {
+                }
             }
         });
 
     }
 
-    public void setItemData(NotificationModel notificationModel) {
-        activity.DisplayFragmentClientDelegateOffer(notificationModel);
+    public void setItemData(NotificationModel notificationModel, int pos) {
+        if (userModel.getData().getUser_type().equals(Tags.TYPE_CLIENT) && notificationModel.getOrder_status().equals(String.valueOf(Tags.STATE_DELEGATE_SEND_OFFER))) {
+            activity.DisplayFragmentClientDelegateOffer(notificationModel);
+            lastSelectedItem = pos;
+        } else if (userModel.getData().getUser_type().equals(Tags.TYPE_CLIENT) && notificationModel.getOrder_status().equals(String.valueOf(Tags.STATE_DELEGATE_REFUSE_ORDER)))
+        {
+
+            activity.CreateAcceptRefuseDialog(notificationModel.getOrder_id(),Double.parseDouble(notificationModel.getPlace_lat()),Double.parseDouble(notificationModel.getPlace_long()),notificationModel.getClient_id());
+        }
     }
 }

@@ -220,4 +220,6 @@
     <string name="rate_of_courier">Rate of courier</string>
     <string name="comment">Comment</string>
     <string name="add_rate">Add Rate</string>
+    <string name="offer_refused">Offer refused</string>
+    <string name="order_refused_send_again">Order refuse resend order to another courier?</string>
 </resources>

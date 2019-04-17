@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -196,32 +197,23 @@ public class Fragment_Client_Order_Details extends Fragment {
             builder.start();
 
 
-            if (order.getOrder_status().equals(String.valueOf(Tags.STATE_DELEGATE_NOT_APPROVED_ORDER))) {
+            if (order.getOrder_status().equals(String.valueOf(Tags.STATE_ORDER_NEW))) {
                 ll_delegate_data_container.setVisibility(View.GONE);
                 image_chat.setVisibility(View.GONE);
                 image_call.setVisibility(View.GONE);
                 tv_not_approved.setVisibility(View.VISIBLE);
                 updateStepView(0);
-            } else if (order.getOrder_status().equals(Tags.CLIENT_ACCEPT_ORDER) && order.getOrder_movement().equals("0")) {
+            } else{
 
                 ll_delegate_data_container.setVisibility(View.VISIBLE);
                 image_chat.setVisibility(View.VISIBLE);
                 image_call.setVisibility(View.VISIBLE);
                 tv_not_approved.setVisibility(View.GONE);
 
-                updateStepView(Tags.STATE_DELEGATE_ACCEPT_ORDER);
+                updateStepView(Integer.parseInt(order.getOrder_status()));
 
-            } else {
-
-                ll_delegate_data_container.setVisibility(View.VISIBLE);
-                image_chat.setVisibility(View.VISIBLE);
-                image_call.setVisibility(View.VISIBLE);
-                tv_not_approved.setVisibility(View.GONE);
-
-                updateStepView(Tags.STATE_DELEGATE_ACCEPT_ORDER);
 
             }
-
 
             tv_order_id.setText(getString(R.string.order_number) + " #" + order.getOrder_id());
 
@@ -231,11 +223,12 @@ public class Fragment_Client_Order_Details extends Fragment {
 
 
     public void updateStepView(int completePosition) {
+        Log.e("completePosition",completePosition+"__");
         switch (completePosition) {
-            case Tags.STATE_DELEGATE_NOT_APPROVED_ORDER:
+            case Tags.STATE_ORDER_NEW:
                 ClearStepUI();
                 break;
-            case Tags.STATE_DELEGATE_ACCEPT_ORDER:
+            case Tags.STATE_CLIENT_ACCEPT_OFFER:
                 image1.setBackgroundResource(R.drawable.step_green_circle);
                 image1.setImageResource(R.drawable.step_green_true);
                 view1.setBackgroundColor(ContextCompat.getColor(activity, R.color.green_text));

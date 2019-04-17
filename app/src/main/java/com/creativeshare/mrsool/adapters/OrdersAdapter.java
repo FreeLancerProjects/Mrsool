@@ -120,7 +120,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         }
 
         public void BindData(OrderDataModel.OrderModel orderModel) {
-            if (orderModel.getOrder_status().equals(Tags.ORDER_NEW))
+            if (orderModel.getOrder_status().equals(String.valueOf(Tags.STATE_ORDER_NEW))||orderModel.getOrder_status().equals(String.valueOf(Tags.STATE_DELEGATE_SEND_OFFER)))
             {
                 Picasso.with(context).load(R.drawable.logo_only).fit().into(image);
                 image_state.setBackgroundResource(R.drawable.wait_bg_gray);
@@ -139,12 +139,12 @@ public class OrdersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
                         }
 
-                        if (orderModel.getOrder_status().equals(Tags.ORDER_CURRENT))
+                        if (orderModel.getOrder_status().equals(String.valueOf(Tags.STATE_CLIENT_ACCEPT_OFFER))||orderModel.getOrder_status().equals(String.valueOf(Tags.STATE_DELEGATE_COLLECTING_ORDER))||orderModel.getOrder_status().equals(String.valueOf(Tags.STATE_DELEGATE_DELIVERING_ORDER)))
                         {
                             image_state.setBackgroundResource(R.drawable.wait_bg);
                             image_state.setImageResource(R.drawable.ic_time_left);
                             tv_order_state.setText(R.string.pending);
-                        }else
+                        }else if (orderModel.getOrder_status().equals(String.valueOf(Tags.STATE_DELEGATE_DELIVERED_ORDER)))
                             {
                                 image_state.setBackgroundResource(R.drawable.finish_bg);
                                 image_state.setImageResource(R.drawable.ic_correct);

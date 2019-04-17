@@ -5,6 +5,7 @@ import android.graphics.PorterDuff;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,16 +61,26 @@ public class NotificationsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
             final MyHolder myHolder = (MyHolder) holder;
             NotificationModel notificationModel = notificationModelList.get(myHolder.getAdapterPosition());
-            myHolder.BindData(notificationModel);
+            if (notificationModel.getOrder_status().equals(String.valueOf(Tags.STATE_ORDER_NEW)))
+            {
+                if (user_type.equals(Tags.TYPE_DELEGATE))
+                {
+                    myHolder.BindData(notificationModel);
+
+                }
+            }else
+                {
+                    myHolder.BindData(notificationModel);
+
+                }
             myHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     NotificationModel notificationModel = notificationModelList.get(myHolder.getAdapterPosition());
-                    if (user_type.equals(Tags.TYPE_CLIENT)&&notificationModel.getOrder_status().equals(Tags.DELEGATE_ACCEPT_ORDER))
-                    {
-                        //delegate send price offer client accept or refused
-                        fragment.setItemData(notificationModel);
-                    }
+                    //delegate send price offer client accept or refused
+                    fragment.setItemData(notificationModel,myHolder.getAdapterPosition());
+
+
                 }
 
             });
@@ -110,15 +121,16 @@ public class NotificationsAdapter extends RecyclerView.Adapter<RecyclerView.View
             tv_notification_date.setText(TimeAgo.getTimeAgo(Long.parseLong(notificationModel.getDate_notification()) * 1000, context));
 
 
-            if (notificationModel.getOrder_status().equals(String.valueOf(Tags.STATE_DELEGATE_NOT_APPROVED_ORDER)))
+            if (notificationModel.getOrder_status().equals(String.valueOf(Tags.STATE_ORDER_NEW)))
             {
+                // delegate only
                 tv_order_state.setText(R.string.not_approved);
                 image_state.setVisibility(View.GONE);
                 image_state.setVisibility(View.GONE);
 
 
             }
-            else if (notificationModel.getOrder_status().equals(Tags.CLIENT_ACCEPT_ORDER) || notificationModel.getOrder_status().equals(Tags.DELEGATE_ACCEPT_ORDER)) {
+             else if (notificationModel.getOrder_status().equals(String.valueOf(Tags.STATE_DELEGATE_SEND_OFFER)) || notificationModel.getOrder_status().equals(String.valueOf(Tags.STATE_CLIENT_ACCEPT_OFFER))) {
                 image_state.setBackgroundResource(R.drawable.wait_bg);
                 image_state.setImageResource(R.drawable.ic_time_left);
                 image_state.setVisibility(View.VISIBLE);
@@ -127,11 +139,14 @@ public class NotificationsAdapter extends RecyclerView.Adapter<RecyclerView.View
                     tv_order_state.setText(R.string.order_accepted);
 
                 } else {
-                    tv_order_state.setText(R.string.accepted);
+                    tv_order_state.setText(context.getString(R.string.offer_accepted));
 
                 }
 
-            } else if (notificationModel.getOrder_status().equals(Tags.CLIENT_REFUSED_ORDER) || notificationModel.getOrder_status().equals(Tags.DELEGATE_REFUSED_ORDER)) {
+            }
+            else if (notificationModel.getOrder_status().equals(String.valueOf(Tags.STATE_DELEGATE_REFUSE_ORDER)) || notificationModel.getOrder_status().equals(String.valueOf(Tags.STATE_CLIENT_REFUSE_OFFER))) {
+
+                Log.e("emadddddd","ffgg");
 
                 image_state.setBackgroundResource(R.drawable.delete_bg);
                 image_state.setImageResource(R.drawable.ic_delete_state);
@@ -141,11 +156,11 @@ public class NotificationsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
                 if (user_type.equals(Tags.TYPE_CLIENT))
                 {
-                    tv_order_state.setText(R.string.order_refused);
+                    tv_order_state.setText(R.string.order_refused_send_again);
 
                 }else
                 {
-                    tv_order_state.setText(R.string.refused);
+                    tv_order_state.setText(R.string.offer_refused);
 
                 }
             }

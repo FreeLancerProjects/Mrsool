@@ -217,5 +217,7 @@
     <string name="rate_of_courier">تقييم المرسول</string>
     <string name="comment">تعليقك</string>
     <string name="add_rate">إضافة تقييم</string>
+    <string name="offer_refused">تم رفض العرض</string>
+    <string name="order_refused_send_again">تم رفض طلبك إرسال طلبك لمرسول آخر ؟</string>
 
 </resources>

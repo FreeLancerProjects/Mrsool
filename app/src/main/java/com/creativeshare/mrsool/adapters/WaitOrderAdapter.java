@@ -102,7 +102,7 @@ public class WaitOrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             String date = dateFormat.format(new Date(Long.parseLong(waitOrder.getOrder_time_arrival())*1000));
             tv_delivery_time.setText(date);
             tv_phone.setText(waitOrder.getDriver_user_phone());
-            tv_order_num.setText(waitOrder.getOrder_id());
+            tv_order_num.setText(" #"+waitOrder.getOrder_id());
 
         }
     }

@@ -151,7 +151,7 @@ public class Fragment_Client_Delegate_Offer extends Fragment{
     private void UpdateUI(NotificationModel notificationModel) {
         if (notificationModel!=null)
         {
-            if (notificationModel.getOrder_status().equals(Tags.DELEGATE_ACCEPT_ORDER))
+            if (notificationModel.getOrder_status().equals(String.valueOf(Tags.STATE_DELEGATE_SEND_OFFER)))
             {
                 ll_action_container.setVisibility(View.VISIBLE);
             }else

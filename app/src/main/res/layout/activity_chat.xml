@@ -1,227 +1,269 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/coordinator"
+    <android.support.constraint.ConstraintLayout
+
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:background="@color/gray0"
-        app:layout_constraintBottom_toTopOf="@id/ll_msg_container"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="match_parent">
+
 
         <android.support.design.widget.AppBarLayout
             android:id="@+id/app_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimary">
+            android:background="@color/colorPrimary"
+            app:layout_constraintTop_toTopOf="parent">
 
-
-            <android.support.design.widget.CollapsingToolbarLayout
+            <android.support.v7.widget.Toolbar
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed"
-                app:titleEnabled="false">
+                android:layout_height="56dp"
+                app:contentInsetEnd="0dp"
+                app:contentInsetLeft="0dp"
+                app:contentInsetRight="0dp"
+                app:contentInsetStart="0dp"
+                app:layout_collapseMode="pin">
 
-                <FrameLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="56dp"
-                    android:layout_marginBottom="25dp"
-
-                    >
+                    android:layout_height="match_parent">
 
                     <LinearLayout
-                        android:id="@+id/ll_user_data_container"
+                        android:id="@+id/ll_back"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:orientation="vertical"
-                        android:weightSum="2">
+                        android:layout_centerVertical="true"
+                        android:orientation="horizontal"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
 
-                        <de.hdodenhof.circleimageview.CircleImageView
-                            android:id="@+id/image"
-                            android:layout_width="70dp"
-                            android:layout_height="70dp"
-                            android:layout_gravity="center"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginTop="8dp"
-                            android:layout_marginRight="10dp"
-                            app:civ_border_color="@color/white"
-                            app:civ_border_width="1dp"
-                            app:civ_fill_color="@color/white" />
+                        >
+
+                        <ImageView
+                            android:id="@+id/image_back"
+                            android:layout_width="27dp"
+                            android:layout_height="match_parent"
+                            android:clickable="false"
+                            android:longClickable="false"
+                            android:padding="3dp"
+                            android:src="@drawable/ic_left_arrow"
+                            android:tint="@color/white" />
 
                         <TextView
-                            android:id="@+id/tv_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginRight="10dp"
-                            android:layout_marginBottom="10dp"
-                            android:gravity="center"
+                            android:layout_gravity="center_vertical"
+                            android:clickable="false"
+                            android:longClickable="false"
+                            android:text="@string/back"
                             android:textColor="@color/white"
-                            android:textSize="15sp" />
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
                     </LinearLayout>
 
-                </FrameLayout>
-                <android.support.v7.widget.Toolbar
-                    android:layout_width="match_parent"
-                    android:layout_height="56dp"
-                    app:contentInsetEnd="0dp"
-                    app:contentInsetLeft="0dp"
-                    app:contentInsetRight="0dp"
-                    app:contentInsetStart="0dp"
-                    app:layout_collapseMode="pin"
-                    >
+                </RelativeLayout>
+            </android.support.v7.widget.Toolbar>
 
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <LinearLayout
-                            android:id="@+id/ll_back"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:orientation="horizontal"
-                            android:paddingLeft="5dp"
-                            android:paddingRight="5dp"
-
-                            >
-
-                            <ImageView
-                                android:id="@+id/image_back"
-                                android:layout_width="27dp"
-                                android:layout_height="match_parent"
-                                android:clickable="false"
-                                android:longClickable="false"
-                                android:padding="3dp"
-                                android:src="@drawable/ic_left_arrow"
-                                android:tint="@color/white" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:clickable="false"
-                                android:longClickable="false"
-                                android:text="@string/back"
-                                android:textColor="@color/white"
-                                android:textSize="14sp"
-                                android:textStyle="bold" />
-                        </LinearLayout>
-
-                    </RelativeLayout>
-                </android.support.v7.widget.Toolbar>
-
-            </android.support.design.widget.CollapsingToolbarLayout>
-
-        </android.support.design.widget.AppBarLayout>
-
-        <android.support.v4.widget.NestedScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fillViewport="true"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            android:layout_marginTop="25dp"
-            >
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recView"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="25dp"
 
                 >
 
-            </android.support.v7.widget.RecyclerView>
+                <LinearLayout
+                    android:id="@+id/ll_user_data_container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="vertical"
+                    android:weightSum="2">
 
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/image"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginRight="10dp"
+                        app:civ_border_color="@color/white"
+                        app:civ_border_width="1dp"
+                        app:civ_fill_color="@color/white" />
 
-        </android.support.v4.widget.NestedScrollView>
+                    <TextView
+                        android:id="@+id/tv_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:textSize="15sp" />
+                </LinearLayout>
 
-        <ImageView
-            android:id="@+id/image_call"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:layout_marginStart="10dp"
-            android:background="@drawable/circle_gradient"
-            android:padding="13dp"
-            android:src="@drawable/ic_call"
-            android:tint="@color/white"
-            app:layout_anchor="@id/app_bar"
-            app:layout_anchorGravity="bottom"
-            tools:ignore="RtlCompat" />
-    </android.support.design.widget.CoordinatorLayout>
+            </FrameLayout>
+        </android.support.design.widget.AppBarLayout>
 
+        <ProgressBar
+            android:id="@+id/progBarLoadMore"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/app_bar" />
 
-    <LinearLayout
-        android:id="@+id/ll_msg_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@id/cons_typing"
+            app:layout_constraintTop_toBottomOf="@id/progBarLoadMore">
 
-        <LinearLayout
+        </android.support.v7.widget.RecyclerView>
+
+        <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/cons_typing"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:minHeight="40dp"
-            android:orientation="horizontal"
-            android:paddingLeft="8dp"
-            android:paddingTop="8dp"
-            android:paddingRight="8dp"
-            android:paddingBottom="8dp">
+            android:padding="8dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@id/ll_msg_container"
 
-            <ImageView
-                android:id="@+id/image_send"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:background="@drawable/circle_gradient"
-                android:padding="12dp"
-                android:src="@drawable/ic_send"
-                android:tint="@color/white" />
 
-            <EditText
-                android:id="@+id/edt_msg_content"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_weight="2.5"
+            >
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/image_chat_user"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+
+                />
+
+            <FrameLayout
+                android:layout_width="70dp"
+                android:layout_height="28dp"
+                android:layout_marginLeft="3dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginRight="3dp"
+                android:layout_marginBottom="3dp"
                 android:background="@drawable/edt_sign_up_bg"
+                app:layout_constraintBottom_toBottomOf="@id/image_chat_user"
+                app:layout_constraintEnd_toStartOf="@id/image_chat_user"
+                app:layout_constraintTop_toTopOf="@id/image_chat_user"
+
+
+                >
+
+                <pl.tajchert.waitingdots.DotsTextView
+                    android:id="@+id/tv_wait_dot"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="17sp"
+                    android:textStyle="bold"
+                    tools:ignore="RtlCompat"
+
+                    />
+            </FrameLayout>
+
+        </android.support.constraint.ConstraintLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_msg_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:hint="@string/type_a_message"
-                android:inputType="textMultiLine"
-                android:maxLines="3"
-                android:minHeight="37dp"
+                android:minHeight="40dp"
+                android:orientation="horizontal"
                 android:paddingLeft="8dp"
-                android:paddingTop="5dp"
+                android:paddingTop="8dp"
                 android:paddingRight="8dp"
-                android:paddingBottom="5dp"
-                android:textColor="@color/black"
-                android:textColorHint="@color/gray3"
-                android:textSize="14sp" />
+                android:paddingBottom="8dp">
 
+                <ImageView
+                    android:id="@+id/image_send"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:background="@drawable/circle_gradient"
+                    android:padding="12dp"
+                    android:src="@drawable/ic_send"
+                    android:tint="@color/white" />
+
+                <EditText
+                    android:id="@+id/edt_msg_content"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_weight="2.5"
+                    android:background="@drawable/edt_sign_up_bg"
+                    android:gravity="center_vertical"
+                    android:hint="@string/type_a_message"
+                    android:inputType="textMultiLine"
+                    android:maxLines="3"
+                    android:minHeight="37dp"
+                    android:paddingLeft="8dp"
+                    android:paddingTop="5dp"
+                    android:paddingRight="8dp"
+                    android:paddingBottom="5dp"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/gray3"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
 
-    <ProgressBar
-        android:id="@+id/progBar"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:layout_gravity="center"
-        android:visibility="visible"
+        <ProgressBar
+            android:id="@+id/progBar"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_gravity="center"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias=".6" />
+
+
+    </android.support.constraint.ConstraintLayout>
+
+    <ImageView
+        android:id="@+id/image_call"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:background="@drawable/circle_gradient"
+        android:padding="13dp"
+        android:src="@drawable/ic_call"
+        android:tint="@color/white"
+        app:layout_anchor="@id/app_bar"
+        app:layout_anchorGravity="bottom"
+        app:layout_constraintBottom_toBottomOf="@id/app_bar"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintVertical_bias=".6"
+        app:layout_constraintTop_toBottomOf="@id/app_bar"
+        tools:ignore="RtlCompat"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
         />
 
-
-</android.support.constraint.ConstraintLayout>
+</android.support.design.widget.CoordinatorLayout>

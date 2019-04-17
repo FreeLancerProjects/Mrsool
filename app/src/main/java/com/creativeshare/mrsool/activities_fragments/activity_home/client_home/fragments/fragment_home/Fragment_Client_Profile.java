@@ -1,6 +1,5 @@
 package com.creativeshare.mrsool.activities_fragments.activity_home.client_home.fragments.fragment_home;
 
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -120,13 +119,13 @@ public class Fragment_Client_Profile extends Fragment{
                 }
             }
         });
-        ll_telegram.setOnClickListener(new View.OnClickListener() {
+       /* ll_telegram.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_VIEW,Uri.parse(""));
                 startActivity(intent);
             }
-        });
+        });*/
 
         updateUI(userModel);
 

@@ -36,7 +36,7 @@ public class Fragment_Delegate_Current_Order_Details extends Fragment {
     private OrderDataModel.OrderModel order;
     private UserSingleTone userSingleTone;
     private UserModel userModel;
-    private int order_state,order_movement;
+    private int order_state;
 
 
 
@@ -136,7 +136,7 @@ public class Fragment_Delegate_Current_Order_Details extends Fragment {
             @Override
             public void onClick(View v) {
 
-                activity.UpdateOrderMovement(order.getClient_id(),order.getDriver_id(),order.getOrder_id(),order_movement);
+                activity.UpdateOrderMovement(order.getClient_id(),order.getDriver_id(),order.getOrder_id(),order_state);
 
             }
         });
@@ -166,8 +166,7 @@ public class Fragment_Delegate_Current_Order_Details extends Fragment {
 
 
         order_state = Integer.parseInt(order.getOrder_status());
-        order_movement = Integer.parseInt(order.getOrder_movement());
-        updateOrderState(order_movement);
+        updateOrderState(order_state);
 
     }
 
@@ -176,30 +175,28 @@ public class Fragment_Delegate_Current_Order_Details extends Fragment {
     {
 
 
-        this.order_movement = state;
-        if (order_state == Integer.parseInt(Tags.CLIENT_ACCEPT_ORDER))
+        this.order_state = state;
+        switch (state)
         {
+            case Tags.STATE_CLIENT_ACCEPT_OFFER:
+                tv_order_state.setText(getString(R.string.accepted));
+                tv_order_next_state.setText(getString(R.string.collect_order));
+                break;
+            case Tags.STATE_DELEGATE_COLLECTING_ORDER:
+                tv_order_state.setText(getString(R.string.collecting_order));
+                tv_order_next_state.setText(getString(R.string.collected_order));
+                break;
+            case Tags.STATE_DELEGATE_COLLECTED_ORDER:
+                tv_order_state.setText(getString(R.string.collected_order));
+                tv_order_next_state.setText(getString(R.string.deliver_order));
+                break;
+            case Tags.STATE_DELEGATE_DELIVERING_ORDER:
+                tv_order_state.setText(getString(R.string.delivering_order));
+                tv_order_next_state.setText(getString(R.string.delivered_order));
+                break;
 
-            switch (order_movement)
-            {
-                case 1:
-                    tv_order_state.setText(getString(R.string.accepted));
-                    tv_order_next_state.setText(getString(R.string.collect_order));
-                    break;
-                case Tags.STATE_DELEGATE_COLLECTING_ORDER:
-                    tv_order_state.setText(getString(R.string.collecting_order));
-                    tv_order_next_state.setText(getString(R.string.collected_order));
-                    break;
-                case Tags.STATE_DELEGATE_COLLECTED_ORDER:
-                    tv_order_state.setText(getString(R.string.collected_order));
-                    tv_order_next_state.setText(getString(R.string.deliver_order));
-                    break;
-                case Tags.STATE_DELEGATE_DELIVERED_ORDER:
-                    tv_order_state.setText(getString(R.string.delivered_order));
-                    fl_update_order_state.setVisibility(View.VISIBLE);
-                    break;
 
-            }
+
         }
 
 

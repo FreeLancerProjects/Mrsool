@@ -114,7 +114,6 @@ public class Fragment_Client_Current_Orders extends Fragment{
 
     public void getOrders()
     {
-        orderModelList.clear();
         if (userModel.getData().getUser_type().equals(Tags.TYPE_CLIENT))
         {
             call  = Api.getService(Tags.base_url).getClientOrders(userModel.getData().getUser_id(),"current", 1);
@@ -131,6 +130,7 @@ public class Fragment_Client_Current_Orders extends Fragment{
                 progBar.setVisibility(View.GONE);
                 if (response.isSuccessful())
                 {
+                    orderModelList.clear();
 
                     if (response.body()!=null&&response.body().getData().size()>0)
                     {
@@ -141,6 +141,8 @@ public class Fragment_Client_Current_Orders extends Fragment{
 
                     }else
                     {
+                        adapter.notifyDataSetChanged();
+
                         tv_no_orders.setVisibility(View.VISIBLE);
 
                     }

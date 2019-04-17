@@ -75,8 +75,8 @@ public class UpdateLocationService extends Service implements LocationListener ,
     private void initLocationRequest(final int accuracy) {
 
         locationRequest = new LocationRequest();
-        locationRequest.setInterval(5000*6);
-        locationRequest.setFastestInterval(5000*6);
+        locationRequest.setInterval(1000*5*60);
+        locationRequest.setFastestInterval(1000*5);
         locationRequest.setPriority(accuracy);
 
 
@@ -127,6 +127,12 @@ public class UpdateLocationService extends Service implements LocationListener ,
         Log.e("lat",location.getLatitude()+"");
         EventBus.getDefault().post(location);
         handler.removeCallbacks(runnable);
+        stopSelf();
+
+        if (googleApiClient!=null)
+        {
+            googleApiClient.disconnect();
+        }
     }
 
     @Override
@@ -141,10 +147,13 @@ public class UpdateLocationService extends Service implements LocationListener ,
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
+        stopSelf();
         if (googleApiClient!=null)
         {
             googleApiClient.disconnect();
         }
+
+        super.onDestroy();
+
     }
 }

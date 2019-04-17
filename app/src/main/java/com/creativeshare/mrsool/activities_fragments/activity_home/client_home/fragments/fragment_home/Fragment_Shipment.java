@@ -40,7 +40,7 @@ import retrofit2.Response;
 public class Fragment_Shipment extends Fragment {
 
     private ClientHomeActivity activity;
-    private ImageView image_send;
+    private ImageView image_send,img_delete1,img_delete2,img_delete3;
     private CardView cardView_location_pickup, cardView_location_dropoff, cardView_delivery_time;
     private TextView tv_location_pickup, tv_location_dropoff, tv_delivery_time;
     private EditText edt_order_details;
@@ -84,6 +84,10 @@ public class Fragment_Shipment extends Fragment {
 
         };
 
+        img_delete1 = view.findViewById(R.id.img_delete1);
+        img_delete2 = view.findViewById(R.id.img_delete2);
+        img_delete3 = view.findViewById(R.id.img_delete3);
+
         image_send = view.findViewById(R.id.image_send);
         cardView_location_pickup = view.findViewById(R.id.cardView_location_pickup);
         cardView_location_dropoff = view.findViewById(R.id.cardView_location_dropoff);
@@ -116,13 +120,64 @@ public class Fragment_Shipment extends Fragment {
         image_send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CheckData();
+                if (userModel!=null) {
+                    if (userModel.getData().getUser_type().equals(Tags.TYPE_CLIENT))
+                    {
+                        CheckData();
+
+                    }else
+                        {
+                            Common.CreateSignAlertDialog(activity,getString(R.string.serv_aval_client));
+
+                        }
+
+                }
+            }
+        });
+
+        img_delete1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tv_location_pickup.setText("");
+                tv_location_pickup.setHint(getString(R.string.receiving_location));
+                place_pickup_address = "";
+                place_pickup_lat = 0.0;
+                place_pickup_long = 0.0;
+                place_id="";
+                img_delete1.setVisibility(View.GONE);
+
+            }
+        });
+
+        img_delete2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tv_location_dropoff.setText("");
+                tv_location_dropoff.setHint(getString(R.string.dropoff_location));
+                place_dropoff_address = "";
+                place_dropoff_lat = 0.0;
+                place_dropoff_long = 0.0;
+                place_id="";
+                img_delete2.setVisibility(View.GONE);
+
+
+            }
+        });
+        img_delete3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selected_time = 0;
+                tv_delivery_time.setHint(getString(R.string.deliver_within));
+                tv_delivery_time.setText("");
+                img_delete3.setVisibility(View.GONE);
+
             }
         });
 
     }
 
-    private void CheckData() {
+    private void CheckData()
+    {
 
         order_details = edt_order_details.getText().toString().trim();
         if (!TextUtils.isEmpty(place_pickup_address) &&
@@ -191,9 +246,8 @@ public class Fragment_Shipment extends Fragment {
             }
 
     }
-
-
-    public void sendOrder(String delegate_id) {
+    public void sendOrder(String delegate_id)
+    {
         this.delegate_id = delegate_id;
         final ProgressDialog dialog = Common.createProgressDialog(activity, getString(R.string.wait));
         dialog.show();
@@ -227,7 +281,6 @@ public class Fragment_Shipment extends Fragment {
                 });
 
     }
-
     public void setLocationData(String place_id, String place_address, double place_lat, double place_long, String type) {
         if (type.equals("pickup_location")) {
             this.place_pickup_address = place_address;
@@ -236,6 +289,7 @@ public class Fragment_Shipment extends Fragment {
             this.place_id = place_id;
             tv_location_pickup.setText(place_address);
             tv_location_pickup.setError(null);
+            img_delete1.setVisibility(View.VISIBLE);
 
         } else if (type.equals("dropoff_location")) {
             this.place_dropoff_address = place_address;
@@ -244,6 +298,8 @@ public class Fragment_Shipment extends Fragment {
             this.place_id = place_id;
             tv_location_dropoff.setText(place_address);
             tv_location_dropoff.setError(null);
+            img_delete2.setVisibility(View.VISIBLE);
+
 
         }
     }
@@ -271,6 +327,7 @@ public class Fragment_Shipment extends Fragment {
                 tv_delivery_time.setText(val);
                 tv_delivery_time.setError(null);
                 setTime(numberPicker.getValue());
+                img_delete3.setVisibility(View.VISIBLE);
                 dialog.dismiss();
             }
         });
@@ -319,7 +376,8 @@ public class Fragment_Shipment extends Fragment {
         selected_time = calendar.getTimeInMillis() / 1000;
     }
 
-    public void CreateAlertDialog(String order_id) {
+    public void CreateAlertDialog(String order_id)
+    {
 
 
         final AlertDialog dialog = new AlertDialog.Builder(activity)
@@ -339,7 +397,7 @@ public class Fragment_Shipment extends Fragment {
                 clearUI();
 
                 dialog.dismiss();
-                activity.FollowOrder();
+                activity.FollowOrderFromShipment();
 
 
             }
@@ -348,8 +406,8 @@ public class Fragment_Shipment extends Fragment {
         btn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                clearUI();
                 dialog.dismiss();
-                activity.Back();
 
 
             }
@@ -362,9 +420,14 @@ public class Fragment_Shipment extends Fragment {
     }
 
     private void clearUI() {
+        edt_order_details.setText("");
         edt_order_details.setHint(getString(R.string.write_package_details));
+        tv_delivery_time.setText("");
         tv_delivery_time.setHint(getString(R.string.deliver_within));
+
+        tv_location_pickup.setText("");
         tv_location_pickup.setHint(getString(R.string.receiving_location));
+        tv_location_dropoff.setText("");
         tv_location_dropoff.setHint(getString(R.string.dropoff_location));
         place_id = "";
         place_pickup_address = "";

@@ -347,7 +347,9 @@ public class Fragment_Client_Store extends Fragment {
     }
 
     public void setItemData(PlaceModel placeModel) {
+        Log.e("iddddd",placeModel.getPlace_id());
         activity.DisplayFragmentStoreDetails(placeModel);
+
     }
 
     public void setQueryItemData(int pos)

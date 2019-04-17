@@ -21,10 +21,8 @@
         tools:ignore="RtlCompat,UnusedAttribute">
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/image"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            app:civ_border_width="1dp"
-            app:civ_border_color="@color/colorPrimary"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_gravity="top"
             />
         <LinearLayout
@@ -44,7 +42,7 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:textSize="16sp"
-                android:textColor="@color/white"
+                android:textColor="@color/colorPrimary"
                 android:maxWidth="270dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
@@ -56,7 +54,7 @@
                 android:layout_gravity="end"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:textColor="@color/white"
+                android:textColor="@color/colorPrimary"
                 android:textSize="13sp"
                 android:layout_marginBottom="5dp"
                 />

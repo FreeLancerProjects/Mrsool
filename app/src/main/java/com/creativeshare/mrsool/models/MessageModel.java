@@ -91,4 +91,60 @@ public class MessageModel implements Serializable {
     public String getTo_user_image() {
         return to_user_image;
     }
+
+    public void setId_message(String id_message) {
+        this.id_message = id_message;
+    }
+
+    public void setRoom_id_fk(String room_id_fk) {
+        this.room_id_fk = room_id_fk;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public void setFrom_user(String from_user) {
+        this.from_user = from_user;
+    }
+
+    public void setFrom_user_full_name(String from_user_full_name) {
+        this.from_user_full_name = from_user_full_name;
+    }
+
+    public void setFrom_user_image(String from_user_image) {
+        this.from_user_image = from_user_image;
+    }
+
+    public void setFrom_user_phone_code(String from_user_phone_code) {
+        this.from_user_phone_code = from_user_phone_code;
+    }
+
+    public void setFrom_user_phone(String from_user_phone) {
+        this.from_user_phone = from_user_phone;
+    }
+
+    public void setTo_user(String to_user) {
+        this.to_user = to_user;
+    }
+
+    public void setTo_user_full_name(String to_user_full_name) {
+        this.to_user_full_name = to_user_full_name;
+    }
+
+    public void setTo_user_image(String to_user_image) {
+        this.to_user_image = to_user_image;
+    }
+
+    public void setTo_user_phone_code(String to_user_phone_code) {
+        this.to_user_phone_code = to_user_phone_code;
+    }
+
+    public void setTo_user_phone(String to_user_phone) {
+        this.to_user_phone = to_user_phone;
+    }
 }

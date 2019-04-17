@@ -68,6 +68,7 @@
              />
         <activity android:name=".activities_fragments.activity_chat.ChatActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
+            android:windowSoftInputMode="stateAlwaysHidden"
             android:excludeFromRecents="true"
             android:launchMode="singleTask"
             android:taskAffinity=""
