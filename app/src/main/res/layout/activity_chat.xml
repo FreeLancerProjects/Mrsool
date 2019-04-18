@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
-
-    <android.support.constraint.ConstraintLayout
-
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
         <android.support.design.widget.AppBarLayout
@@ -20,7 +17,7 @@
 
             <android.support.v7.widget.Toolbar
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
+                android:layout_height="wrap_content"
                 app:contentInsetEnd="0dp"
                 app:contentInsetLeft="0dp"
                 app:contentInsetRight="0dp"
@@ -35,10 +32,10 @@
                         android:id="@+id/ll_back"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
                         android:orientation="horizontal"
                         android:paddingLeft="5dp"
                         android:paddingRight="5dp"
+                        android:layout_marginTop="8dp"
 
                         >
 
@@ -63,51 +60,60 @@
                             android:textSize="14sp"
                             android:textStyle="bold" />
                     </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:orientation="vertical"
+                        >
+                        <LinearLayout
+                            android:id="@+id/ll_user_data_container"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:orientation="horizontal"
+                            android:weightSum="2"
+                            android:layout_marginTop="5dp"
+                            >
 
+                            <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/image"
+                                android:layout_width="36dp"
+                                android:layout_height="36dp"
+                                android:layout_gravity="center"
+                                app:civ_border_color="@color/white"
+                                app:civ_border_width="1dp"
+                                app:civ_fill_color="@color/white" />
+
+                            <TextView
+                                android:id="@+id/tv_name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginLeft="5dp"
+                                android:layout_marginRight="5dp"
+                                android:gravity="center"
+                                android:textColor="@color/white"
+                                android:textSize="15sp"
+
+                                />
+                        </LinearLayout>
+                        <TextView
+                            android:id="@+id/tv_order_num"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:textColor="@color/white"
+                            android:textSize="14sp"
+
+                            />
+
+
+                    </LinearLayout>
                 </RelativeLayout>
             </android.support.v7.widget.Toolbar>
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="25dp"
-
-                >
-
-                <LinearLayout
-                    android:id="@+id/ll_user_data_container"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:orientation="vertical"
-                    android:weightSum="2">
-
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/image"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginRight="10dp"
-                        app:civ_border_color="@color/white"
-                        app:civ_border_width="1dp"
-                        app:civ_fill_color="@color/white" />
-
-                    <TextView
-                        android:id="@+id/tv_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginBottom="10dp"
-                        android:gravity="center"
-                        android:textColor="@color/white"
-                        android:textSize="15sp" />
-                </LinearLayout>
-
-            </FrameLayout>
         </android.support.design.widget.AppBarLayout>
 
         <ProgressBar
@@ -201,34 +207,62 @@
 
                 <ImageView
                     android:id="@+id/image_send"
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:background="@drawable/circle_gradient"
-                    android:padding="12dp"
+                    android:padding="10dp"
                     android:src="@drawable/ic_send"
                     android:tint="@color/white" />
 
-                <EditText
-                    android:id="@+id/edt_msg_content"
+                <android.support.constraint.ConstraintLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
                     android:layout_weight="2.5"
+                    android:orientation="horizontal"
                     android:background="@drawable/edt_sign_up_bg"
-                    android:gravity="center_vertical"
-                    android:hint="@string/type_a_message"
-                    android:inputType="textMultiLine"
-                    android:maxLines="3"
-                    android:minHeight="37dp"
-                    android:paddingLeft="8dp"
-                    android:paddingTop="5dp"
-                    android:paddingRight="8dp"
-                    android:paddingBottom="5dp"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/gray3"
-                    android:textSize="14sp" />
+
+                    >
+                    <EditText
+                        android:id="@+id/edt_msg_content"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:background="@color/transparent"
+                        android:gravity="center_vertical"
+                        android:hint="@string/type_a_message"
+                        android:inputType="textMultiLine"
+                        android:maxLines="3"
+                        android:minHeight="37dp"
+                        android:paddingLeft="8dp"
+                        android:paddingTop="5dp"
+                        android:paddingRight="8dp"
+                        android:paddingBottom="5dp"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/gray3"
+                        android:textSize="14sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintTop_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/image_upload_image"
+
+
+                        />
+
+                    <ImageView
+                        android:id="@+id/image_upload_image"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:padding="10dp"
+                        android:src="@drawable/ic_chat_image_upload"
+                        android:tint="@color/gray4"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintTop_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginEnd="8dp"
+                        tools:ignore="RtlCompat" />
+                </android.support.constraint.ConstraintLayout>
 
             </LinearLayout>
         </LinearLayout>
@@ -243,12 +277,12 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias=".6" />
+            app:layout_constraintVertical_bias=".5" />
 
 
     </android.support.constraint.ConstraintLayout>
 
-    <ImageView
+    <!--<ImageView
         android:id="@+id/image_call"
         android:layout_width="45dp"
         android:layout_height="45dp"
@@ -264,6 +298,6 @@
         tools:ignore="RtlCompat"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
-        />
+        android:visibility="gone"
+        />-->
 
-</android.support.design.widget.CoordinatorLayout>

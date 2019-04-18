@@ -213,11 +213,19 @@
     <string name="dropoff_location">موقع التسليم</string>
     <string name="deliver_within">مدة التوصيل</string>
     <string name="write_package_details">إكتب هنا تفاصيل الغرض اللي ترغب في إرسالة. مثلا ماهو، وكيف حجمة، واذا محتاج سيارة مخصصة لنقلة. ملاحظة: لاتستخدم هذه الخدمة للطلب من المطاعم. </string>
-    <string name="contact_us_on_telegram">إتصل بنا على حسابنا في تيلجرام.</string>
+    <string name="contact_us_on_telegram">تواصل معنا عبر تيليجرام.</string>
     <string name="rate_of_courier">تقييم المرسول</string>
     <string name="comment">تعليقك</string>
     <string name="add_rate">إضافة تقييم</string>
     <string name="offer_refused">تم رفض العرض</string>
     <string name="order_refused_send_again">تم رفض طلبك إرسال طلبك لمرسول آخر ؟</string>
+    <string name="age_18_and_over">العمر 18 سنة وأكثر</string>
+    <string name="a_picture_of_the_car_from_the_front">صورة للسيارة من الامام ( برجاء ان يكون رقم لوحة السيارة واضح)</string>
+    <string name="a_picture_of_the_car_from_behind">صورة للسيارة من الخلف (برجاء ان يكون رقم لوحة السيارة واضح)</string>
+    <string name="ch_img_front">إختر صورة السيارة من الامام</string>
+    <string name="ch_img_behind">إختر صورة للسيارة من الخلف</string>
+    <string name="upload_bill_image">رفع صورة الفاتورة</string>
+    <string name="upload">رفع الصورة</string>
+    <string name="order_cost">تكلفة الطلب</string>
 
 </resources>

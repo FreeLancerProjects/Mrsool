@@ -1,14 +1,23 @@
 package com.creativeshare.mrsool.activities_fragments.activity_chat;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,7 +25,9 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -35,6 +46,7 @@ import com.creativeshare.mrsool.models.TypingModel;
 import com.creativeshare.mrsool.models.UserModel;
 import com.creativeshare.mrsool.preferences.Preferences;
 import com.creativeshare.mrsool.remote.Api;
+import com.creativeshare.mrsool.share.Common;
 import com.creativeshare.mrsool.singletone.UserSingleTone;
 import com.creativeshare.mrsool.tags.Tags;
 import com.squareup.picasso.Picasso;
@@ -43,8 +55,11 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Currency;
 import java.util.List;
 import java.util.Locale;
 
@@ -58,9 +73,9 @@ import retrofit2.Response;
 public class ChatActivity extends AppCompatActivity {
 
     private DotsTextView tv_wait_dot;
-    private TextView tv_name;
+    private TextView tv_name,tv_order_num;
     private CircleImageView image,image_chat_user;
-    private ImageView image_call,image_send,image_back;
+    private ImageView image_send,image_back,image_upload_image;
     private EditText edt_msg_content;
     private ConstraintLayout cons_typing;
     private LinearLayout ll_back;
@@ -79,6 +94,12 @@ public class ChatActivity extends AppCompatActivity {
     private boolean canSendTyping = true;
     private boolean from = true;
     private MediaPlayer mp;
+
+    private final String read_permission = Manifest.permission.READ_EXTERNAL_STORAGE;
+    private final String write_permission = Manifest.permission.WRITE_EXTERNAL_STORAGE;
+    private final String camera_permission = Manifest.permission.CAMERA;
+    private final int IMG1 = 1,IMG2=2;
+    private Uri imgUri = null;
 
     @Override
     protected void attachBaseContext(Context base) {
@@ -130,6 +151,7 @@ public class ChatActivity extends AppCompatActivity {
         }
 
 
+
         progBar = findViewById(R.id.progBar);
         progBar.getIndeterminateDrawable().setColorFilter(ContextCompat.getColor(this, R.color.colorPrimary), PorterDuff.Mode.SRC_IN);
 
@@ -138,8 +160,11 @@ public class ChatActivity extends AppCompatActivity {
 
 
         tv_name = findViewById(R.id.tv_name);
+        tv_order_num = findViewById(R.id.tv_order_num);
+        image_upload_image = findViewById(R.id.image_upload_image);
+
         image = findViewById(R.id.image);
-        image_call =findViewById(R.id.image_call);
+        //image_call =findViewById(R.id.image_call);
         image_send =findViewById(R.id.image_send);
         edt_msg_content = findViewById(R.id.edt_msg_content);
         ll_back = findViewById(R.id.ll_back);
@@ -189,13 +214,20 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
-        image_call.setOnClickListener(new View.OnClickListener() {
+       /* image_call.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+chatUserModel.getPhone()));
                 startActivity(intent);
             }
-        });
+        });*/
+
+       image_upload_image.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               CreateImageAlertDialog();
+           }
+       });
 
         image_send.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -206,7 +238,7 @@ public class ChatActivity extends AppCompatActivity {
                     edt_msg_content.setText("");
                     canSendTyping = true;
                     updateTyingState(Tags.END_TYPING);
-                    SendMessage(msg);
+                    SendMessage(msg,Tags.MESSAGE_TEXT);
                 }
             }
         });
@@ -322,13 +354,29 @@ public class ChatActivity extends AppCompatActivity {
     {
         preferences.saveChatUserData(this,chatUserModel);
         tv_name.setText(chatUserModel.getName());
+        tv_order_num.setText(getString(R.string.order_number)+"#"+chatUserModel.getOrder_id());
         Picasso.with(this).load(Uri.parse(Tags.IMAGE_URL+chatUserModel.getImage())).placeholder(R.drawable.logo_only).fit().into(image);
         Picasso.with(this).load(Uri.parse(Tags.IMAGE_URL+chatUserModel.getImage())).placeholder(R.drawable.logo_only).fit().into(image_chat_user);
 
         getChatMessages();
     }
-    private void SendMessage(String msg)
+    private void SendMessage(String msg,String msg_type)
     {
+        if (msg_type.equals(Tags.MESSAGE_TEXT))
+        {
+           sendTextMessage(msg);
+        }else
+            {
+                sendTextMessageWithImage(msg);
+            }
+
+    }
+
+    private void sendTextMessageWithImage(String msg) {
+
+    }
+
+    private void sendTextMessage(String msg) {
         Api.getService(Tags.base_url)
                 .sendMessage(chatUserModel.getRoom_id(),userModel.getData().getUser_id(),chatUserModel.getId(),msg)
                 .enqueue(new Callback<MessageModel>() {
@@ -345,12 +393,12 @@ public class ChatActivity extends AppCompatActivity {
                                 recView.smoothScrollToPosition(messageModelList.size()-1);
 
                             }else
-                                {
-                                    messageModelList.add(response.body());
-                                    adapter.notifyItemInserted(messageModelList.size()-1);
-                                    recView.smoothScrollToPosition(messageModelList.size()-1);
+                            {
+                                messageModelList.add(response.body());
+                                adapter.notifyItemInserted(messageModelList.size()-1);
+                                recView.smoothScrollToPosition(messageModelList.size()-1);
 
-                                }
+                            }
 
                         }else
                         {
@@ -371,6 +419,7 @@ public class ChatActivity extends AppCompatActivity {
                     }
                 });
     }
+
     private void getChatMessages()
     {
         Api.getService(Tags.base_url)
@@ -465,7 +514,248 @@ public class ChatActivity extends AppCompatActivity {
                 });
     }
 
+    private void CreateImageAlertDialog()
+    {
 
+        final AlertDialog dialog = new AlertDialog.Builder(this)
+                .setCancelable(true)
+                .create();
+
+
+        View view = LayoutInflater.from(this).inflate(R.layout.dialog_select_image, null);
+        Button btn_camera = view.findViewById(R.id.btn_camera);
+        Button btn_gallery = view.findViewById(R.id.btn_gallery);
+        Button btn_cancel = view.findViewById(R.id.btn_cancel);
+
+
+        btn_camera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                Check_CameraPermission();
+
+            }
+        });
+
+        btn_gallery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                Check_ReadPermission();
+
+
+            }
+        });
+
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.getWindow().getAttributes().windowAnimations = R.style.dialog_congratulation_animation;
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setView(view);
+        dialog.show();
+    }
+
+
+    private void Check_ReadPermission()
+    {
+        if (ContextCompat.checkSelfPermission(this, read_permission) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{read_permission}, IMG1);
+        } else {
+            select_photo(1);
+        }
+    }
+
+    private void Check_CameraPermission()
+    {
+        if (ContextCompat.checkSelfPermission(this, camera_permission) != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(this, write_permission) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{camera_permission, write_permission}, IMG2);
+        } else {
+            select_photo(2);
+
+        }
+
+    }
+
+    private void select_photo(int type)
+    {
+
+        Intent  intent = new Intent();
+
+        if (type == 1)
+        {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+            {
+                intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
+                intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+            }else
+            {
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+
+            }
+
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            intent.setType("image/*");
+            startActivityForResult(intent,IMG1);
+
+        }else if (type ==2)
+        {
+            try {
+                intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(intent,IMG2);
+            }catch (SecurityException e)
+            {
+                Toast.makeText(this,R.string.perm_image_denied, Toast.LENGTH_SHORT).show();
+            }
+            catch (Exception e)
+            {
+                Toast.makeText(this,R.string.perm_image_denied, Toast.LENGTH_SHORT).show();
+
+            }
+
+
+        }
+    }
+    private void SelectImage(int type)
+    {
+
+        Intent  intent = new Intent();
+
+        if (type == 1)
+        {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+            {
+                intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
+                intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+            }else
+            {
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+
+            }
+
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            intent.setType("image/*");
+            startActivityForResult(intent,IMG1);
+
+        }else if (type ==2)
+        {
+            try {
+                intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(intent,IMG2);
+            }catch (SecurityException e)
+            {
+                Toast.makeText(this,R.string.perm_image_denied, Toast.LENGTH_SHORT).show();
+            }
+            catch (Exception e)
+            {
+                Toast.makeText(this,R.string.perm_image_denied, Toast.LENGTH_SHORT).show();
+
+            }
+
+
+        }
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == IMG1) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                SelectImage(1);
+            } else {
+                Toast.makeText(this, getString(R.string.perm_image_denied), Toast.LENGTH_SHORT).show();
+            }
+        }else if (requestCode == IMG2) {
+            if (grantResults.length > 0) {
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                    select_photo(2);
+
+                } else {
+                    Toast.makeText(this, getString(R.string.perm_image_denied), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == IMG1 && resultCode == Activity.RESULT_OK && data != null) {
+            imgUri = data.getData();
+            CreateSignAlertDialog(imgUri);
+
+        }else if (requestCode == IMG2 && resultCode == Activity.RESULT_OK && data != null) {
+            Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+            imgUri = getUriFromBitmap(bitmap);
+            if (imgUri!=null)
+            {
+                CreateSignAlertDialog(imgUri);
+
+            }
+
+        }
+    }
+
+    public  void CreateSignAlertDialog(Uri uri)
+    {
+        final AlertDialog dialog = new AlertDialog.Builder(this)
+                .setCancelable(true)
+                .create();
+
+        View view = LayoutInflater.from(this).inflate(R.layout.dialog_bill_photo,null);
+        ImageView image = view.findViewById(R.id.image);
+        final EditText edt_order_cost = view.findViewById(R.id.edt_order_cost);
+
+        File file = new File(Common.getImagePath(this, uri));
+        Picasso.with(this).load(file).fit().into(image);
+
+        Button btn_upload = view.findViewById(R.id.btn_upload);
+        btn_upload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String cost = edt_order_cost.getText().toString().trim();
+                Currency currency = Currency.getInstance(new Locale(current_language,userModel.getData().getUser_country()));
+                if (!TextUtils.isEmpty(cost))
+                {
+                    dialog.dismiss();
+                    Common.CloseKeyBoard(ChatActivity.this,edt_order_cost);
+                    //send message
+                    double total = Double.parseDouble(cost)+Double.parseDouble(chatUserModel.getOffer_cost());
+                    String msg = "تكلفة المشتريات: "+cost+" "+currency.getSymbol()+"\n"+"تكلفة التوصيل: "+chatUserModel.getOffer_cost()+" "+currency.getSymbol()+"\n"+"المجموع الكلي: "+total+" "+currency.getSymbol();
+                    SendMessage(msg,Tags.MESSAGE_IMAGE_TEXT);
+                }
+            }
+        });
+
+        dialog.getWindow().getAttributes().windowAnimations=R.style.dialog_congratulation_animation;
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.getWindow().setBackgroundDrawableResource(R.drawable.dialog_window_bg);
+        dialog.setView(view);
+        dialog.show();
+    }
+
+    private Uri getUriFromBitmap(Bitmap bitmap) {
+        String path = "";
+        try {
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+            path = MediaStore.Images.Media.insertImage(getContentResolver(), bitmap, "title", null);
+            return Uri.parse(path);
+
+        } catch (SecurityException e) {
+            Toast.makeText(this, getString(R.string.perm_image_denied), Toast.LENGTH_SHORT).show();
+
+        } catch (Exception e) {
+            Toast.makeText(this, getString(R.string.perm_image_denied), Toast.LENGTH_SHORT).show();
+
+        }
+        return null;
+    }
 
     private void Back()
     {

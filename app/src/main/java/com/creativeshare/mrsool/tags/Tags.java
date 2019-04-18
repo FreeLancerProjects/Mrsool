@@ -43,6 +43,9 @@ public class Tags {
     public static final String FIREBASE_NOT_ORDER_STATUS = "order_status";
     public static final String FIREBASE_NOT_SEND_MESSAGE = "send_message";
 
+    public static final String MESSAGE_TEXT = "1";
+    public static final String MESSAGE_IMAGE_TEXT = "2";
+
 
 
 

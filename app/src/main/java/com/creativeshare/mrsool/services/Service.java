@@ -156,7 +156,10 @@ public interface Service {
                                      @Part("user_card_id") RequestBody user_card_id,
                                      @Part("user_address") RequestBody user_address,
                                      @Part MultipartBody.Part user_card_id_image,
-                                     @Part MultipartBody.Part user_driving_license
+                                     @Part MultipartBody.Part user_driving_license,
+                                     @Part MultipartBody.Part image_car_front,
+                                     @Part MultipartBody.Part image_car_back
+
     );
 
     @Multipart

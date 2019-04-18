@@ -1469,7 +1469,7 @@ public class ClientHomeActivity extends AppCompatActivity {
                 },1000);
     }
 
-    public void registerDelegate(String national_id, String address, Uri image_national_id,Uri image_license)
+    public void registerDelegate(String national_id, String address, Uri image_national_id,Uri image_license,Uri image_front_uri,Uri image_behind_uri)
     {
         final ProgressDialog dialog = Common.createProgressDialog(this,getString(R.string.wait));
         dialog.show();
@@ -1479,8 +1479,12 @@ public class ClientHomeActivity extends AppCompatActivity {
         MultipartBody.Part image_national_id_part = Common.getMultiPart(this,image_national_id,"user_card_id_image");
         MultipartBody.Part image_license_part = Common.getMultiPart(this,image_license,"user_driving_license");
 
+        MultipartBody.Part image_front_part = Common.getMultiPart(this,image_national_id,"image_car_front");
+        MultipartBody.Part image_back_part = Common.getMultiPart(this,image_license,"image_car_back");
+
+
         Api.getService(Tags.base_url)
-                .registerDelegate(user_id_part,national_id_part,address_part,image_national_id_part,image_license_part)
+                .registerDelegate(user_id_part,national_id_part,address_part,image_national_id_part,image_license_part,image_front_part,image_back_part)
                 .enqueue(new Callback<UserModel>() {
                     @Override
                     public void onResponse(Call<UserModel> call, final Response<UserModel> response) {

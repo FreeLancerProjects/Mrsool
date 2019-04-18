@@ -222,4 +222,12 @@
     <string name="add_rate">Add Rate</string>
     <string name="offer_refused">Offer refused</string>
     <string name="order_refused_send_again">Order refuse resend order to another courier?</string>
+    <string name="age_18_and_over">Age 18 and over</string>
+    <string name="a_picture_of_the_car_from_the_front">A picture of the car from the front(The car plate number should be clear)</string>
+    <string name="a_picture_of_the_car_from_behind">A picture of the car from behind(The car plate number should be clear)</string>
+    <string name="ch_img_front">Choose car image from front</string>
+    <string name="ch_img_behind">Choose car image from behind</string>
+    <string name="upload_bill_image">Upload bill image</string>
+    <string name="upload">Upload</string>
+    <string name="order_cost">Order cost</string>
 </resources>

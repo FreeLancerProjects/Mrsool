@@ -161,7 +161,7 @@ public class Fragment_Client_Order_Details extends Fragment {
         image_chat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ChatUserModel chatUserModel = new ChatUserModel(order.getDriver_user_full_name(),order.getDriver_user_image(),order.getDriver_id(),order.getRoom_id_fk(),order.getDriver_user_phone_code(),order.getDriver_user_phone());
+                ChatUserModel chatUserModel = new ChatUserModel(order.getDriver_user_full_name(),order.getDriver_user_image(),order.getDriver_id(),order.getRoom_id_fk(),order.getDriver_user_phone_code(),order.getDriver_user_phone(),order.getOrder_id(),order.getDriver_offer());
                 activity.NavigateToChatActivity(chatUserModel,"from_fragment");
             }
         });
