@@ -18,7 +18,9 @@ import android.widget.TextView;
 import com.creativeshare.mrsool.R;
 import com.creativeshare.mrsool.activities_fragments.activity_home.client_home.activity.ClientHomeActivity;
 import com.creativeshare.mrsool.models.OrderDataModel;
+import com.creativeshare.mrsool.models.UserModel;
 import com.creativeshare.mrsool.share.Common;
+import com.creativeshare.mrsool.singletone.UserSingleTone;
 import com.creativeshare.mrsool.tags.Tags;
 import com.squareup.picasso.Picasso;
 
@@ -40,6 +42,8 @@ public class Fragment_Delegate_Add_Offer extends Fragment{
     private String current_language;
     private ClientHomeActivity activity;
     private AppBarLayout app_bar;
+    private UserSingleTone userSingleTone;
+    private UserModel userModel;
 
 
 
@@ -64,6 +68,8 @@ public class Fragment_Delegate_Add_Offer extends Fragment{
 
     private void initView(View view)
     {
+        userSingleTone = UserSingleTone.getInstance();
+        userModel = userSingleTone.getUserModel();
         activity = (ClientHomeActivity) getActivity();
         Paper.init(activity);
         current_language = Paper.book().read("lang", Locale.getDefault().getLanguage());
@@ -121,7 +127,7 @@ public class Fragment_Delegate_Add_Offer extends Fragment{
         btn_refused.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                activity.delegateRefuse_FinishOrder(orderModel.getDriver_id(),orderModel.getClient_id(),orderModel.getOrder_id(),"refuse");
+                activity.delegateRefuse_FinishOrder(userModel.getData().getUser_id(),orderModel.getClient_id(),orderModel.getOrder_id(),"refuse");
 
             }
         });
@@ -182,7 +188,7 @@ public class Fragment_Delegate_Add_Offer extends Fragment{
         {
             edt_delivery_cost.setError(null);
             Common.CloseKeyBoard(activity,edt_delivery_cost);
-            activity.delegateAcceptOrder(orderModel.getDriver_id(),orderModel.getClient_id(),orderModel.getOrder_id(),m_cost);
+            activity.delegateAcceptOrder(userModel.getData().getUser_id(),orderModel.getClient_id(),orderModel.getOrder_id(),m_cost);
         }else
             {
                 edt_delivery_cost.setError(getString(R.string.field_req));

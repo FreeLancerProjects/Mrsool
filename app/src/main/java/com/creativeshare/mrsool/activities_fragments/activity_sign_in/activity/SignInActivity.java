@@ -12,9 +12,10 @@ import android.util.Log;
 import com.creativeshare.mrsool.R;
 import com.creativeshare.mrsool.activities_fragments.activity_home.client_home.activity.ClientHomeActivity;
 import com.creativeshare.mrsool.activities_fragments.activity_sign_in.fragments.Fragment_Chooser_Login;
-import com.creativeshare.mrsool.activities_fragments.activity_sign_in.fragments.Fragment_Sign_Up;
+import com.creativeshare.mrsool.activities_fragments.activity_sign_in.fragments.Fragment_Code_Verification;
 import com.creativeshare.mrsool.activities_fragments.activity_sign_in.fragments.Fragment_Language;
 import com.creativeshare.mrsool.activities_fragments.activity_sign_in.fragments.Fragment_Phone;
+import com.creativeshare.mrsool.activities_fragments.activity_sign_in.fragments.Fragment_Sign_Up;
 import com.creativeshare.mrsool.activities_fragments.terms_conditions.TermsConditionsActivity;
 import com.creativeshare.mrsool.language.Language_Helper;
 import com.creativeshare.mrsool.models.UserModel;
@@ -41,11 +42,13 @@ public class SignInActivity extends AppCompatActivity {
     private Fragment_Chooser_Login fragment_chooser_login;
     private Fragment_Phone fragment_phone;
     private Fragment_Sign_Up fragment_signUp;
+    private Fragment_Code_Verification fragment_code_verification;
     private Preferences preferences;
     private String phone = "";
     private String countrycode="",phone_code="";
     private String current_lang;
     private UserSingleTone userSingleTone;
+    private int fragment_count=0;
 
 
     @Override
@@ -95,6 +98,7 @@ public class SignInActivity extends AppCompatActivity {
     }
     public void DisplayFragmentChooserLogin()
     {
+        fragment_count +=1;
         this.phone = "";
         this.countrycode = "";
         preferences.saveLoginFragmentState(this,1);
@@ -117,13 +121,12 @@ public class SignInActivity extends AppCompatActivity {
     }
     public void DisplayFragmentPhone()
     {
+        fragment_count +=1;
+
         this.phone = "";
         this.countrycode="";
 
-        if (fragment_chooser_login!=null&&fragment_chooser_login.isAdded())
-        {
-            fragmentManager.beginTransaction().hide(fragment_chooser_login).commit();
-        }
+
         if (fragment_phone == null)
         {
             fragment_phone = Fragment_Phone.newInstance("signup");
@@ -143,14 +146,8 @@ public class SignInActivity extends AppCompatActivity {
     }
     public void DisplayFragmentSignUp(String phone)
     {
-        if (fragment_chooser_login!=null&&fragment_chooser_login.isAdded())
-        {
-            fragmentManager.beginTransaction().hide(fragment_chooser_login).commit();
-        }
-        if (fragment_phone!=null&&fragment_phone.isAdded())
-        {
-            fragmentManager.beginTransaction().hide(fragment_phone).commit();
-        }
+        fragment_count +=1;
+
         if (fragment_signUp == null)
         {
             fragment_signUp = Fragment_Sign_Up.newInstance();
@@ -167,6 +164,28 @@ public class SignInActivity extends AppCompatActivity {
 
 
     }
+
+    public void DisplayFragmentCodeVerification(String phone_code,String phone_number,String country_code)
+    {
+        fragment_count +=1;
+
+        if (fragment_code_verification == null)
+        {
+            fragment_code_verification = Fragment_Code_Verification.newInstance(phone_code,phone_number,country_code);
+        }
+        if (fragment_code_verification.isAdded())
+        {
+            fragmentManager.beginTransaction().show(fragment_code_verification).commit();
+
+        }else
+        {
+            fragmentManager.beginTransaction().add(R.id.fragment_sign_in_container, fragment_code_verification,"fragment_code_verification").addToBackStack("fragment_code_verification").commit();
+
+        }
+
+
+    }
+
     public void NavigateToClientHomeActivity()
     {
         Intent intent = new Intent(this, ClientHomeActivity.class);
@@ -238,7 +257,8 @@ public class SignInActivity extends AppCompatActivity {
 
     }
 
-    public void signIn(String m_phone, String country_code,String phone_code) {
+    public void signIn(String m_phone, String country_code,String phone_code)
+    {
 
         this.phone = m_phone;
         this.countrycode = country_code;
@@ -272,6 +292,7 @@ public class SignInActivity extends AppCompatActivity {
                             }
                             if (response.code() == 404)
                             {
+
                                 DisplayFragmentSignUp(phone);
                             }
                         }
@@ -395,18 +416,17 @@ public class SignInActivity extends AppCompatActivity {
 
     public void Back()
     {
-        if (fragment_signUp !=null&& fragment_signUp.isVisible())
+        if (fragment_count==1)
         {
+            finish();
+
+        }else if (fragment_count>1&&fragment_count<3)
+        {
+            fragment_count-=1;
             super.onBackPressed();
-            DisplayFragmentPhone();
-        }else if (fragment_phone!=null&&fragment_phone.isVisible())
-        {
-            fragmentManager.popBackStack("fragment_phone",FragmentManager.POP_BACK_STACK_INCLUSIVE);
-            DisplayFragmentChooserLogin();
-        }else
-            {
-                finish();
-            }
+
+        }
+
     }
 
 

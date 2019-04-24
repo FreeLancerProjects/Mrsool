@@ -233,14 +233,15 @@ public class Fragment_Reserve_Order extends Fragment {
             tv_delivery_time.setError(null);
             tv_address.setError(null);
             Common.CloseKeyBoard(activity,edt_order_details);
-            if (TextUtils.isEmpty(delegate_id))
+            /*if (TextUtils.isEmpty(delegate_id))
             {
                 activity.DisplayFragmentDelegates(placeModel.getLat(),placeModel.getLng(),"reserve_order","","");
 
             }else
                 {
-                    sendOrder(delegate_id);
-                }
+                }*/
+            sendOrder();
+
 
         }else
             {
@@ -386,22 +387,15 @@ public class Fragment_Reserve_Order extends Fragment {
         updateSelectedAddress(favourite_location,false);
     }
 
-    public void sendOrder(String delegate_id)
+    public void sendOrder()
     {
-        this.delegate_id = delegate_id;
-        Log.e("delegate_id",delegate_id);
-        Log.e("place_id",placeModel.getPlace_id()+"_");
-        Log.e("user_id",userModel.getData().getUser_id()+"_");
-        Log.e("address",selected_location.getAddress()+"_");
-        Log.e("street",selected_location.getStreet()+"_");
-        Log.e("lat",selected_location.getLat()+"_");
-        Log.e("lng",selected_location.getLng()+"_");
-        Log.e("selected_time",selected_time+"_");
+        //this.delegate_id = delegate_id;
+
 
         final ProgressDialog dialog = Common.createProgressDialog(activity,getString(R.string.wait));
         dialog.show();
         Api.getService(Tags.base_url)
-                .sendOrder(userModel.getData().getUser_id(),selected_location.getStreet()+" "+selected_location.getAddress(),selected_location.getLat(),selected_location.getLng(),delegate_id,order_details,placeModel.getPlace_id(),placeModel.getAddress(),"1",placeModel.getLat(),placeModel.getLng(),selected_time)
+                .sendOrder(userModel.getData().getUser_id(),selected_location.getStreet()+" "+selected_location.getAddress(),selected_location.getLat(),selected_location.getLng(),order_details,placeModel.getPlace_id(),placeModel.getAddress(),"1",placeModel.getLat(),placeModel.getLng(),selected_time)
                 .enqueue(new Callback<OrderIdDataModel>() {
                     @Override
                     public void onResponse(Call<OrderIdDataModel> call, Response<OrderIdDataModel> response) {

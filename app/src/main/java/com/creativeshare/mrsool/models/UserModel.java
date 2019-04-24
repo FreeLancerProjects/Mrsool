@@ -31,6 +31,7 @@ public class UserModel implements Serializable {
         private int num_orders;
         private int num_comments;
         private double account_balance;
+        private int  num_coupon;
 
         public String getUser_id() {
             return user_id;
@@ -106,6 +107,10 @@ public class UserModel implements Serializable {
 
         public String getUser_address() {
             return user_address;
+        }
+
+        public int getNum_coupon() {
+            return num_coupon;
         }
     }
 }

@@ -401,7 +401,8 @@ public class Fragment_Delegate_Register extends Fragment {
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == IMG_REQ1 && resultCode == Activity.RESULT_OK && data != null) {
             if (selectedType == 1)

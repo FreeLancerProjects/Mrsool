@@ -1,5 +1,6 @@
 package com.creativeshare.mrsool.activities_fragments.activity_home.client_home.fragments.fragment_home;
 
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -8,6 +9,8 @@ import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 
 import com.aurelhubert.ahbottomnavigation.notification.AHNotification;
 import com.creativeshare.mrsool.R;
@@ -27,6 +30,8 @@ public class Fragment_Home extends Fragment {
     private UserSingleTone userSingleTone;
     private UserModel userModel;
     private Preferences preferences;
+    private LinearLayout ll_progress,ll_container;
+    private ProgressBar progBar;
 
     public static Fragment_Home newInstance()
     {
@@ -41,7 +46,8 @@ public class Fragment_Home extends Fragment {
     }
 
 
-    private void initView(View view) {
+    private void initView(View view)
+    {
         activity = (ClientHomeActivity) getActivity();
         preferences = Preferences.getInstance();
         userSingleTone = UserSingleTone.getInstance();
@@ -52,6 +58,11 @@ public class Fragment_Home extends Fragment {
         }
         userModel = userSingleTone.getUserModel();
         ah_bottom_nav = view.findViewById(R.id.ah_bottom_nav);
+
+        ll_container = view.findViewById(R.id.ll_container);
+        ll_progress = view.findViewById(R.id.ll_progress);
+        progBar = view.findViewById(R.id.progBar);
+        progBar.getIndeterminateDrawable().setColorFilter(ContextCompat.getColor(activity,R.color.colorPrimary), PorterDuff.Mode.SRC_IN);
 
         setUpBottomNavigation();
         ah_bottom_nav.setOnTabSelectedListener(new AHBottomNavigation.OnTabSelectedListener() {
@@ -159,5 +170,12 @@ public class Fragment_Home extends Fragment {
                 builder.setText("");
                 ah_bottom_nav.setNotification(builder.build(),3);
             }
+    }
+
+    public void DisplayFragmentView()
+    {
+        ll_progress.setVisibility(View.GONE);
+        ll_container.setVisibility(View.VISIBLE);
+        ah_bottom_nav.setVisibility(View.VISIBLE);
     }
 }

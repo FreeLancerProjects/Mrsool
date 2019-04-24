@@ -8,6 +8,8 @@
     android:fitsSystemWindows="true"
     android:background="@drawable/bg"
     android:id="@+id/root"
+    android:clickable="true"
+    android:focusable="true"
     >
 
     <LinearLayout

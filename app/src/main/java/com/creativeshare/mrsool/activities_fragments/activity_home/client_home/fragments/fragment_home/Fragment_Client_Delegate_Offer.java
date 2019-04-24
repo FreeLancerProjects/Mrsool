@@ -115,14 +115,14 @@ public class Fragment_Client_Delegate_Offer extends Fragment{
         btn_accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                activity.clientAcceptRefuseOffer(notificationModel.getDriver_id(),notificationModel.getClient_id(),notificationModel.getOrder_id(),"accept",Double.parseDouble(notificationModel.getPlace_lat()),Double.parseDouble(notificationModel.getPlace_long()));
+                //activity.clientAcceptRefuseOffer(notificationModel.getDriver_id(),notificationModel.getClient_id(),notificationModel.getOrder_id(),"accept",Double.parseDouble(notificationModel.getPlace_lat()),Double.parseDouble(notificationModel.getPlace_long()));
             }
         });
 
         btn_refused.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                activity.clientAcceptRefuseOffer(notificationModel.getDriver_id(),notificationModel.getClient_id(),notificationModel.getOrder_id(),"refuse",Double.parseDouble(notificationModel.getPlace_lat()),Double.parseDouble(notificationModel.getPlace_long()));
+                //activity.clientAcceptRefuseOffer(notificationModel.getDriver_id(),notificationModel.getClient_id(),notificationModel.getOrder_id(),"refuse",Double.parseDouble(notificationModel.getPlace_lat()),Double.parseDouble(notificationModel.getPlace_long()));
 
             }
         });

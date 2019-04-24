@@ -2,10 +2,10 @@ package com.creativeshare.mrsool.adapters;
 
 import android.content.Context;
 import android.graphics.PorterDuff;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -99,7 +99,7 @@ public class NotificationsAdapter extends RecyclerView.Adapter<RecyclerView.View
     public class MyHolder extends RecyclerView.ViewHolder {
         private CircleImageView image;
         private ImageView image_state;
-        private TextView tv_name, tv_order_num, tv_notification_date, tv_order_state;
+        private TextView tv_name, tv_order_num, tv_notification_date, tv_order_state,tv_add_rate;
 
         public MyHolder(View itemView) {
             super(itemView);
@@ -110,13 +110,12 @@ public class NotificationsAdapter extends RecyclerView.Adapter<RecyclerView.View
             tv_order_num = itemView.findViewById(R.id.tv_order_num);
             tv_order_state = itemView.findViewById(R.id.tv_order_state);
             tv_name = itemView.findViewById(R.id.tv_name);
+            tv_add_rate = itemView.findViewById(R.id.tv_add_rate);
 
 
         }
 
         public void BindData(NotificationModel notificationModel) {
-            Picasso.with(context).load(Tags.IMAGE_URL + notificationModel.getFrom_user_image()).placeholder(R.drawable.logo_only).fit().into(image);
-            tv_name.setText(notificationModel.getFrom_user_full_name());
             tv_order_num.setText("#" + notificationModel.getOrder_id());
             tv_notification_date.setText(TimeAgo.getTimeAgo(Long.parseLong(notificationModel.getDate_notification()) * 1000, context));
 
@@ -127,6 +126,11 @@ public class NotificationsAdapter extends RecyclerView.Adapter<RecyclerView.View
                 tv_order_state.setText(R.string.not_approved);
                 image_state.setVisibility(View.GONE);
                 image_state.setVisibility(View.GONE);
+                tv_add_rate.setVisibility(View.GONE);
+                Picasso.with(context).load(R.drawable.logo_only).fit().into(image);
+                tv_name.setText(notificationModel.getOrder_details());
+
+
 
 
             }
@@ -135,33 +139,58 @@ public class NotificationsAdapter extends RecyclerView.Adapter<RecyclerView.View
                 image_state.setImageResource(R.drawable.ic_time_left);
                 image_state.setVisibility(View.VISIBLE);
                 image_state.setVisibility(View.VISIBLE);
+                tv_add_rate.setVisibility(View.GONE);
+
                 if (user_type.equals(Tags.TYPE_CLIENT)) {
                     tv_order_state.setText(R.string.order_accepted);
 
+                    Picasso.with(context).load(R.drawable.logo_only).fit().into(image);
+                    tv_name.setText(notificationModel.getOrder_details());
+
+
                 } else {
                     tv_order_state.setText(context.getString(R.string.offer_accepted));
+                    Picasso.with(context).load(Uri.parse(Tags.IMAGE_URL + notificationModel.getFrom_user_image())).placeholder(R.drawable.logo_only).fit().into(image);
+                    tv_name.setText(notificationModel.getFrom_user_full_name());
 
                 }
 
             }
             else if (notificationModel.getOrder_status().equals(String.valueOf(Tags.STATE_DELEGATE_REFUSE_ORDER)) || notificationModel.getOrder_status().equals(String.valueOf(Tags.STATE_CLIENT_REFUSE_OFFER))) {
 
-                Log.e("emadddddd","ffgg");
 
                 image_state.setBackgroundResource(R.drawable.delete_bg);
                 image_state.setImageResource(R.drawable.ic_delete_state);
 
                 image_state.setVisibility(View.VISIBLE);
                 image_state.setVisibility(View.VISIBLE);
+                tv_add_rate.setVisibility(View.GONE);
 
                 if (user_type.equals(Tags.TYPE_CLIENT))
                 {
                     tv_order_state.setText(R.string.order_refused_send_again);
 
                 }else
+
                 {
+                    Picasso.with(context).load(Uri.parse(Tags.IMAGE_URL + notificationModel.getFrom_user_image())).placeholder(R.drawable.logo_only).fit().into(image);
+                    tv_name.setText(notificationModel.getFrom_user_full_name());
                     tv_order_state.setText(R.string.offer_refused);
 
+                }
+            }else if (notificationModel.getOrder_status().equals(String.valueOf(Tags.STATE_DELEGATE_DELIVERED_ORDER)))
+            {
+                if (user_type.equals(Tags.TYPE_CLIENT))
+                {
+                    Picasso.with(context).load(Uri.parse(Tags.IMAGE_URL + notificationModel.getFrom_user_image())).placeholder(R.drawable.logo_only).fit().into(image);
+                    tv_name.setText(notificationModel.getFrom_user_full_name());
+                    tv_order_state.setText(context.getString(R.string.done));
+
+                    image_state.setBackgroundResource(R.drawable.finish_bg);
+                    image_state.setImageResource(R.drawable.ic_correct);
+                    tv_add_rate.setVisibility(View.VISIBLE);
+                    image_state.setVisibility(View.VISIBLE);
+                    image_state.setVisibility(View.VISIBLE);
                 }
             }
 

@@ -169,8 +169,8 @@
                         <option name="values">
                           <map>
                             <entry key="assetSourceType" value="FILE" />
-                            <entry key="outputName" value="ic_chat_image_upload" />
-                            <entry key="sourceFile" value="C:\Users\Delta\Desktop\chat_image_upload.svg" />
+                            <entry key="outputName" value="ic_distance" />
+                            <entry key="sourceFile" value="C:\Users\Delta\Desktop\distance-to-travel-between-two-points.svg" />
                           </map>
                         </option>
                       </PersistentState>

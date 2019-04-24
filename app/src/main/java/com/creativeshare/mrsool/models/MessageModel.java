@@ -8,6 +8,8 @@ public class MessageModel implements Serializable {
     private String room_id_fk;
     private String date;
     private String message;
+    private String message_type;
+    private String file;
     private String from_user;
     private String from_user_full_name;
     private String from_user_image;
@@ -19,11 +21,14 @@ public class MessageModel implements Serializable {
     private String to_user_phone_code;
     private String to_user_phone;
 
-    public MessageModel(String id_message, String room_id_fk, String date, String message, String from_user, String from_user_full_name, String from_user_image, String from_user_phone_code, String from_user_phone, String to_user, String to_user_full_name, String to_user_image, String to_user_phone_code, String to_user_phone) {
+
+    public MessageModel(String id_message, String room_id_fk, String date, String message, String message_type, String file, String from_user, String from_user_full_name, String from_user_image, String from_user_phone_code, String from_user_phone, String to_user, String to_user_full_name, String to_user_image, String to_user_phone_code, String to_user_phone) {
         this.id_message = id_message;
         this.room_id_fk = room_id_fk;
         this.date = date;
         this.message = message;
+        this.message_type = message_type;
+        this.file = file;
         this.from_user = from_user;
         this.from_user_full_name = from_user_full_name;
         this.from_user_image = from_user_image;
@@ -146,5 +151,13 @@ public class MessageModel implements Serializable {
 
     public void setTo_user_phone(String to_user_phone) {
         this.to_user_phone = to_user_phone;
+    }
+
+    public String getMessage_type() {
+        return message_type;
+    }
+
+    public String getFile() {
+        return file;
     }
 }

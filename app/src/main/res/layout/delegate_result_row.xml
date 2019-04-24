@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="5dp"
+    android:layout_marginTop="3dp"
+    android:layout_marginBottom="2dp"
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp"
+    app:cardElevation="3dp"
+
+    >
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+
+        >
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/image"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:civ_fill_color="@color/white"
+
+            />
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/image"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            android:textColor="@color/colorPrimary"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:maxLines="2"
+            android:ellipsize="end"
+            app:layout_constraintWidth_default="wrap"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            />
+        <TextView
+            android:id="@+id/tv_offer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@id/ll"
+            app:layout_constraintStart_toEndOf="@id/image"
+            app:layout_constraintBottom_toBottomOf="@id/ll"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            android:textColor="@color/colorPrimary"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:lines="1"
+            android:ellipsize="end"
+            app:layout_constraintWidth_default="wrap"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            app:layout_constraintEnd_toStartOf="@id/ll"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+
+            />
+        <LinearLayout
+            android:id="@+id/ll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tv_name"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal"
+            >
+            <TextView
+                android:id="@+id/tv_distance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimary"
+                android:textSize="13sp"
+                android:layout_gravity="center_vertical"
+
+
+                />
+            <ImageView
+                android:id="@+id/map"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/ic_distance"
+                android:tint="@color/colorPrimary"
+                android:padding="2dp"
+
+
+
+                />
+
+        </LinearLayout>
+
+        <com.iarcuschin.simpleratingbar.SimpleRatingBar
+            android:id="@+id/rateBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/image"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ll"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@id/btn_send"
+            app:srb_isIndicator="true"
+            app:srb_stepSize=".5"
+            app:srb_starSize="20dp"
+            app:srb_starsSeparation="5dp"
+            app:srb_numberOfStars="5"
+            app:srb_fillColor="@color/rating"
+            app:srb_borderColor="@color/rating"
+            app:srb_starBorderWidth="3"
+            app:srb_drawBorderEnabled="true"
+            app:srb_starBackgroundColor="@color/white"
+
+
+
+            />
+
+        <Button
+            android:id="@+id/btn_send"
+            android:layout_width="125dp"
+            android:layout_height="30dp"
+            app:layout_constraintStart_toEndOf="@id/image"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:background="@drawable/btn_send"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:text="@string/send"
+
+            />
+    </android.support.constraint.ConstraintLayout>
+</android.support.v7.widget.CardView>

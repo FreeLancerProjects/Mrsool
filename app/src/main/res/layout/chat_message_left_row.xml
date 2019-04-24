@@ -42,7 +42,7 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:textSize="16sp"
-                android:textColor="@color/colorPrimary"
+                android:textColor="@color/black"
                 android:maxWidth="270dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
@@ -54,7 +54,7 @@
                 android:layout_gravity="end"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:textColor="@color/colorPrimary"
+                android:textColor="@color/black"
                 android:textSize="13sp"
                 android:layout_marginBottom="5dp"
                 />

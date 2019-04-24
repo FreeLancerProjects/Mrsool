@@ -5,7 +5,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:fillViewport="true"
     android:fitsSystemWindows="true"
-    android:background="@drawable/bg">
+    android:background="@drawable/bg"
+    android:clickable="true"
+    android:focusable="true"
+    >
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"

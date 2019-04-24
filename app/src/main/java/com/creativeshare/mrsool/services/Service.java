@@ -15,6 +15,7 @@ import com.creativeshare.mrsool.models.PlaceGeocodeData;
 import com.creativeshare.mrsool.models.PlaceMapDetailsData;
 import com.creativeshare.mrsool.models.SearchDataModel;
 import com.creativeshare.mrsool.models.SliderModel;
+import com.creativeshare.mrsool.models.SocialMediaModel;
 import com.creativeshare.mrsool.models.UserModel;
 import com.creativeshare.mrsool.models.WatingOrderData;
 
@@ -136,7 +137,6 @@ public interface Service {
                                      @Field("client_address") String client_address,
                                      @Field("client_lat") double client_lat,
                                      @Field("client_long") double client_long,
-                                     @Field("driver_id") String driver_id,
                                      @Field("order_details") String order_details,
                                      @Field("place_google_id") String place_google_id,
                                      @Field("place_address") String place_address,
@@ -235,7 +235,18 @@ public interface Service {
     Call<ResponseBody> clientAccept_Refuse(@Field("client_id") String client_id,
                                            @Field("driver_id") String driver_id,
                                            @Field("order_id") String order_id,
+                                           @Field("driver_offer") String driver_offer,
                                            @Field("type") String type
+    );
+
+    @FormUrlEncoded
+    @POST("/Api/clientAction")
+    Call<ResponseBody> addRate(@Field("client_id") String client_id,
+                               @Field("driver_id") String driver_id,
+                               @Field("order_id") String order_id,
+                               @Field("client_rate") double client_rate,
+                               @Field("type") String type,
+                               @Field("client_comment") String client_comment
     );
 
     @GET("/Api/comment")
@@ -268,18 +279,63 @@ public interface Service {
     Call<MessageModel> sendMessage(@Field("room_id_fk") String room_id_fk,
                                    @Field("from_user") String from_user_id,
                                    @Field("to_user") String to_user_id,
-                                   @Field("message") String message
+                                   @Field("message") String message,
+                                   @Field("message_type") String message_type
 
-                                   );
+    );
+
+
+    @Multipart
+    @POST("/Api/chating")
+    Call<MessageModel> sendMessageWithImage(@Part("room_id_fk") RequestBody room_id_fk,
+                                            @Part("from_user") RequestBody from_user_id,
+                                            @Part("to_user") RequestBody to_user_id,
+                                            @Part("message") RequestBody message,
+                                            @Part("message_type") RequestBody message_type,
+                                            @Part MultipartBody.Part messagefile_type
+
+
+    );
 
     @FormUrlEncoded
     @POST("/Api/Typing")
     Call<MessageModel> typing(@Field("room_id_fk") String room_id_fk,
-                                   @Field("from_user") String from_user_id,
-                                   @Field("to_user") String to_user_id,
-                                   @Field("typing_value") int typing_value
+                              @Field("from_user") String from_user_id,
+                              @Field("to_user") String to_user_id,
+                              @Field("typing_value") int typing_value
 
     );
+
+    @FormUrlEncoded
+    @POST("/Api/confirmCode")
+    Call<ResponseBody> validateCode(@Field("user_phone_code") String user_phone_code,
+                                    @Field("user_phone") String user_phone,
+                                    @Field("confirm_code") String confirm_code
+    );
+
+    @FormUrlEncoded
+    @POST("/Api/resendSms")
+    Call<ResponseBody> getSmsCode(@Field("user_phone_code") String user_phone_code,
+                                  @Field("user_phone") String user_phone
+    );
+
+    @FormUrlEncoded
+    @POST("/Api/coupon")
+    Call<UserModel> getCouponValue(@Field("user_id") String user_id,
+                                   @Field("type") String type,
+                                   @Field("coupon_code") String coupon_code
+
+    );
+
+    @FormUrlEncoded
+    @POST("/Api/deleteNote")
+    Call<ResponseBody> clientRefuseDelegateOffer(@Field("id_notification") String id_notification);
+
+    @GET("/Api/socialMedia")
+    Call<SocialMediaModel> getSocialMedia();
+
+    @GET("/Api/profile")
+    Call<UserModel> getUserDataById(@Query("user_id") String user_id);
 }
 
 

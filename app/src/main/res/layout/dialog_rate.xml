@@ -60,28 +60,49 @@
         android:layout_marginTop="30dp"
         android:orientation="horizontal"
         android:layout_marginBottom="20dp"
+        android:weightSum="5"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
         >
 
         <ImageView
-            android:id="@+id/image_love"
-            android:layout_width="50dp"
+            android:id="@+id/image_excellent"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="50dp"
-            android:src="@drawable/emoji_love_unsel"
+            android:src="@drawable/excellent_gray"
             />
         <ImageView
-            android:id="@+id/image_smile"
-            android:layout_width="50dp"
+            android:id="@+id/image_very_good"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="50dp"
-            android:src="@drawable/emoji_smile_unsel"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
+            android:src="@drawable/very_good_gray"
             />
         <ImageView
-            android:id="@+id/image_angry"
-            android:layout_width="50dp"
+            android:id="@+id/image_good"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="50dp"
-            android:src="@drawable/emoji_ang_unsel"
+            android:src="@drawable/good_gray"
             />
+
+        <ImageView
+            android:id="@+id/image_bad"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="50dp"
+            android:src="@drawable/bad_gray"
+
+            />
+        <ImageView
+            android:id="@+id/image_very_bad"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="50dp"
+            android:src="@drawable/angry_gray"
+            />
+
     </LinearLayout>
 
     <TextView
@@ -102,7 +123,7 @@
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
         android:orientation="vertical"
-        android:visibility="gone"
+        android:visibility="visible"
         >
         <TextView
             android:layout_width="wrap_content"

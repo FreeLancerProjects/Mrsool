@@ -226,7 +226,6 @@ public class Fragment_Client_Store extends Fragment {
     public void getNearbyPlaces(final Location location,String query)
     {
         getAds();
-        activity.DismissDialog();
         progBar.setVisibility(View.VISIBLE);
         cardView.setVisibility(View.VISIBLE);
         ll_no_store.setVisibility(View.GONE);
@@ -252,8 +251,6 @@ public class Fragment_Client_Store extends Fragment {
                                 if (response.body().getResults().size()>0)
                                 {
                                     ll_no_store.setVisibility(View.GONE);
-
-
                                     updateUi(response.body(),location);
                                 }else
                                 {
@@ -318,6 +315,7 @@ public class Fragment_Client_Store extends Fragment {
                 adapter.notifyDataSetChanged();
             }
 
+            activity.DisplayFragmentHomeView();
 
     }
 

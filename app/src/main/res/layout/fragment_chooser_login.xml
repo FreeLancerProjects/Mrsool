@@ -6,7 +6,10 @@
     android:background="@drawable/bg"
     android:fillViewport="true"
     android:fitsSystemWindows="true"
-    android:scrollbars="none">
+    android:scrollbars="none"
+    android:clickable="true"
+    android:focusable="true"
+    >
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"

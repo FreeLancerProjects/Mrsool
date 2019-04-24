@@ -1,6 +1,7 @@
 package com.creativeshare.mrsool.activities_fragments.activity_home.client_home.activity;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -11,8 +12,10 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -22,10 +25,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.creativeshare.mrsool.R;
 import com.creativeshare.mrsool.activities_fragments.activity_chat.ChatActivity;
+import com.creativeshare.mrsool.activities_fragments.activity_home.client_home.fragments.fragment_home.Fragment_Add_Coupon;
 import com.creativeshare.mrsool.activities_fragments.activity_home.client_home.fragments.fragment_home.Fragment_Client_Delegate_Offer;
 import com.creativeshare.mrsool.activities_fragments.activity_home.client_home.fragments.fragment_home.Fragment_Client_Notifications;
 import com.creativeshare.mrsool.activities_fragments.activity_home.client_home.fragments.fragment_home.Fragment_Client_Order_Details;
@@ -36,7 +43,10 @@ import com.creativeshare.mrsool.activities_fragments.activity_home.client_home.f
 import com.creativeshare.mrsool.activities_fragments.activity_home.client_home.fragments.fragment_home.Fragment_Delegate_Current_Order_Details;
 import com.creativeshare.mrsool.activities_fragments.activity_home.client_home.fragments.fragment_home.Fragment_Delegate_Register;
 import com.creativeshare.mrsool.activities_fragments.activity_home.client_home.fragments.fragment_home.Fragment_Delegates;
+import com.creativeshare.mrsool.activities_fragments.activity_home.client_home.fragments.fragment_home.Fragment_Delegates_Result;
+import com.creativeshare.mrsool.activities_fragments.activity_home.client_home.fragments.fragment_home.Fragment_Documentation_Data;
 import com.creativeshare.mrsool.activities_fragments.activity_home.client_home.fragments.fragment_home.Fragment_Edit_Profile;
+import com.creativeshare.mrsool.activities_fragments.activity_home.client_home.fragments.fragment_home.Fragment_Explain_Courier;
 import com.creativeshare.mrsool.activities_fragments.activity_home.client_home.fragments.fragment_home.Fragment_Home;
 import com.creativeshare.mrsool.activities_fragments.activity_home.client_home.fragments.fragment_home.Fragment_Map;
 import com.creativeshare.mrsool.activities_fragments.activity_home.client_home.fragments.fragment_home.Fragment_Map_Location_Details;
@@ -53,23 +63,36 @@ import com.creativeshare.mrsool.language.Language_Helper;
 import com.creativeshare.mrsool.models.ChatUserModel;
 import com.creativeshare.mrsool.models.Favourite_location;
 import com.creativeshare.mrsool.models.LocationError;
+import com.creativeshare.mrsool.models.NotStateModel;
 import com.creativeshare.mrsool.models.NotificationCountModel;
 import com.creativeshare.mrsool.models.NotificationModel;
-import com.creativeshare.mrsool.models.NotStateModel;
+import com.creativeshare.mrsool.models.NotificationTypeModel;
 import com.creativeshare.mrsool.models.OrderDataModel;
 import com.creativeshare.mrsool.models.PlaceModel;
 import com.creativeshare.mrsool.models.UserModel;
 import com.creativeshare.mrsool.preferences.Preferences;
 import com.creativeshare.mrsool.remote.Api;
-import com.creativeshare.mrsool.services.UpdateLocationService;
 import com.creativeshare.mrsool.share.Common;
 import com.creativeshare.mrsool.singletone.UserSingleTone;
 import com.creativeshare.mrsool.tags.Tags;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResult;
+import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
+import com.squareup.picasso.Picasso;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -82,6 +105,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import io.paperdb.Paper;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -90,7 +114,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ClientHomeActivity extends AppCompatActivity {
+public class ClientHomeActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener,GoogleApiClient.ConnectionCallbacks,LocationListener {
     private final String gps_perm = Manifest.permission.ACCESS_FINE_LOCATION;
     private final int gps_req = 22;
     private FragmentManager fragmentManager;
@@ -115,11 +139,14 @@ public class ClientHomeActivity extends AppCompatActivity {
     private Fragment_Delegate_Comments fragment_delegate_comments;
     private Fragment_Delegate_Current_Order_Details fragment_delegate_current_order_details;
     private Fragment_Map_Location_Details fragment_map_location_details;
+    private Fragment_Add_Coupon fragment_add_coupon;
+    private Fragment_Explain_Courier fragment_explain_courier;
+    private Fragment_Documentation_Data fragment_documentation_data;
+    private Fragment_Delegates_Result fragment_delegates_result;
     private UserSingleTone userSingleTone;
     private UserModel userModel;
     private Preferences preferences;
-    private Intent intentService;
-    private ProgressDialog dialog;
+    //private Intent intentService;
     public  Location location = null;
     private String current_lang;
     private int fragment_count = 0;
@@ -127,6 +154,10 @@ public class ClientHomeActivity extends AppCompatActivity {
     private Call<ResponseBody> call;
     private String state = "";
     private boolean canUpdateLocation = true;
+    private double rate=0.0;
+    private GoogleApiClient googleApiClient;
+    private LocationRequest locationRequest;
+    private  LocationCallback  locationCallback;
 
 
 
@@ -140,7 +171,9 @@ public class ClientHomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_client_home);
 
+
         initView();
+
         if (savedInstanceState == null) {
             CheckPermission();
             DisplayFragmentHome();
@@ -340,6 +373,7 @@ public class ClientHomeActivity extends AppCompatActivity {
         }
 
 
+
     }
     private void updateToken()
     {
@@ -375,14 +409,19 @@ public class ClientHomeActivity extends AppCompatActivity {
                 });
     }
 
-    ///////////////////////////////////
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void LocationListener(final Location location)
+    private void initGoogleApiClient()
     {
-        if (dialog!=null)
-        {
-            dialog.dismiss();
-        }
+        googleApiClient = new GoogleApiClient.Builder(this)
+                .addOnConnectionFailedListener(this)
+                .addConnectionCallbacks(this)
+                .addApi(LocationServices.API)
+                .build();
+        googleApiClient.connect();
+    }
+    ///////////////////////////////////
+    private void LocationListener(final Location location)
+    {
+
         if (location!=null)
         {
             if (userModel!=null)
@@ -403,10 +442,10 @@ public class ClientHomeActivity extends AppCompatActivity {
                                 fragment_client_store.getNearbyPlaces(location,"restaurant");
 
                             }
-                            if (intentService!=null)
+                            /*if (intentService!=null)
                             {
                                 stopService(intentService);
-                            }
+                            }*/
                         }
                     },1);
         }
@@ -414,7 +453,7 @@ public class ClientHomeActivity extends AppCompatActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void LocationErrorListener(final LocationError locationError)
     {
-        stopService(intentService);
+        /*stopService(intentService);
         if (locationError.getStatus()==0)
         {
             StartService(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
@@ -422,7 +461,7 @@ public class ClientHomeActivity extends AppCompatActivity {
         {
             StartService(LocationRequest.PRIORITY_LOW_POWER);
 
-        }
+        }*/
     }
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void ListenNotificationChange(final NotStateModel notStateModel)
@@ -442,7 +481,44 @@ public class ClientHomeActivity extends AppCompatActivity {
         canRead =true;
         RefreshFragment_Notification();
         getNotificationCount();
+        RefreshFragment_Order();
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void ListenNotificationRate(NotificationTypeModel notificationTypeModel)
+    {
+        if (userModel.getData().getUser_type().equals(Tags.TYPE_DELEGATE))
+        {
+            getUserDataById(userModel.getData().getUser_id());
+
+        }
+
+
+    }
+
+    private void getUserDataById(String user_id)
+    {
+        Api.getService(Tags.base_url)
+                .getUserDataById(user_id)
+                .enqueue(new Callback<UserModel>() {
+                    @Override
+                    public void onResponse(Call<UserModel> call, Response<UserModel> response) {
+                        if (response.isSuccessful()&&response.body()!=null)
+                        {
+                            updateUserData(response.body());
+
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<UserModel> call, Throwable t) {
+                        try {
+                            Log.e("Error",t.getMessage());
+                        }catch (Exception e){}
+                    }
+                });
+    }
+
     //////////////////////////////////////////////////
     private void UpdateUserLocation(Location location)
     {
@@ -592,6 +668,8 @@ public class ClientHomeActivity extends AppCompatActivity {
     ///////////////////////////////////
     public void updateUserData(final UserModel userModel)
     {
+        preferences.create_update_userData(this,userModel);
+        userSingleTone.setUserModel(userModel);
         this.userModel = userModel;
         if (fragment_client_profile!=null && fragment_client_profile.isAdded())
         {
@@ -776,6 +854,21 @@ public class ClientHomeActivity extends AppCompatActivity {
 
         } else {
             fragmentManager.beginTransaction().add(R.id.fragment_home_container, fragment_client_profile, "fragment_client_profile").addToBackStack("fragment_client_profile").commit();
+        }
+
+    }
+    public void DisplayFragmentAddCoupon()
+    {
+        fragment_count+=1;
+
+        fragment_add_coupon = Fragment_Add_Coupon.newInstance();
+
+
+        if (fragment_add_coupon.isAdded()) {
+            fragmentManager.beginTransaction().show(fragment_add_coupon).commit();
+
+        } else {
+            fragmentManager.beginTransaction().add(R.id.fragment_app_container, fragment_add_coupon, "fragment_add_coupon").addToBackStack("fragment_add_coupon").commit();
         }
 
     }
@@ -989,6 +1082,23 @@ public class ClientHomeActivity extends AppCompatActivity {
         }
 
     }
+
+    public void DisplayFragmentDelegatesResult(NotificationModel notificationModel)
+    {
+        fragment_count+=1;
+
+        fragment_delegates_result = Fragment_Delegates_Result.newInstance(notificationModel);
+
+
+        if (fragment_delegates_result.isAdded()) {
+            fragmentManager.beginTransaction().show(fragment_delegates_result).commit();
+
+        } else {
+            fragmentManager.beginTransaction().add(R.id.fragment_app_container, fragment_delegates_result, "fragment_delegates_result").addToBackStack("fragment_delegates_result").commit();
+
+        }
+
+    }
     public void DisplayFragmentRegisterDelegate()
     {
 
@@ -999,13 +1109,16 @@ public class ClientHomeActivity extends AppCompatActivity {
             fragment_delegate_register = Fragment_Delegate_Register.newInstance();
 
 
-            if (fragment_delegate_register.isAdded()) {
+
+            if (fragment_delegate_register.isAdded())
+            {
                 fragmentManager.beginTransaction().show(fragment_delegate_register).commit();
 
-            } else {
-                fragmentManager.beginTransaction().add(R.id.fragment_app_container, fragment_delegate_register, "fragment_delegate_register").addToBackStack("fragment_delegate_register").commit();
-            }
+            }else
+                {
+                    fragmentManager.beginTransaction().add(R.id.fragment_app_container, fragment_delegate_register, "fragment_delegate_register").addToBackStack("fragment_delegate_register").commit();
 
+                }
         }else
             {
                 Common.CreateSignAlertDialog(this,getString(R.string.already_courier));
@@ -1111,6 +1224,55 @@ public class ClientHomeActivity extends AppCompatActivity {
 
 
     }
+    public void DisplayFragmentExplainCourier()
+    {
+        fragment_count+=1;
+
+        fragment_explain_courier = Fragment_Explain_Courier.newInstance();
+
+
+        if (fragment_explain_courier.isAdded()) {
+            fragmentManager.beginTransaction().show(fragment_explain_courier).commit();
+
+        } else {
+            fragmentManager.beginTransaction().add(R.id.fragment_app_container, fragment_explain_courier, "fragment_explain_courier").addToBackStack("fragment_explain_courier").commit();
+        }
+
+    }
+
+    public void DisplayFragmentDocumentation()
+    {
+
+        if (userModel.getData().getUser_type().equals(Tags.TYPE_CLIENT))
+        {
+            fragment_count+=1;
+
+            fragment_documentation_data = Fragment_Documentation_Data.newInstance();
+
+
+            if (fragment_documentation_data.isAdded()) {
+                fragmentManager.beginTransaction().show(fragment_documentation_data).commit();
+
+            } else {
+                fragmentManager.beginTransaction().add(R.id.fragment_app_container, fragment_documentation_data, "fragment_documentation_data").addToBackStack("fragment_documentation_data").commit();
+            }
+
+        }else
+        {
+            Common.CreateSignAlertDialog(this,getString(R.string.already_courier));
+        }
+
+
+    }
+
+    // from fragment coupon
+    public void updateUserDataProfile(UserModel userModel)
+    {
+        if (fragment_client_profile!=null&&fragment_client_profile.isAdded())
+        {
+            fragment_client_profile.updateUserData(userModel);
+        }
+    }
 
     public void NavigateToChatActivity(ChatUserModel chatUserModel,String from)
     {
@@ -1177,7 +1339,8 @@ public class ClientHomeActivity extends AppCompatActivity {
                             if (type.equals("refuse"))
                             {
                                 Toast.makeText(ClientHomeActivity.this,getString(R.string.refused), Toast.LENGTH_SHORT).show();
-
+                                RefreshFragment_Order();
+                                RefreshFragment_Notification();
                             }else if (type.equals("end"))
                             {
                                 ClientHomeActivity.super.onBackPressed();
@@ -1219,33 +1382,68 @@ public class ClientHomeActivity extends AppCompatActivity {
                     }
                 });
     }
-    public void clientAcceptRefuseOffer(final String driver_id, final String client_id, final String order_id, final String type, final double place_lat, final double place_long)
+    // from dialog or fragment delegate result
+    public void clientAcceptOffer(final String driver_id, final String client_id, final String order_id, final String type, String driver_offer, final String from)
     {
 
         final ProgressDialog dialog = Common.createProgressDialog(this,getString(R.string.wait));
         dialog.setCancelable(false);
         dialog.show();
         Api.getService(Tags.base_url)
-                .clientAccept_Refuse(client_id,driver_id,order_id,type)
+                .clientAccept_Refuse(client_id,driver_id,order_id,driver_offer,type)
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         dialog.dismiss();
                         if (response.isSuccessful())
                         {
-                            fragment_count-=1;
-                            ClientHomeActivity.super.onBackPressed();
-                            if (type.equals("refuse"))
+                            if (from.equals("fragment_delegate_result"))
                             {
-                                ///show alert
-                                CreateAcceptRefuseDialog(order_id,place_lat,place_long,client_id);
-                                Toast.makeText(ClientHomeActivity.this,getString(R.string.refused), Toast.LENGTH_SHORT).show();
-
-                            }else if (type.equals("accept"))
-                            {
-                                Toast.makeText(ClientHomeActivity.this,getString(R.string.accepted), Toast.LENGTH_SHORT).show();
-
+                                fragment_count-=1;
+                                ClientHomeActivity.super.onBackPressed();
                             }
+
+                            Toast.makeText(ClientHomeActivity.this,getString(R.string.accepted), Toast.LENGTH_SHORT).show();
+
+                            RefreshFragment_Notification();
+                            RefreshFragment_Order();
+
+                        }else
+                        {
+                            dialog.dismiss();
+                            Toast.makeText(ClientHomeActivity.this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
+                            try {
+                                Log.e("error_code",response.code()+""+response.errorBody().string());
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        try {
+                            dialog.dismiss();
+                            Log.e("Error",t.getMessage());
+                        }catch (Exception e){}
+                    }
+                });
+    }
+
+    public void clientRefuseOffer(final String id_notification)
+    {
+
+        final ProgressDialog dialog = Common.createProgressDialog(this,getString(R.string.wait));
+        dialog.setCancelable(false);
+        dialog.show();
+        Api.getService(Tags.base_url)
+                .clientRefuseDelegateOffer(id_notification)
+                .enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        dialog.dismiss();
+                        if (response.isSuccessful())
+                        {
                             RefreshFragment_Notification();
                             RefreshFragment_Order();
 
@@ -1313,7 +1511,7 @@ public class ClientHomeActivity extends AppCompatActivity {
                 });
     }
     ////////////////////////
-    public  void CreateAcceptRefuseDialog(final String order_id, final double place_lat, final double place_long, final String client_id)
+   /* public  void CreateAcceptRefuseDialog(final String order_id, final double place_lat, final double place_long, final String client_id)
     {
         final AlertDialog dialog = new AlertDialog.Builder(this)
                 .setCancelable(true)
@@ -1345,14 +1543,14 @@ public class ClientHomeActivity extends AppCompatActivity {
         dialog.getWindow().setBackgroundDrawableResource(R.drawable.dialog_window_bg);
         dialog.setView(view);
         dialog.show();
-    }
+    }*/
 
     ////////////////////////
 
     //from fragment delegate,fragment client delegate offer order_id and client_id may be empty
-    public void setDelegate_id(final String delegate_id,String client_id,String order_id, String type)
+   /* public void setDelegate_id(final String delegate_id,String client_id,String order_id, String type)
     {
-        if (type.equals("reserve_order"))
+        *//*if (type.equals("reserve_order"))
         {
             if (fragment_reserve_order!=null&&fragment_reserve_order.isAdded())
             {
@@ -1367,7 +1565,8 @@ public class ClientHomeActivity extends AppCompatActivity {
                             }
                         },1);
             }
-        }else if (type.equals("resend_order"))
+        }else*//*
+        if (type.equals("resend_order"))
         {
             ClientHomeActivity.super.onBackPressed();
             fragment_count-=1;
@@ -1386,8 +1585,9 @@ public class ClientHomeActivity extends AppCompatActivity {
             }
 
 
-    }
+    }*/
 
+/*
     private void ResendOrder(String client_id, String delegate_id, String order_id) {
 
         final ProgressDialog dialog = Common.createProgressDialog(this,getString(R.string.wait));
@@ -1427,6 +1627,7 @@ public class ClientHomeActivity extends AppCompatActivity {
                     }
                 });
     }
+*/
 
     //from fragment reserve order
     public void FollowOrder()
@@ -1693,7 +1894,175 @@ public class ClientHomeActivity extends AppCompatActivity {
 
     }
 
+    public void CreateAddRateAlertDialog(final NotificationModel notificationModel)
+    {
+        final AlertDialog dialog = new AlertDialog.Builder(this)
+                .setCancelable(true)
+                .create();
 
+        View view = LayoutInflater.from(this).inflate(R.layout.dialog_rate,null);
+        ImageView img_close = view.findViewById(R.id.img_close);
+        CircleImageView image = view.findViewById(R.id.image);
+        TextView tv_name = view.findViewById(R.id.tv_name);
+        final ImageView image_very_bad= view.findViewById(R.id.image_very_bad);
+        final ImageView image_bad = view.findViewById(R.id.image_bad);
+        final ImageView image_good = view.findViewById(R.id.image_good);
+        final ImageView image_very_good = view.findViewById(R.id.image_very_good);
+        final ImageView image_excellent = view.findViewById(R.id.image_excellent);
+
+        final EditText edt_comment = view.findViewById(R.id.edt_comment);
+        final TextView tv_rate = view.findViewById(R.id.tv_rate);
+        final Button btn_rate = view.findViewById(R.id.btn_rate);
+        Picasso.with(this).load(Uri.parse(Tags.IMAGE_URL+notificationModel.getFrom_user_image())).fit().into(image);
+        tv_name.setText(notificationModel.getFrom_user_full_name());
+
+
+
+
+        image_excellent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rate = 5.0;
+                image_excellent.setImageResource(R.drawable.excellent_yellow);
+                image_very_good.setImageResource(R.drawable.very_good_gray);
+                image_good.setImageResource(R.drawable.good_gray);
+                image_bad.setImageResource(R.drawable.bad_gray);
+                image_very_bad.setImageResource(R.drawable.angry_gray);
+
+                tv_rate.setText(R.string.excellent);
+                btn_rate.setVisibility(View.VISIBLE);
+            }
+        });
+
+        image_very_good.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rate = 4.0;
+                image_excellent.setImageResource(R.drawable.excellent_gray);
+                image_very_good.setImageResource(R.drawable.very_good_yeallow);
+                image_good.setImageResource(R.drawable.good_gray);
+                image_bad.setImageResource(R.drawable.bad_gray);
+                image_very_bad.setImageResource(R.drawable.angry_gray);
+
+                tv_rate.setText(R.string.very_good);
+                btn_rate.setVisibility(View.VISIBLE);
+            }
+        });
+
+        image_good.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rate = 3.0;
+
+                image_excellent.setImageResource(R.drawable.excellent_gray);
+                image_very_good.setImageResource(R.drawable.very_good_gray);
+                image_good.setImageResource(R.drawable.good_yellow);
+                image_bad.setImageResource(R.drawable.bad_gray);
+                image_very_bad.setImageResource(R.drawable.angry_gray);
+
+                tv_rate.setText(R.string.good);
+                btn_rate.setVisibility(View.VISIBLE);
+            }
+        });
+
+        image_bad.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rate = 2.0;
+
+                image_excellent.setImageResource(R.drawable.excellent_gray);
+                image_very_good.setImageResource(R.drawable.very_good_gray);
+                image_good.setImageResource(R.drawable.good_gray);
+                image_bad.setImageResource(R.drawable.bad_yellow);
+                image_very_bad.setImageResource(R.drawable.angry_gray);
+
+                tv_rate.setText(R.string.bad);
+                btn_rate.setVisibility(View.VISIBLE);
+            }
+        });
+
+        image_very_bad.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rate = 1.0;
+
+                image_excellent.setImageResource(R.drawable.excellent_gray);
+                image_very_good.setImageResource(R.drawable.very_good_gray);
+                image_good.setImageResource(R.drawable.good_gray);
+                image_bad.setImageResource(R.drawable.bad_gray);
+                image_very_bad.setImageResource(R.drawable.angry_yellow);
+
+                tv_rate.setText(R.string.very_bad);
+                btn_rate.setVisibility(View.VISIBLE);
+            }
+        });
+
+        btn_rate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String comment = edt_comment.getText().toString().trim();
+                AddRate(dialog,notificationModel,rate,comment);
+            }
+        });
+
+        img_close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.getWindow().getAttributes().windowAnimations=R.style.dialog_congratulation_animation;
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.getWindow().setBackgroundDrawableResource(R.drawable.dialog_window_bg);
+        dialog.setView(view);
+        dialog.show();
+    }
+
+    private void AddRate(final AlertDialog alertDialog,NotificationModel notificationModel, double rate, String comment) {
+
+        final ProgressDialog dialog = Common.createProgressDialog(this,getString(R.string.wait));
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
+        dialog.show();
+
+        Api.getService(Tags.base_url)
+                .addRate(notificationModel.getClient_id(),notificationModel.getDriver_id(),notificationModel.getOrder_id(),rate,"end",comment)
+                .enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        if (response.isSuccessful())
+                        {
+
+                            alertDialog.dismiss();
+                            dialog.dismiss();
+                            RefreshFragment_Notification();
+
+                        }else
+                        {
+                            try {
+                                Log.e("error_code",response.errorBody().string());
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            dialog.dismiss();
+                            Toast.makeText(ClientHomeActivity.this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        try {
+                            dialog.dismiss();
+                            Log.e("Error",t.getMessage());
+                            Toast.makeText(ClientHomeActivity.this,getString(R.string.something), Toast.LENGTH_SHORT).show();
+                        }catch (Exception re){}
+                    }
+                });
+
+
+
+    }
 
     private void RefreshFragment_Order()
     {
@@ -1764,14 +2133,24 @@ public class ClientHomeActivity extends AppCompatActivity {
             fragment.onActivityResult(requestCode, resultCode, data);
         }
 
+        if (requestCode == 1255)
+        {
+            if (resultCode == RESULT_OK)
+            {
+                startLocationUpdate();
+            }else
+                {
+                    //create dialog to open_gps
+                }
+        }
 
-        if (requestCode == 33) {
+        /*if (requestCode == 33) {
             if (isGpsOpen()) {
                 StartService(LocationRequest.PRIORITY_LOW_POWER);
             } else {
                 CreateGpsDialog();
             }
-        }
+        }*/
     }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
@@ -1783,13 +2162,8 @@ public class ClientHomeActivity extends AppCompatActivity {
         }
 
         if (requestCode == gps_req && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            if (isGpsOpen())
-            {
-                StartService(LocationRequest.PRIORITY_HIGH_ACCURACY);
-            }else
-                {
-                    CreateGpsDialog();
-                }
+
+            initGoogleApiClient();
         }
     }
     private void CheckPermission()
@@ -1798,30 +2172,23 @@ public class ClientHomeActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, new String[]{gps_perm}, gps_req);
         } else {
 
-            if (isGpsOpen())
+            initGoogleApiClient();
+           /* if (isGpsOpen())
             {
                 StartService(LocationRequest.PRIORITY_HIGH_ACCURACY);
             }else
                 {
                     CreateGpsDialog();
 
-                }
+                }*/
         }
     }
     private void StartService(int accuracy)
     {
-        if (dialog == null)
-        {
-            dialog = Common.createProgressDialog(this,getString(R.string.fetching_your_location));
-            dialog.setCancelable(true);
-            dialog.show();
 
-
-
-        }
-        intentService = new Intent(this, UpdateLocationService.class);
+       /* intentService = new Intent(this, UpdateLocationService.class);
         intentService.putExtra("accuracy",accuracy);
-        startService(intentService);
+        startService(intentService);*/
     }
     private boolean isGpsOpen()
     {
@@ -1871,14 +2238,90 @@ public class ClientHomeActivity extends AppCompatActivity {
         dialog.setView(view);
         dialog.show();
     }
-    public void DismissDialog()
+
+    /////////////////////////////////////////////////////////////////
+    private void intLocationRequest()
     {
-        if (dialog!=null)
-        {
-            dialog.dismiss();
-        }
+        locationRequest = new LocationRequest();
+        locationRequest.setFastestInterval(10000);
+        locationRequest.setInterval(300000);
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
+                .addLocationRequest(locationRequest);
+        PendingResult<LocationSettingsResult> result = LocationServices.SettingsApi.checkLocationSettings(googleApiClient, builder.build());
+
+        result.setResultCallback(new ResultCallback<LocationSettingsResult>() {
+            @Override
+            public void onResult(@NonNull LocationSettingsResult result) {
+
+                Status status = result.getStatus();
+                switch (status.getStatusCode())
+                {
+                    case LocationSettingsStatusCodes.SUCCESS:
+                        startLocationUpdate();
+                        break;
+                    case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
+                        try {
+                            status.startResolutionForResult(ClientHomeActivity.this,1255);
+                        }catch (Exception e)
+                        {
+                        }
+                        break;
+                    case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
+                        Log.e("not available","not available");
+                        break;
+                }
+            }
+        });
 
     }
+
+    @SuppressLint("MissingPermission")
+    private void startLocationUpdate()
+    {
+        locationCallback = new LocationCallback()
+        {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                onLocationChanged(locationResult.getLastLocation());
+            }
+        };
+        LocationServices.getFusedLocationProviderClient(this)
+                .requestLocationUpdates(locationRequest,locationCallback, Looper.myLooper());
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle)
+    {
+        intLocationRequest();
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        if (googleApiClient!=null)
+        {
+            googleApiClient.connect();
+        }
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        LocationListener(location);
+    }
+    /////////////////////////////////////////////////////////////////
+    public void DisplayFragmentHomeView()
+    {
+        if (fragment_home!=null&&fragment_home.isAdded())
+        {
+            fragment_home.DisplayFragmentView();
+        }
+    }
+    /////////////////////////////////////////////////////////////////
     public void Logout()
     {
         final ProgressDialog dialog =Common.createProgressDialog(this,getString(R.string.wait));
@@ -1993,9 +2436,15 @@ public class ClientHomeActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (intentService!=null)
+
+        if (locationCallback!=null)
         {
-            stopService(intentService);
+            LocationServices.getFusedLocationProviderClient(this).removeLocationUpdates(locationCallback);
+
+        }
+        if (googleApiClient!=null)
+        {
+            googleApiClient.disconnect();
         }
 
         if (EventBus.getDefault().isRegistered(this))
@@ -2005,134 +2454,5 @@ public class ClientHomeActivity extends AppCompatActivity {
     }
 
 
-    /*public void CreateAddRateAlertDialog(final NotificationRateModel notificationRateModel)
-    {
-        final AlertDialog dialog = new AlertDialog.Builder(this)
-                .setCancelable(true)
-                .create();
 
-        View view = LayoutInflater.from(this).inflate(R.layout.dialog_rate,null);
-        ImageView img_close = view.findViewById(R.id.img_close);
-        CircleImageView image = view.findViewById(R.id.image);
-        TextView tv_name = view.findViewById(R.id.tv_name);
-        final ImageView image_love = view.findViewById(R.id.image_love);
-        final ImageView image_smile = view.findViewById(R.id.image_smile);
-        final ImageView image_angry = view.findViewById(R.id.image_angry);
-        final LinearLayout ll_comment = view.findViewById(R.id.ll_comment);
-        final EditText edt_comment = view.findViewById(R.id.edt_comment);
-        final TextView tv_rate = view.findViewById(R.id.tv_rate);
-        final Button btn_rate = view.findViewById(R.id.btn_rate);
-        Picasso.with(this).load(Uri.parse(Tags.IMAGE_URL+notificationRateModel.getDelegate_avatar())).fit().into(image);
-        tv_name.setText(notificationRateModel.getDelegate_name());
-
-
-
-
-        image_love.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                rate = 5.0;
-                image_love.setImageResource(R.drawable.emoji_love_sel);
-                image_smile.setImageResource(R.drawable.emoji_smile_unsel);
-                image_angry.setImageResource(R.drawable.emoji_ang_unsel);
-                tv_rate.setText(R.string.excellent);
-                ll_comment.setVisibility(View.GONE);
-                btn_rate.setVisibility(View.VISIBLE);
-            }
-        });
-
-        image_smile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                rate = 3.0;
-
-                image_love.setImageResource(R.drawable.emoji_love_unsel);
-                image_smile.setImageResource(R.drawable.emoji_smile_sel);
-                image_angry.setImageResource(R.drawable.emoji_ang_unsel);
-                tv_rate.setText(R.string.moderate);
-                ll_comment.setVisibility(View.VISIBLE);
-                btn_rate.setVisibility(View.VISIBLE);
-            }
-        });
-
-        image_angry.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                rate = 1.5;
-
-                image_love.setImageResource(R.drawable.emoji_love_unsel);
-                image_smile.setImageResource(R.drawable.emoji_smile_unsel);
-                image_angry.setImageResource(R.drawable.emoji_ang_sel);
-                tv_rate.setText(R.string.bad);
-                ll_comment.setVisibility(View.VISIBLE);
-                btn_rate.setVisibility(View.VISIBLE);
-            }
-        });
-
-        btn_rate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                comment = edt_comment.getText().toString().trim();
-                AddRate(dialog,notificationRateModel.getReceiver_id(),notificationRateModel.getDelegate_id(),rate,comment);
-            }
-        });
-
-        img_close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-
-        dialog.getWindow().getAttributes().windowAnimations=R.style.dialog_congratulation_animation;
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.getWindow().setBackgroundDrawableResource(R.drawable.dialog_window_bg);
-        dialog.setView(view);
-        dialog.show();
-    }
-
-    private void AddRate(final AlertDialog alertDialog, int client_id, int delegate_id, double rate, String comment) {
-
-        final ProgressDialog dialog = Common.createProgressDialog(this,getString(R.string.wait));
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.show();
-        Api.getService()
-                .addRate(client_id,delegate_id,rate,comment)
-                .enqueue(new Callback<ResponseModel>() {
-                    @Override
-                    public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
-                        if (response.isSuccessful())
-                        {
-                            alertDialog.dismiss();
-                            dialog.dismiss();
-                            NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-
-                            if (manager!=null)
-                            {
-                                manager.cancelAll();
-                            }
-                        }else
-                        {
-                            try {
-                                Log.e("error_code",response.errorBody().string());
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                            dialog.dismiss();
-                            Toast.makeText(HomeActivity.this, getString(R.string.failed), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<ResponseModel> call, Throwable t) {
-
-                        try {
-                            dialog.dismiss();
-                            Log.e("Error",t.getMessage());
-                            Toast.makeText(HomeActivity.this,getString(R.string.something), Toast.LENGTH_SHORT).show();
-                        }catch (Exception re){}
-                    }
-                });
-    }
-*/
 }

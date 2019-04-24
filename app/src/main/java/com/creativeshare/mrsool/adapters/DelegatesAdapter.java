@@ -110,7 +110,7 @@ public class DelegatesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         public void BindData(NearDelegateDataModel.DelegateModel delegateModel) {
             Picasso.with(context).load(Uri.parse(Tags.IMAGE_URL+delegateModel.getUser_image())).fit().placeholder(R.drawable.logo_only).into(image);
             tv_name.setText(delegateModel.getUser_full_name());
-            tv_distance.setText(String.format("%.2f",delegateModel.getRate())+" "+context.getString(R.string.km));
+            tv_distance.setText(String.format("%.2f",delegateModel.getDistance())+" "+context.getString(R.string.km));
             tv_phone.setText(delegateModel.getUser_phone());
 
             SimpleRatingBar.AnimationBuilder builder = rateBar.getAnimationBuilder()

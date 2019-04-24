@@ -1,5 +1,6 @@
 package com.creativeshare.mrsool.activities_fragments.activity_sign_in.fragments;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
@@ -9,27 +10,38 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.creativeshare.mrsool.R;
 import com.creativeshare.mrsool.activities_fragments.activity_home.client_home.activity.ClientHomeActivity;
 import com.creativeshare.mrsool.activities_fragments.activity_sign_in.activity.SignInActivity;
+import com.creativeshare.mrsool.remote.Api;
 import com.creativeshare.mrsool.share.Common;
+import com.creativeshare.mrsool.tags.Tags;
 import com.mukesh.countrypicker.Country;
 import com.mukesh.countrypicker.CountryPicker;
 import com.mukesh.countrypicker.listeners.OnCountryPickerListener;
 
+import java.io.IOException;
 import java.util.Locale;
 
 import io.paperdb.Paper;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class Fragment_Phone extends Fragment implements OnCountryPickerListener {
     private static final String TAG = "TYPE";
@@ -137,7 +149,9 @@ public class Fragment_Phone extends Fragment implements OnCountryPickerListener 
             Common.CloseKeyBoard(activity, edt_phone);
             if (type.equals("signup"))
             {
-                ((SignInActivity)activity).signIn(phone,country_code,code);
+
+                sendSMSCode(code,phone);
+                //((SignInActivity)activity).signIn(phone,country_code,code);
 
             }else if (type.equals("edit_profile"))
             {
@@ -153,6 +167,51 @@ public class Fragment_Phone extends Fragment implements OnCountryPickerListener 
                     edt_phone.setError(null);
                 }
         }
+    }
+
+    private void sendSMSCode(String phone_code, final String phone) {
+        final ProgressDialog dialog = Common.createProgressDialog(activity,getString(R.string.wait));
+        dialog.setCancelable(false);
+        dialog.show();
+        Api.getService(Tags.base_url)
+                .getSmsCode(phone_code.replace("+","00"),phone)
+                .enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+                        dialog.dismiss();
+
+                        if (response.isSuccessful())
+                        {
+                            CreateAlertDialog(phone);
+                        }else
+                        {
+                            try {
+                                Log.e("error_code",response.code()+"_"+response.errorBody().string());
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            if (response.code()==404)
+                            {
+                                Common.CreateSignAlertDialog(activity,getString(R.string.inc_code_verification));
+                            }else
+                            {
+                                Toast.makeText(activity, getString(R.string.failed), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        try {
+                            dialog.dismiss();
+                            Toast.makeText(activity, getString(R.string.something), Toast.LENGTH_SHORT).show();
+                            Log.e("Error",t.getMessage());
+
+
+                        }catch (Exception e){}
+                    }
+                });
     }
 
 
@@ -187,8 +246,6 @@ public class Fragment_Phone extends Fragment implements OnCountryPickerListener 
 
 
     }
-
-
     @Override
     public void onSelectCountry(Country country) {
         updateUi(country);
@@ -204,5 +261,33 @@ public class Fragment_Phone extends Fragment implements OnCountryPickerListener 
 
 
 
+    }
+
+    private void CreateAlertDialog(final String phone)
+    {
+        final AlertDialog dialog = new AlertDialog.Builder(activity)
+                .setCancelable(false)
+                .create();
+
+        View view = LayoutInflater.from(activity).inflate(R.layout.dialog_sign,null);
+        Button doneBtn = view.findViewById(R.id.doneBtn);
+        TextView tv_msg = view.findViewById(R.id.tv_msg);
+        tv_msg.setText(R.string.you_will_receive_4_digit);
+        doneBtn.setOnClickListener(
+                new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                dialog.dismiss();
+                ((SignInActivity)activity).DisplayFragmentCodeVerification(code.replace("+","00"),phone,country_code);
+
+            }
+        });
+
+        dialog.getWindow().getAttributes().windowAnimations=R.style.dialog_congratulation_animation;
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.getWindow().setBackgroundDrawableResource(R.drawable.dialog_window_bg);
+        dialog.setView(view);
+        dialog.show();
     }
 }

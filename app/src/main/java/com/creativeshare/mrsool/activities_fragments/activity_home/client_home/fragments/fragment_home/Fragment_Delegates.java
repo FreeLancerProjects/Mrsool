@@ -232,7 +232,7 @@ public class Fragment_Delegates extends Fragment {
     }
 
     public void setItemData(NearDelegateDataModel.DelegateModel delegateModel) {
-        activity.setDelegate_id(delegateModel.getDriver_id(),client_id,order_id,type);
+        //activity.setDelegate_id(delegateModel.getDriver_id(),client_id,order_id,type);
 
     }
 }

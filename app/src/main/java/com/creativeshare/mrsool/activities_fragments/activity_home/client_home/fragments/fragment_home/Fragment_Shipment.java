@@ -192,14 +192,16 @@ public class Fragment_Shipment extends Fragment {
             edt_order_details.setError(null);
             Common.CloseKeyBoard(activity,edt_order_details);
 
-            if (TextUtils.isEmpty(delegate_id))
-            {
-                activity.DisplayFragmentDelegates(place_pickup_lat,place_dropoff_long,"reserve_shipment","","");
+//            if (TextUtils.isEmpty(delegate_id))
+//            {
+//                activity.DisplayFragmentDelegates(place_pickup_lat,place_dropoff_long,"reserve_shipment","","");
+//
+//            }else
+//                {
+//                }
 
-            }else
-                {
-                    sendOrder(delegate_id);
-                }
+            sendOrder();
+
 
         }else
             {
@@ -246,13 +248,13 @@ public class Fragment_Shipment extends Fragment {
             }
 
     }
-    public void sendOrder(String delegate_id)
+    public void sendOrder()
     {
-        this.delegate_id = delegate_id;
+        //this.delegate_id = delegate_id;
         final ProgressDialog dialog = Common.createProgressDialog(activity, getString(R.string.wait));
         dialog.show();
         Api.getService(Tags.base_url)
-                .sendOrder(userModel.getData().getUser_id(),place_dropoff_address, place_dropoff_lat, place_dropoff_long, delegate_id, order_details, place_id, place_pickup_address, "2", place_pickup_lat, place_pickup_long, selected_time)
+                .sendOrder(userModel.getData().getUser_id(),place_dropoff_address, place_dropoff_lat, place_dropoff_long, order_details, place_id, place_pickup_address, "2", place_pickup_lat, place_pickup_long, selected_time)
                 .enqueue(new Callback<OrderIdDataModel>() {
                     @Override
                     public void onResponse(Call<OrderIdDataModel> call, Response<OrderIdDataModel> response) {

@@ -40,11 +40,7 @@ public class UpdateLocationService extends Service implements LocationListener ,
 
 
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
 
-    }
 
     private void initGoogleApiClient() {
         googleApiClient = new GoogleApiClient.Builder(this)

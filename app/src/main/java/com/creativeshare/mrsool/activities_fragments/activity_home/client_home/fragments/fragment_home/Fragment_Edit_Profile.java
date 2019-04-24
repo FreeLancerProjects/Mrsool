@@ -562,8 +562,6 @@ public class Fragment_Edit_Profile extends Fragment implements DatePickerDialog.
     private void UpdateUserData(UserModel userModel)
     {
         this.userModel = userModel;
-        preferences.create_update_userData(activity,userModel);
-        userSingleTone.setUserModel(userModel);
         UpdateUI(userModel);
         activity.updateUserData(userModel);
     }
