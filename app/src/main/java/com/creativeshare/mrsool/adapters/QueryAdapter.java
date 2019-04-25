@@ -7,22 +7,25 @@ import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.creativeshare.mrsool.R;
 import com.creativeshare.mrsool.activities_fragments.activity_home.client_home.fragments.fragment_home.Fragment_Client_Store;
+import com.creativeshare.mrsool.models.QuerySearchModel;
 
 import java.util.List;
 
 public class QueryAdapter extends RecyclerView.Adapter<QueryAdapter.MyHolder> {
 
-    private List<String> queryList;
+    private List<QuerySearchModel> querySearchModelList;
     private Context context;
     private Fragment_Client_Store fragment;
     private int lastSelectedPos = 0;
     private SparseBooleanArray booleanArray;
-    public QueryAdapter(List<String> queryList, Context context, Fragment_Client_Store fragment) {
-        this.queryList = queryList;
+    public QueryAdapter(List<QuerySearchModel> querySearchModelList, Context context, Fragment_Client_Store fragment) {
+        this.querySearchModelList = querySearchModelList;
         this.context = context;
         this.fragment = fragment;
         booleanArray = new SparseBooleanArray();
@@ -41,15 +44,15 @@ public class QueryAdapter extends RecyclerView.Adapter<QueryAdapter.MyHolder> {
     @Override
     public void onBindViewHolder(@NonNull final MyHolder holder, int position) {
 
-        String query = queryList.get(position);
-        holder.BindData(query);
+        QuerySearchModel querySearchModel = querySearchModelList.get(position);
+        holder.BindData(querySearchModel);
 
         if (booleanArray.get(position,false))
         {
-            holder.tv_query.setBackgroundResource(R.drawable.tv_query_selected_bg);
+            holder.ll_container.setBackgroundResource(R.drawable.tv_query_selected_bg);
         }else
             {
-                holder.tv_query.setBackgroundResource(R.drawable.tv_query_unselected_bg);
+                holder.ll_container.setBackgroundResource(R.drawable.tv_query_unselected_bg);
             }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -67,24 +70,29 @@ public class QueryAdapter extends RecyclerView.Adapter<QueryAdapter.MyHolder> {
 
     @Override
     public int getItemCount() {
-        return queryList.size();
+        return querySearchModelList.size();
     }
 
     public class MyHolder extends RecyclerView.ViewHolder {
         private TextView tv_query;
+        private ImageView image;
+        private LinearLayout ll_container;
 
         public MyHolder(View itemView) {
             super(itemView);
 
             tv_query = itemView.findViewById(R.id.tv_query);
+            image = itemView.findViewById(R.id.image);
+            ll_container = itemView.findViewById(R.id.ll_container);
 
 
 
         }
 
-        public void BindData(String query) {
+        public void BindData(QuerySearchModel querySearchModel) {
 
-            tv_query.setText(query);
+            tv_query.setText(querySearchModel.getQuery());
+            image.setImageResource(querySearchModel.getImage_resource());
         }
     }
 }

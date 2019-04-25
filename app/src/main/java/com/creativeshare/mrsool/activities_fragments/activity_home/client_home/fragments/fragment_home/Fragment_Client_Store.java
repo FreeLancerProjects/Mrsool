@@ -30,6 +30,7 @@ import com.creativeshare.mrsool.adapters.SliderAdapter;
 import com.creativeshare.mrsool.models.NearbyModel;
 import com.creativeshare.mrsool.models.NearbyStoreDataModel;
 import com.creativeshare.mrsool.models.PlaceModel;
+import com.creativeshare.mrsool.models.QuerySearchModel;
 import com.creativeshare.mrsool.models.SliderModel;
 import com.creativeshare.mrsool.remote.Api;
 import com.creativeshare.mrsool.tags.Tags;
@@ -60,7 +61,8 @@ public class Fragment_Client_Store extends Fragment {
     private FrameLayout fl_slider;
     private Location location;
     private QueryAdapter queryAdapter;
-    private List<String> queriesList,en_ar_queriesList;
+    private List<String> queriesList;
+    private List<QuerySearchModel> en_ar_queriesList;
     private Timer timer;
     private TimerTask timerTask;
     private SliderAdapter sliderAdapter;
@@ -96,12 +98,12 @@ public class Fragment_Client_Store extends Fragment {
         queriesList.add("florist");
 
         en_ar_queriesList = new ArrayList<>();
-        en_ar_queriesList.add(getString(R.string.restaurant));
-        en_ar_queriesList.add(getString(R.string.bakery));
-        en_ar_queriesList.add(getString(R.string.supermarket));
-        en_ar_queriesList.add(getString(R.string.cafe));
-        en_ar_queriesList.add(getString(R.string.store));
-        en_ar_queriesList.add(getString(R.string.florist));
+        en_ar_queriesList.add(new QuerySearchModel(getString(R.string.restaurant),R.drawable.ic_restaurant));
+        en_ar_queriesList.add(new QuerySearchModel(getString(R.string.bakery),R.drawable.ic_sweet));
+        en_ar_queriesList.add(new QuerySearchModel(getString(R.string.supermarket),R.drawable.ic_nav_store));
+        en_ar_queriesList.add(new QuerySearchModel(getString(R.string.cafe),R.drawable.ic_cup));
+        en_ar_queriesList.add(new QuerySearchModel(getString(R.string.store),R.drawable.ic_store));
+        en_ar_queriesList.add(new QuerySearchModel(getString(R.string.florist),R.drawable.ic_gift));
 
 
 
@@ -345,7 +347,6 @@ public class Fragment_Client_Store extends Fragment {
     }
 
     public void setItemData(PlaceModel placeModel) {
-        Log.e("iddddd",placeModel.getPlace_id());
         activity.DisplayFragmentStoreDetails(placeModel);
 
     }

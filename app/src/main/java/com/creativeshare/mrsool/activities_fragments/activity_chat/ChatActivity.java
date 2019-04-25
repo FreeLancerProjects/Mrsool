@@ -178,9 +178,6 @@ public class ChatActivity extends AppCompatActivity {
 
 
         recView = findViewById(R.id.recView);
-        recView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
-        recView.setDrawingCacheEnabled(true);
-        recView.setItemViewCacheSize(25);
         manager = new LinearLayoutManager(this);
         manager.setStackFromEnd(true);
         recView.setLayoutManager(manager);
@@ -295,7 +292,7 @@ public class ChatActivity extends AppCompatActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void ListenToTyping(TypingModel typingModel)
     {
-        Log.e("typingModel",typingModel.getTyping_value());
+        Log.e("",typingModel.getTyping_value());
         if (typingModel.getTyping_value().equals("1"))
         {
             cons_typing.setVisibility(View.VISIBLE);
@@ -332,7 +329,7 @@ public class ChatActivity extends AppCompatActivity {
         }else
             {
                 messageModelList.add(messageModel);
-                adapter.notifyDataSetChanged();
+                adapter.notifyItemInserted(messageModelList.size()-1);
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -390,8 +387,6 @@ public class ChatActivity extends AppCompatActivity {
     }
     private void SendMessage(String msg,String msg_type)
     {
-        Log.e("msg_type",msg_type);
-        Log.e("msg",msg+"____");
 
         if (msg_type.equals(Tags.MESSAGE_TEXT))
         {
@@ -438,7 +433,7 @@ public class ChatActivity extends AppCompatActivity {
                             }else
                             {
                                 messageModelList.add(response.body());
-                                adapter.notifyDataSetChanged();
+                                adapter.notifyItemInserted(messageModelList.size()-1);
                                 new Handler().postDelayed(new Runnable() {
                                     @Override
                                     public void run() {
@@ -494,7 +489,7 @@ public class ChatActivity extends AppCompatActivity {
                             }else
                             {
                                 messageModelList.add(response.body());
-                                adapter.notifyDataSetChanged();
+                                adapter.notifyItemInserted(messageModelList.size()-1);
                                 new Handler().postDelayed(new Runnable() {
                                     @Override
                                     public void run() {
@@ -584,9 +579,9 @@ public class ChatActivity extends AppCompatActivity {
                             {
 
 
-                                messageModelList.addAll(response.body().getData());
+                                messageModelList.addAll(0,response.body().getData());
                                 current_page = response.body().getMeta().getCurrent_page();
-                                adapter.notifyDataSetChanged();
+                                adapter.notifyItemRangeInserted(0,response.body().getData().size()-1);
 
                             }
                             isLoading = false;

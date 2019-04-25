@@ -101,6 +101,7 @@ public class FireBaseMessaging extends FirebaseMessagingService {
             String order_id = map.get("order_id");
             String driver_offer = map.get("driver_offer");
             String message_type = map.get("chat_message_type");
+            String msg_image = map.get("file");
 
             ActivityManager activityManager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
             String class_name = activityManager.getRunningTasks(1).get(0).topActivity.getClassName();
@@ -108,7 +109,7 @@ public class FireBaseMessaging extends FirebaseMessagingService {
             if (class_name.equals("com.creativeshare.mrsool.activities_fragments.activity_chat.ChatActivity")) {
                 if (room_id_fk.equals(getChatUserModel().getRoom_id())) {
 
-                    MessageModel messageModel = new MessageModel(message_id,room_id_fk,date,message,message_type,"",from_user_id,from_name,from_user_image,from_user_phone_code,from_user_phone,to_user_id,to_user_full_name,to_user_image,to_user_phone_code,to_user_phone);
+                    MessageModel messageModel = new MessageModel(message_id,room_id_fk,date,message,message_type,msg_image,from_user_id,from_name,from_user_image,from_user_phone_code,from_user_phone,to_user_id,to_user_full_name,to_user_image,to_user_phone_code,to_user_phone);
                     EventBus.getDefault().post(messageModel);
                 } else {
                     String CHANNEL_ID = "my_channel_02";

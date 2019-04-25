@@ -2,8 +2,8 @@ package com.creativeshare.mrsool.adapters;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -17,9 +17,9 @@ import com.creativeshare.mrsool.R;
 import com.creativeshare.mrsool.models.MessageModel;
 import com.creativeshare.mrsool.tags.Tags;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 import com.squareup.picasso.Transformation;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -27,7 +27,6 @@ import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.paperdb.Paper;
-import jp.wasabeef.picasso.transformations.internal.FastBlur;
 
 public class ChatAdapter extends RecyclerView.Adapter {
 
@@ -181,50 +180,64 @@ public class ChatAdapter extends RecyclerView.Adapter {
         }
 
 
-        public void BindData(MessageModel messageModel) {
+        public void BindData(final MessageModel messageModel) {
 
-            Picasso.with(context).load(Uri.parse(Tags.IMAGE_URL + chat_user_image)).placeholder(R.drawable.logo_only).fit().priority(Picasso.Priority.HIGH).into(image);
             if (!messageModel.getMessage().equals("0"))
             {
                 tv_message_content.setText(messageModel.getMessage());
-
             }
             Paper.init(context);
             String lang = Paper.book().read("lang", Locale.getDefault().getLanguage());
             SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm aa", new Locale(lang));
             String msg_time = dateFormat.format(new Date(Long.parseLong(messageModel.getDate()) * 1000));
             tv_time.setText(msg_time);
-            Transformation transformation = new Transformation() {
-                @Override
-                public Bitmap transform(Bitmap source) {
-                    Bitmap bitmap = FastBlur.blur(source,10,true);
-                    source.recycle();
-                    return bitmap;
-                }
 
-                @Override
-                public String key() {
-                    return "blur()";
-                }
-            };
-            Picasso.with(context).load(Uri.parse(Tags.IMAGE_URL+messageModel.getFile())).transform(transformation).resizeDimen(R.dimen.chat_image_width,R.dimen.chat_image_height).into(new Target() {
-                @Override
-                public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                    image_bill.setImageBitmap(bitmap);
-                }
-
-                @Override
-                public void onBitmapFailed(Drawable errorDrawable) {
-
-                }
-
-                @Override
-                public void onPrepareLoad(Drawable placeHolderDrawable) {
-
-                }
-            });
+            //Picasso.with(context).load(Uri.parse(Tags.IMAGE_URL+messageModel.getFile())).resizeDimen(R.dimen.chat_image_width,R.dimen.chat_image_height).into(image_bill);
+            new MyAsyncTask().execute(messageModel.getFile());
+            Picasso.with(context).load(Uri.parse(Tags.IMAGE_URL + chat_user_image)).placeholder(R.drawable.logo_only).fit().priority(Picasso.Priority.HIGH).into(image);
 
         }
+
+
+        public class MyAsyncTask extends AsyncTask<String,Void,Bitmap>
+        {
+            @Override
+            protected Bitmap doInBackground(String... strings) {
+                Bitmap bitmap = null;
+                try {
+                    bitmap = Picasso.with(context).load(Uri.parse(Tags.IMAGE_URL+strings[0])).priority(Picasso.Priority.HIGH).transform(new Transformation() {
+                        @Override
+                        public Bitmap transform(Bitmap source) {
+                            int size = Math.min(source.getWidth(), source.getHeight());
+                            int x = (source.getWidth() - size) / 2;
+                            int y = (source.getHeight() - size) / 2;
+                            Bitmap result = Bitmap.createBitmap(source, x, y, size, size);
+                            if (result != source) {
+                                source.recycle();
+                            }
+                            return result;
+
+                        }
+
+                        @Override
+                        public String key() {
+                            return "square()";
+                        }
+                    }).get();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return bitmap;
+            }
+
+            @Override
+            protected void onPostExecute(Bitmap bitmap) {
+                super.onPostExecute(bitmap);
+                Log.e("nknk","nknk");
+                image_bill.setImageBitmap(bitmap);
+            }
+        }
+
     }
 
 
@@ -241,12 +254,11 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
         }
 
-        public void BindData(MessageModel messageModel) {
+        public void BindData(final MessageModel messageModel) {
 
             if (!messageModel.getMessage().equals("0"))
             {
                 tv_message_content.setText(messageModel.getMessage());
-
             }
 
             Paper.init(context);
@@ -255,38 +267,49 @@ public class ChatAdapter extends RecyclerView.Adapter {
             String msg_time = dateFormat.format(new Date(Long.parseLong(messageModel.getDate()) * 1000));
             tv_time.setText(msg_time);
 
-            Transformation transformation = new Transformation() {
-                @Override
-                public Bitmap transform(Bitmap source) {
-                    Bitmap bitmap = FastBlur.blur(source,10,true);
-                    source.recycle();
-                    return bitmap;
-                }
 
-                @Override
-                public String key() {
-                    return "blur()";
-                }
-            };
-            Picasso.with(context).load(Uri.parse(Tags.IMAGE_URL+messageModel.getFile())).transform(transformation).resizeDimen(R.dimen.chat_image_width,R.dimen.chat_image_height).into(new Target() {
-                @Override
-                public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                    image_bill.setImageBitmap(bitmap);
-                }
-
-                @Override
-                public void onBitmapFailed(Drawable errorDrawable) {
-
-                }
-
-                @Override
-                public void onPrepareLoad(Drawable placeHolderDrawable) {
-
-                }
-            });
+            new MyAsyncTask().execute(messageModel.getFile());
 
 
         }
+
+        public class MyAsyncTask extends AsyncTask<String,Void,Bitmap> {
+            @Override
+            protected Bitmap doInBackground(String... strings) {
+                Bitmap bitmap = null;
+                try {
+                    bitmap = Picasso.with(context).load(Uri.parse(Tags.IMAGE_URL+strings[0])).priority(Picasso.Priority.HIGH).transform(new Transformation() {
+                        @Override
+                        public Bitmap transform(Bitmap source) {
+                            int size = Math.min(source.getWidth(), source.getHeight());
+                            int x = (source.getWidth() - size) / 2;
+                            int y = (source.getHeight() - size) / 2;
+                            Bitmap result = Bitmap.createBitmap(source, x, y, size, size);
+                            if (result != source) {
+                                source.recycle();
+                            }
+                            return result;
+
+                        }
+
+                        @Override
+                        public String key() {
+                            return "square()";
+                        }
+                    }).get();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return bitmap;
+            }
+
+            @Override
+            protected void onPostExecute(Bitmap bitmap) {
+                super.onPostExecute(bitmap);
+                image_bill.setImageBitmap(bitmap);
+            }
+        }
+
     }
 
 
@@ -318,4 +341,6 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
 
     }
+
+
 }
