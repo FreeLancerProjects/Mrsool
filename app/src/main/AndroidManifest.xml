@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.creativeshare.mrsool">
+    package="com.creativeshare.wow">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -16,7 +16,7 @@
         />
 
     <application
-        android:name=".share.App"
+        android:name="com.creativeshare.wow.share.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -27,13 +27,13 @@
 
 
         <service
-            android:name=".notifications.FireBaseMessaging"
+            android:name="com.creativeshare.wow.notifications.FireBaseMessaging"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <service android:name=".services.UpdateLocationService" />
+        <service android:name="com.creativeshare.wow.services.UpdateLocationService" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -43,7 +43,7 @@
             android:value="@integer/google_play_services_version" />
 
         <activity
-            android:name=".activities_fragments.activity_splash.SplashActivity"
+            android:name="com.creativeshare.wow.activities_fragments.activity_splash.SplashActivity"
             android:configChanges="orientation|screenSize|keyboardHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -52,21 +52,21 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities_fragments.activity_sign_in.activity.SignInActivity"
+            android:name="com.creativeshare.wow.activities_fragments.activity_sign_in.activity.SignInActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
         <activity
-            android:name=".activities_fragments.terms_conditions.TermsConditionsActivity"
+            android:name="com.creativeshare.wow.activities_fragments.terms_conditions.TermsConditionsActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activities_fragments.activity_home.client_home.activity.ClientHomeActivity"
+            android:name="com.creativeshare.wow.activities_fragments.activity_home.client_home.activity.ClientHomeActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:excludeFromRecents="true"
             android:launchMode="singleTask"
             android:taskAffinity=""
              />
-        <activity android:name=".activities_fragments.activity_chat.ChatActivity"
+        <activity android:name="com.creativeshare.wow.activities_fragments.activity_chat.ChatActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:windowSoftInputMode="stateAlwaysHidden"
             android:excludeFromRecents="true"
