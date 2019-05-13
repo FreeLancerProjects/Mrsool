@@ -9,7 +9,7 @@
 
     >
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
@@ -131,9 +131,7 @@
             android:maxLines="2"
             android:textColor="@color/colorPrimary"
             android:textSize="13sp"
-            app:layout_constraintBaseline_toBaselineOf="@id/tv_distance"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/map"
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toEndOf="@id/image"
             app:layout_constraintTop_toBottomOf="@id/order_state"
@@ -176,7 +174,7 @@
             />
 
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </LinearLayout>

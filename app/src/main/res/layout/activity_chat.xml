@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<androidx.constraintlayout.widget.ConstraintLayout
 
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,14 +8,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
-        <android.support.design.widget.AppBarLayout
+        <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/app_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorPrimary"
             app:layout_constraintTop_toTopOf="parent">
 
-            <android.support.v7.widget.Toolbar
+            <androidx.appcompat.widget.Toolbar
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:contentInsetEnd="0dp"
@@ -24,7 +24,7 @@
                 app:contentInsetStart="0dp"
                 app:layout_collapseMode="pin">
 
-                <android.support.constraint.ConstraintLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
@@ -146,10 +146,10 @@
                             />
 
                     </LinearLayout>
-                </android.support.constraint.ConstraintLayout>
-            </android.support.v7.widget.Toolbar>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.appcompat.widget.Toolbar>
 
-        </android.support.design.widget.AppBarLayout>
+        </com.google.android.material.appbar.AppBarLayout>
 
         <ProgressBar
             android:id="@+id/progBarLoadMore"
@@ -160,18 +160,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/app_bar" />
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toTopOf="@id/cons_typing"
             app:layout_constraintTop_toBottomOf="@id/progBarLoadMore">
 
-        </android.support.v7.widget.RecyclerView>
+        </androidx.recyclerview.widget.RecyclerView>
 
-        <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools"
+        <androidx.constraintlayout.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/cons_typing"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -224,7 +222,7 @@
                    ></com.eyalbira.loadingdots.LoadingDots>
             </FrameLayout>
 
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.ConstraintLayout>
 
         <LinearLayout
             android:id="@+id/ll_msg_container"
@@ -253,7 +251,7 @@
                     android:src="@drawable/ic_send"
                     android:tint="@color/white" />
 
-                <android.support.constraint.ConstraintLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2.5"
@@ -301,7 +299,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         android:layout_marginEnd="8dp"
                         tools:ignore="RtlCompat" />
-                </android.support.constraint.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
             </LinearLayout>
         </LinearLayout>
@@ -319,7 +317,7 @@
             app:layout_constraintVertical_bias=".5" />
 
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!--<ImageView
         android:id="@+id/image_call"

@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--suppress ALL -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,7 +11,7 @@
     >
 
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,7 +20,7 @@
         android:visibility="invisible"
 
         >
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             >
@@ -87,19 +88,19 @@
 
             </com.balysv.materialripple.MaterialRippleLayout>
 
-        </android.support.constraint.ConstraintLayout>
-    </android.support.v7.widget.CardView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
 
-    <android.support.design.widget.CoordinatorLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >
-        <android.support.design.widget.AppBarLayout
+        <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/gray1"
             >
-            <android.support.design.widget.CollapsingToolbarLayout
+            <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:titleEnabled="false"
@@ -115,15 +116,15 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         >
-                        <android.support.v4.view.ViewPager
+                        <androidx.viewpager.widget.ViewPager
                             android:id="@+id/pager"
                             android:layout_width="match_parent"
                             android:layout_height="160dp"
                             android:layout_marginBottom="8dp"
                             >
 
-                        </android.support.v4.view.ViewPager>
-                        <android.support.design.widget.TabLayout
+                        </androidx.viewpager.widget.ViewPager>
+                        <com.google.android.material.tabs.TabLayout
                             android:id="@+id/tab"
                             android:layout_width="wrap_content"
                             android:layout_height="6dp"
@@ -137,7 +138,7 @@
 
                             >
 
-                        </android.support.design.widget.TabLayout>
+                        </com.google.android.material.tabs.TabLayout>
                     </LinearLayout>
                     <ProgressBar
                         android:id="@+id/progBarSlider"
@@ -149,8 +150,8 @@
                 </FrameLayout>
 
 
-            </android.support.design.widget.CollapsingToolbarLayout>
-            <android.support.v7.widget.RecyclerView
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recViewQueries"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -159,10 +160,10 @@
                 android:visibility="gone"
                 >
 
-            </android.support.v7.widget.RecyclerView>
-        </android.support.design.widget.AppBarLayout>
+            </androidx.recyclerview.widget.RecyclerView>
+        </com.google.android.material.appbar.AppBarLayout>
 
-        <android.support.v4.widget.NestedScrollView
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fillViewport="true"
@@ -180,13 +181,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     >
-                    <android.support.v7.widget.RecyclerView
+                    <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recView"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         >
 
-                    </android.support.v7.widget.RecyclerView>
+                    </androidx.recyclerview.widget.RecyclerView>
 
                     <ProgressBar
                         android:id="@+id/progBar"
@@ -223,8 +224,8 @@
                 </FrameLayout>
 
             </LinearLayout>
-        </android.support.v4.widget.NestedScrollView>
+        </androidx.core.widget.NestedScrollView>
 
-    </android.support.design.widget.CoordinatorLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </LinearLayout>

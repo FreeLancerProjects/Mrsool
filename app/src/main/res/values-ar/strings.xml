@@ -205,7 +205,7 @@
     <string name="new_order_sent">تم إرسال طلب جديد</string>
     <string name="offer_accepted">تم الموافقة على عرض التوصيل</string>
     <string name="shipment">طرد مرسولك</string>
-    <string name="do_you_have_a_purpose_that_you_want_to_be_assigned_to_any_place_in_your_city_the_shipment_provide_this_service">عندك غرض ودك ترسلة لاي مكان في مدينتك ؟ طرد مرسلوك يقدم لك هالخدمة</string>
+    <string name="do_you_have_a_purpose_that_you_want_to_be_assigned_to_any_place_in_your_city_the_shipment_provide_this_service">عندك غرض ودك ترسلة لاي مكان في مدينتك ؟ طرد مرسولك يقدم لك هالخدمة</string>
     <string name="receiving_and_delivery_location">موقع الاستلام والتسليم</string>
     <string name="receiving_location">موقع الاستلام</string>
     <string name="choose">إختر</string>

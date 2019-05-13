@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!--suppress ALL -->
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,17 +11,17 @@
     android:focusable="true"
     >
 
-    <android.support.design.widget.AppBarLayout
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         >
-        <android.support.design.widget.CollapsingToolbarLayout
+        <com.google.android.material.appbar.CollapsingToolbarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:titleEnabled="false"
             >
-            <android.support.constraint.ConstraintLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 >
@@ -103,9 +105,9 @@
                         android:textStyle="bold"
                         />
                 </LinearLayout>
-            </android.support.constraint.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <android.support.v7.widget.Toolbar
+            <androidx.appcompat.widget.Toolbar
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 app:contentInsetStart="0dp"
@@ -113,7 +115,7 @@
                 app:layout_collapseMode="pin"
                 android:background="@color/colorPrimary"
                 >
-                <android.support.constraint.ConstraintLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     >
@@ -155,12 +157,12 @@
                         tools:ignore="RtlCompat"
                         android:text="@string/profile"
                         />
-                </android.support.constraint.ConstraintLayout>
-            </android.support.v7.widget.Toolbar>
-        </android.support.design.widget.CollapsingToolbarLayout>
-    </android.support.design.widget.AppBarLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.appcompat.widget.Toolbar>
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
 
-    <android.support.v4.widget.NestedScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
@@ -174,7 +176,7 @@
             android:orientation="vertical"
 
             >
-            <android.support.constraint.ConstraintLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cons_add_coupon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -204,8 +206,8 @@
                     android:textColor="@color/colorPrimary"
                     android:text="@string/add_coupon"
                     />
-            </android.support.constraint.ConstraintLayout>
-            <android.support.constraint.ConstraintLayout
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="15dp"
@@ -237,13 +239,13 @@
 
                     />
 
-            </android.support.constraint.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1px"
                 android:background="@color/gray5"/>
 
-            <android.support.constraint.ConstraintLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:paddingStart="16dp"
@@ -274,13 +276,13 @@
 
                     />
 
-            </android.support.constraint.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1px"
                 android:background="@color/gray5"/>
 
-            <android.support.constraint.ConstraintLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cons_comment"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -316,13 +318,13 @@
 
                     />
 
-            </android.support.constraint.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1px"
                 android:background="@color/gray5"/>
 
-            <android.support.constraint.ConstraintLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:paddingStart="16dp"
@@ -356,14 +358,14 @@
 
                     />
 
-            </android.support.constraint.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1px"
                 android:background="@color/gray5"/>
 
 
-            <android.support.constraint.ConstraintLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cons_register_delegate"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -395,13 +397,13 @@
                     android:padding="13dp"
                     />
 
-            </android.support.constraint.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1px"
                 android:background="@color/gray5"/>
 
-            <android.support.constraint.ConstraintLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cons_logout"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -433,7 +435,7 @@
                     android:padding="13dp"
                     />
 
-            </android.support.constraint.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1px"
@@ -510,5 +512,5 @@
             </LinearLayout>
 
         </LinearLayout>
-    </android.support.v4.widget.NestedScrollView>
-</android.support.design.widget.CoordinatorLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
