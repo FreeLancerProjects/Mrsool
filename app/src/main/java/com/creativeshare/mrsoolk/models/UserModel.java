@@ -26,6 +26,7 @@ public class UserModel implements Serializable {
         private String user_card_id;
         private String user_card_id_image;
         private String user_driving_license;
+        private String available;
 
         private double rate;
         private int num_orders;
@@ -111,6 +112,10 @@ public class UserModel implements Serializable {
 
         public int getNum_coupon() {
             return num_coupon;
+        }
+
+        public String getAvailable() {
+            return available;
         }
     }
 }

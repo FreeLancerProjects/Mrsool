@@ -2,6 +2,7 @@ package com.creativeshare.mrsoolk.services;
 
 import com.creativeshare.mrsoolk.models.AppDataModel;
 import com.creativeshare.mrsoolk.models.CommentDataModel;
+import com.creativeshare.mrsoolk.models.FollowModel;
 import com.creativeshare.mrsoolk.models.MessageDataModel;
 import com.creativeshare.mrsoolk.models.MessageModel;
 import com.creativeshare.mrsoolk.models.NearDelegateDataModel;
@@ -11,6 +12,7 @@ import com.creativeshare.mrsoolk.models.NotificationDataModel;
 import com.creativeshare.mrsoolk.models.OrderDataModel;
 import com.creativeshare.mrsoolk.models.OrderIdDataModel;
 import com.creativeshare.mrsoolk.models.PlaceDetailsModel;
+import com.creativeshare.mrsoolk.models.PlaceDirectionModel;
 import com.creativeshare.mrsoolk.models.PlaceGeocodeData;
 import com.creativeshare.mrsoolk.models.PlaceMapDetailsData;
 import com.creativeshare.mrsoolk.models.SearchDataModel;
@@ -144,6 +146,22 @@ public interface Service {
                                      @Field("place_lat") double place_lat,
                                      @Field("place_long") double place_long,
                                      @Field("order_time_arrival") long order_time_arrival
+    );
+
+    @Multipart
+    @POST("/Api/addOrder")
+    Call<OrderIdDataModel> sendOrderWithImage(@Part("client_id") RequestBody client_id,
+                                              @Part("client_address") RequestBody client_address,
+                                              @Part("client_lat") RequestBody client_lat,
+                                              @Part("client_long") RequestBody client_long,
+                                              @Part("order_details") RequestBody order_details,
+                                              @Part("place_google_id") RequestBody place_google_id,
+                                              @Part("place_address") RequestBody place_address,
+                                              @Part("order_type") RequestBody order_type,
+                                              @Part("place_lat") RequestBody place_lat,
+                                              @Part("place_long") RequestBody place_long,
+                                              @Part("order_time_arrival") RequestBody order_time_arrival,
+                                              @Part MultipartBody.Part image
     );
 
     @FormUrlEncoded
@@ -336,6 +354,27 @@ public interface Service {
 
     @GET("/Api/profile")
     Call<UserModel> getUserDataById(@Query("user_id") String user_id);
+
+    @FormUrlEncoded
+    @POST("/Api/availableStatus")
+    Call<UserModel> updateDelegateAvailable(@Field("user_id") String  user_id,
+                                            @Field("available") String  available
+                                            );
+
+    @GET("directions/json")
+    Call<PlaceDirectionModel> getDirection(@Query("origin") String origin,
+                                           @Query("destination") String destination,
+                                           @Query("transit_mode") String transit_mode,
+                                           @Query("key") String key
+                                           );
+
+
+    @FormUrlEncoded
+    @POST("/Api/followingDriver")
+    Call<FollowModel> getFollowData(@Field("order_id")String order_id,
+                                    @Field("driver_id")String driver_id,
+                                    @Field("client_id")String client_id
+                                    );
 }
 
 

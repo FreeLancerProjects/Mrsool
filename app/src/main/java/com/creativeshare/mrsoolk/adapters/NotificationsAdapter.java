@@ -123,8 +123,15 @@ public class NotificationsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
             if (notificationModel.getOrder_status().equals(String.valueOf(Tags.STATE_ORDER_NEW)))
             {
-                // delegate only
-                tv_order_state.setText(R.string.not_approved);
+                if (user_type.equals(Tags.TYPE_CLIENT))
+                {
+                    tv_order_state.setText(R.string.not_approved);
+
+                }else
+                    {
+                        tv_order_state.setText(context.getString(R.string.new_order_sent2));
+
+                    }
                 image_state.setVisibility(View.GONE);
                 image_state.setVisibility(View.GONE);
                 tv_add_rate.setVisibility(View.GONE);
@@ -143,7 +150,7 @@ public class NotificationsAdapter extends RecyclerView.Adapter<RecyclerView.View
                 tv_add_rate.setVisibility(View.GONE);
 
                 if (user_type.equals(Tags.TYPE_CLIENT)) {
-                    tv_order_state.setText(R.string.order_accepted);
+                    tv_order_state.setText(context.getString(R.string.del_sent_offer));
 
                     Picasso.with(context).load(R.drawable.logo_only).fit().into(image);
                     tv_name.setText(notificationModel.getOrder_details());

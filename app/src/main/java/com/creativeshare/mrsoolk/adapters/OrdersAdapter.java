@@ -126,7 +126,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 Picasso.with(context).load(R.drawable.logo_only).fit().into(image);
                 image_state.setBackgroundResource(R.drawable.wait_bg_gray);
                 image_state.setImageResource(R.drawable.ic_time_left);
-                tv_order_state.setText(R.string.not_approved);
+                tv_order_state.setText(context.getString(R.string.new_order_2));
 
             }else
                 {

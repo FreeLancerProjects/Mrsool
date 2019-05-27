@@ -25,6 +25,7 @@ public class NotificationModel implements Serializable {
     private String place_long;
     private String place_address;
     private String order_type;
+    private String order_image;
     private List<Drivers> driver_list;
 
 
@@ -112,6 +113,10 @@ public class NotificationModel implements Serializable {
 
     public List<Drivers> getDriver_list() {
         return driver_list;
+    }
+
+    public String getOrder_image() {
+        return order_image;
     }
 
     public class Drivers implements Serializable {

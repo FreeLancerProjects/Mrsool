@@ -1,9 +1,17 @@
 package com.creativeshare.mrsoolk.activities_fragments.activity_home.client_home.fragments.fragment_home;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,6 +28,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
@@ -34,15 +43,20 @@ import com.creativeshare.mrsoolk.remote.Api;
 import com.creativeshare.mrsoolk.share.Common;
 import com.creativeshare.mrsoolk.singletone.UserSingleTone;
 import com.creativeshare.mrsoolk.tags.Tags;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.squareup.picasso.Picasso;
 
 import net.cachapa.expandablelayout.ExpandableLayout;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Locale;
 
 import io.paperdb.Paper;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -50,7 +64,7 @@ import retrofit2.Response;
 public class Fragment_Reserve_Order extends Fragment {
     private static final String TAG = "DATA";
     private ClientHomeActivity activity;
-    private ImageView image, arrow, image_reserve;
+    private ImageView image, arrow, image_reserve,image_details;
     private TextView tv_place_name, tv_place_address, tv_address;
     private LinearLayout ll_back, ll_delivery_location, ll_fav_address, ll_fav_map_loc, ll_choose_delivery_time;
     private CheckBox checkbox;
@@ -60,16 +74,23 @@ public class Fragment_Reserve_Order extends Fragment {
     private PlaceModel placeModel;
     private String current_language;
     private Preferences preferences;
+    private FloatingActionButton fab;
     private Favourite_location favourite_location;
     private String [] timesList;
     private UserSingleTone userSingleTone;
     private UserModel userModel;
 
+    private final int IMG1=1,IMG2=2;
+    private Uri uri=null;
+    private final String read_permission = Manifest.permission.READ_EXTERNAL_STORAGE;
+    private final String write_permission = Manifest.permission.WRITE_EXTERNAL_STORAGE;
+    private final String camera_permission = Manifest.permission.CAMERA;
 
     ////////////////////////////////////////////////
     private Favourite_location selected_location = null;
     private long selected_time=0;
     private String order_details,delegate_id="";
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -119,6 +140,8 @@ public class Fragment_Reserve_Order extends Fragment {
         }
         ll_back = view.findViewById(R.id.ll_back);
         image = view.findViewById(R.id.image);
+        image_details = view.findViewById(R.id.image_details);
+        fab = view.findViewById(R.id.fab);
         image_reserve = view.findViewById(R.id.image_reserve);
         tv_place_name = view.findViewById(R.id.tv_place_name);
         tv_place_address = view.findViewById(R.id.tv_place_address);
@@ -133,6 +156,8 @@ public class Fragment_Reserve_Order extends Fragment {
         tv_fav_address = view.findViewById(R.id.tv_fav_address);
         tv_delivery_time = view.findViewById(R.id.tv_delivery_time);
         edt_order_details = view.findViewById(R.id.edt_order_details);
+
+
 
 
 
@@ -218,6 +243,13 @@ public class Fragment_Reserve_Order extends Fragment {
             updateUI(placeModel);
         }
 
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                CreateImageAlertDialog();
+            }
+        });
         image_reserve.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -241,7 +273,15 @@ public class Fragment_Reserve_Order extends Fragment {
             }else
                 {
                 }*/
-            sendOrder();
+
+            if (uri==null)
+            {
+                sendOrder();
+
+            }else
+                {
+                    sendOrderWithImage();
+                }
 
 
         }else
@@ -275,6 +315,7 @@ public class Fragment_Reserve_Order extends Fragment {
             }
 
     }
+
 
 
     private void updateUI(PlaceModel placeModel) {
@@ -388,6 +429,58 @@ public class Fragment_Reserve_Order extends Fragment {
         updateSelectedAddress(favourite_location,false);
     }
 
+    public void sendOrderWithImage()
+    {
+        //this.delegate_id = delegate_id;
+
+        RequestBody user_id_part = Common.getRequestBodyText(userModel.getData().getUser_id());
+        RequestBody client_address_part = Common.getRequestBodyText(selected_location.getStreet()+" "+selected_location.getAddress());
+        RequestBody client_lat_part = Common.getRequestBodyText(String.valueOf(selected_location.getLat()));
+        RequestBody client_lng_part = Common.getRequestBodyText(String.valueOf(selected_location.getLng()));
+        RequestBody order_details_part = Common.getRequestBodyText(order_details);
+        RequestBody place_id_part = Common.getRequestBodyText(placeModel.getPlace_id());
+        RequestBody place_address_part = Common.getRequestBodyText(placeModel.getAddress());
+        RequestBody order_type_part = Common.getRequestBodyText("1");
+        RequestBody place_lat_part = Common.getRequestBodyText(String.valueOf(placeModel.getLat()));
+        RequestBody place_lng_part = Common.getRequestBodyText(String.valueOf(placeModel.getLng()));
+        RequestBody selected_time_part = Common.getRequestBodyText(String.valueOf(selected_time));
+        MultipartBody.Part image_part = Common.getMultiPart(activity,uri,"order_image");
+
+        final ProgressDialog dialog = Common.createProgressDialog(activity,getString(R.string.wait));
+        dialog.show();
+        Api.getService(Tags.base_url)
+                .sendOrderWithImage(user_id_part,client_address_part,client_lat_part,client_lng_part,order_details_part,place_id_part,place_address_part,order_type_part,place_lat_part,place_lng_part,selected_time_part,image_part)
+                .enqueue(new Callback<OrderIdDataModel>() {
+                    @Override
+                    public void onResponse(Call<OrderIdDataModel> call, Response<OrderIdDataModel> response) {
+                        dialog.dismiss();
+                        if (response.isSuccessful()&&response.body()!=null&&response.body().getData()!=null)
+                        {
+                            uri = null;
+                            CreateAlertDialog(response.body().getData().getOrder_id());
+                        }else
+                            {
+                                try {
+                                    Log.e("Error_code",response.code()+""+response.errorBody().string());
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                                Toast.makeText(activity, R.string.failed, Toast.LENGTH_SHORT).show();
+                            }
+                    }
+
+                    @Override
+                    public void onFailure(Call<OrderIdDataModel> call, Throwable t) {
+                        try {
+                            dialog.dismiss();
+                            Toast.makeText(activity, getString(R.string.something), Toast.LENGTH_SHORT).show();
+                            Log.e("Error",t.getMessage());
+                        }catch (Exception e){}
+                    }
+                });
+
+    }
+
     public void sendOrder()
     {
         //this.delegate_id = delegate_id;
@@ -405,14 +498,14 @@ public class Fragment_Reserve_Order extends Fragment {
                         {
                             CreateAlertDialog(response.body().getData().getOrder_id());
                         }else
-                            {
-                                try {
-                                    Log.e("Error_code",response.code()+""+response.errorBody().string());
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-                                Toast.makeText(activity, R.string.failed, Toast.LENGTH_SHORT).show();
+                        {
+                            try {
+                                Log.e("Error_code",response.code()+""+response.errorBody().string());
+                            } catch (IOException e) {
+                                e.printStackTrace();
                             }
+                            Toast.makeText(activity, R.string.failed, Toast.LENGTH_SHORT).show();
+                        }
                     }
 
                     @Override
@@ -544,4 +637,203 @@ public class Fragment_Reserve_Order extends Fragment {
         dialog.setView(view);
         dialog.show();
     }
+
+
+    private void CreateImageAlertDialog()
+    {
+
+        final androidx.appcompat.app.AlertDialog dialog = new androidx.appcompat.app.AlertDialog.Builder(activity)
+                .setCancelable(true)
+                .create();
+
+
+        View view = LayoutInflater.from(activity).inflate(R.layout.dialog_select_image,null);
+        Button btn_camera = view.findViewById(R.id.btn_camera);
+        Button btn_gallery = view.findViewById(R.id.btn_gallery);
+        Button btn_cancel = view.findViewById(R.id.btn_cancel);
+
+
+
+        btn_camera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                Check_CameraPermission();
+
+            }
+        });
+
+        btn_gallery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                Check_ReadPermission();
+
+
+
+            }
+        });
+
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.getWindow().getAttributes().windowAnimations= R.style.dialog_congratulation_animation;
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setView(view);
+        dialog.show();
+    }
+    private void Check_ReadPermission()
+    {
+        if (ContextCompat.checkSelfPermission(activity,read_permission)!= PackageManager.PERMISSION_GRANTED )
+        {
+            ActivityCompat.requestPermissions(activity,new String[]{read_permission},IMG1);
+        }else
+        {
+            select_photo(1);
+
+        }
+
+    }
+
+
+    private void Check_CameraPermission()
+    {
+        if (ContextCompat.checkSelfPermission(activity,camera_permission)!= PackageManager.PERMISSION_GRANTED&&ContextCompat.checkSelfPermission(activity,write_permission)!= PackageManager.PERMISSION_GRANTED)
+        {
+            ActivityCompat.requestPermissions(activity,new String[]{camera_permission,write_permission},IMG2);
+        }else
+        {
+            select_photo(2);
+
+        }
+
+    }
+    private void select_photo(int type)
+    {
+        Intent  intent = new Intent();
+
+        if (type == 1)
+        {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+            {
+                intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
+                intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+            }else
+            {
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+
+            }
+
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            intent.setType("image/*");
+            startActivityForResult(intent,IMG1);
+
+        }else if (type ==2)
+        {
+            try {
+                intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(intent,IMG2);
+            }catch (SecurityException e)
+            {
+                Toast.makeText(activity,R.string.perm_image_denied, Toast.LENGTH_SHORT).show();
+            }
+            catch (Exception e)
+            {
+                Toast.makeText(activity,R.string.perm_image_denied, Toast.LENGTH_SHORT).show();
+
+            }
+
+
+
+        }
+
+
+
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == IMG1 && resultCode == Activity.RESULT_OK && data!=null)
+        {
+            uri = data.getData();
+            File file = new File(Common.getImagePath(activity,uri));
+            try {
+                Picasso.with(activity).load(file).into(image_details);
+
+            }catch (Exception e)
+            {
+                Picasso.with(activity).load(uri).into(image_details);
+            }
+            image_details.setVisibility(View.VISIBLE);
+
+        }else if (requestCode == IMG2 && resultCode == Activity.RESULT_OK && data!=null)
+        {
+            Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+            image_details.setImageBitmap(bitmap);
+            uri = getUriFromBitmap(bitmap);
+            image_details.setVisibility(View.VISIBLE);
+
+        }
+    }
+
+
+    private Uri getUriFromBitmap(Bitmap bitmap)
+    {
+        String path = "";
+        try {
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG,100,outputStream);
+            path = MediaStore.Images.Media.insertImage(activity.getContentResolver(),bitmap,"title",null);
+            return Uri.parse(path);
+
+        }catch (SecurityException e)
+        {
+            Toast.makeText(activity,getString(R.string.perm_image_denied), Toast.LENGTH_SHORT).show();
+
+        }catch (Exception e)
+        {
+            Toast.makeText(activity,getString(R.string.perm_image_denied), Toast.LENGTH_SHORT).show();
+
+        }
+        return null;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == IMG1)
+        {
+            if (grantResults.length>0)
+            {
+                if (grantResults[0]== PackageManager.PERMISSION_GRANTED)
+                {
+                    select_photo(1);
+                }else
+                {
+                    Toast.makeText(activity,getString(R.string.perm_image_denied), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }else if (requestCode == IMG2)
+        {
+            if (grantResults.length>0)
+            {
+                if (grantResults[0]==PackageManager.PERMISSION_GRANTED&&grantResults[1]==PackageManager.PERMISSION_GRANTED)
+                {
+                    select_photo(2);
+
+                }else
+                {
+                    Toast.makeText(activity,getString(R.string.perm_image_denied), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+
+
+    }
+
 }

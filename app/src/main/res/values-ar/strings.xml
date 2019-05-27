@@ -78,7 +78,7 @@
     <string name="active">مفتوح</string>
     <string name="inactive">مغلق</string>
     <string name="im_a_courier">سجلني كمرسول</string>
-    <string name="courier_in">مرسول متواجد</string>
+    <string name="courier_in">مرسولك متواجد</string>
     <string name="state">الحالة</string>
     <string name="away"> كم يبعد عنك</string>
     <string name="shop_info">معلومات المتجر</string>
@@ -148,7 +148,7 @@
     <string name="couriers">مرسول</string>
     <string name="go_to_order">متابعة طلبك</string>
     <string name="order_sent_successfully_order_number_is">تم إرسال طلبك بنجاح رقم طلبك هو</string>
-    <string name="national_number">الرقم القومي</string>
+    <string name="national_number">رقم السجل/الإقامة</string>
     <string name="address">العنوان</string>
     <string name="identity_card_image">صورة البطاقة الشخصية</string>
     <string name="license_image">صورة رخصة القيادة</string>
@@ -161,7 +161,7 @@
     <string name="order_number">رقم الطلب</string>
     <string name="no_waiting_orders">لا توجد طلبات في الانتظار</string>
     <string name="order_state">حالة الطلب</string>
-    <string name="not_approved">لم يتم الموافقة علية</string>
+    <string name="not_approved">تم إرسال طلبك</string>
     <string name="pending">قيد الانتظار</string>
     <string name="done">تم الانجاز</string>
     <string name="just_now">الان</string>
@@ -262,5 +262,17 @@
     <string name="add_rate2">تقييم المرسول</string>
     <string name="bad">سيئ</string>
     <string name="very_bad">سيئ جدا</string>
+    <string name="alert_nearby_order">تنبية الطلبات القريبة</string>
+    <string name="follow_your_order">تتبع طلبك</string>
+    <string name="remaining_time">الوقت المتبقي</string>
+    <string name="min2">دقيقة</string>
+    <string name="Admin">إدارة مرسولك</string>
+    <string name="req_acc_as_cour">تم قبول طلبك كمرسول</string>
+    <string name="rej_as_cour">عفوا، تم رفض طلبك كمرسول.</string>
+    <string name="req_sent">عفوا ، تم إرسال طلبك من قبل نرجو انتظار الرد من قبل الادارة</string>
+    <string name="new_order_sent2">تم إرسال طلب جديد</string>
+    <string name="new_order_2">طلب جديد</string>
+    <string name="del_sent_offer">المندوب أرسل لك عرض التوصيل</string>
+
 
 </resources>

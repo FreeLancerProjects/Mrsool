@@ -1,5 +1,6 @@
 package com.creativeshare.mrsoolk.activities_fragments.activity_home.client_home.fragments.fragment_home;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,7 +34,7 @@ import io.paperdb.Paper;
 public class Fragment_Client_Delegate_Offer extends Fragment {
 
     private final static  String TAG = "Data";
-    private ImageView image_back;
+    private ImageView image_back,order_image;
     private LinearLayout ll_back,ll_action_container,ll_container;
     private CircleImageView image;
     private AppBarLayout app_bar;
@@ -86,6 +87,7 @@ public class Fragment_Client_Delegate_Offer extends Fragment {
         ll_container = view.findViewById(R.id.ll_container);
         app_bar = view.findViewById(R.id.app_bar);
 
+        order_image = view.findViewById(R.id.order_image);
         ll_back = view.findViewById(R.id.ll_back);
         image = view.findViewById(R.id.image);
         tv_delegate_name = view.findViewById(R.id.tv_delegate_name);
@@ -160,6 +162,16 @@ public class Fragment_Client_Delegate_Offer extends Fragment {
                     ll_action_container.setVisibility(View.GONE);
 
                 }
+
+            if (notificationModel.getOrder_image().equals("0"))
+            {
+                order_image.setVisibility(View.GONE);
+            }else
+            {
+                Picasso.with(activity).load(Uri.parse(Tags.base_url+notificationModel.getOrder_image())).fit().into(order_image);
+                order_image.setVisibility(View.VISIBLE);
+
+            }
             Currency currency = Currency.getInstance(new Locale(current_language,userModel.getData().getUser_country()));
             Picasso.with(activity).load(Tags.IMAGE_URL+notificationModel.getFrom_user_image()).placeholder(R.drawable.logo_only).fit().into(image);
             tv_delegate_name.setText(notificationModel.getFrom_user_full_name());

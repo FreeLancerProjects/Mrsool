@@ -6,6 +6,7 @@ public class Tags {
     public static final String IMAGE_URL = base_url+"/uploads/images/";
     public static final String session_login = "login";
     public static final String session_logout = "logout";
+    public static final String googleDirectionBase_url = "https://maps.googleapis.com/maps/api/";
 
     public static final int MALE = 1;
     public static final int FEMALE = 2;
@@ -43,6 +44,11 @@ public class Tags {
     public static final String FIREBASE_NOT_ORDER_STATUS = "order_status";
     public static final String FIREBASE_NOT_SEND_MESSAGE = "send_message";
     public static final String FIREBASE_NOT_RATE = "rate";
+    public static final String FIREBASE_NOT_BEDRIVER = "be_driver";
+    public static final String FIREBASE_NOT_DRIVER_UPDATE_LOCATION = "driver_update_location";
+
+
+
 
     public static final String MESSAGE_TEXT = "1";
     public static final String MESSAGE_IMAGE_TEXT = "2";

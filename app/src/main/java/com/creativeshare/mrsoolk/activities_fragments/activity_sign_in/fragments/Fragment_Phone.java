@@ -145,6 +145,11 @@ public class Fragment_Phone extends Fragment implements OnCountryPickerListener 
 
         String phone = edt_phone.getText().toString().trim();
 
+        if (phone.startsWith("0"))
+        {
+            phone = phone.replaceFirst("0","");
+        }
+
         if (!TextUtils.isEmpty(phone) && phone.matches(phone_regex)) {
             edt_phone.setError(null);
             Common.CloseKeyBoard(activity, edt_phone);
@@ -180,10 +185,19 @@ public class Fragment_Phone extends Fragment implements OnCountryPickerListener 
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
 
+                        try {
+                            Log.e("body",response.body().string()+"__");
+
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        Log.e("code",response.code()+"__");
+
                         dialog.dismiss();
 
                         if (response.isSuccessful())
                         {
+                            Log.e("body",response.body()+"__");
                             CreateAlertDialog(phone);
                         }else
                         {

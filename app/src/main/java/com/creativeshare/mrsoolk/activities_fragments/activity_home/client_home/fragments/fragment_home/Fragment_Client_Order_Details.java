@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -35,7 +36,7 @@ import io.paperdb.Paper;
 public class Fragment_Client_Order_Details extends Fragment {
     private static final String TAG = "ORDER";
     private ClientHomeActivity activity;
-    private ImageView image_back, image_chat, image_call;
+    private ImageView image_back, image_chat, image_call,order_image;
     private LinearLayout ll_back, ll_delegate_data_container,ll_shipment;
     private CircleImageView image;
     private TextView tv_delegate_name, tv_rate;
@@ -45,6 +46,7 @@ public class Fragment_Client_Order_Details extends Fragment {
     private RelativeLayout rl;
     private LinearLayout ll;
     private AppBarLayout app_bar;
+    private Button btn_follow_order;
 
     ////////////////////////////////
     private ImageView image1, image2, image3, image4, image5;
@@ -81,6 +83,8 @@ public class Fragment_Client_Order_Details extends Fragment {
             image_back.setImageResource(R.drawable.ic_left_arrow);
 
         }
+        order_image = view.findViewById(R.id.order_image);
+
         ll_delegate_data_container = view.findViewById(R.id.ll_delegate_data_container);
         ll_shipment = view.findViewById(R.id.ll_shipment);
         tv_location_pickup = view.findViewById(R.id.tv_location_pickup);
@@ -88,6 +92,7 @@ public class Fragment_Client_Order_Details extends Fragment {
 
         tv_not_approved = view.findViewById(R.id.tv_not_approved);
         tv_order_details = view.findViewById(R.id.tv_order_details);
+        btn_follow_order = view.findViewById(R.id.btn_follow_order);
 
         /////////////////////////////////////////////////
         app_bar = view.findViewById(R.id.app_bar);
@@ -167,12 +172,31 @@ public class Fragment_Client_Order_Details extends Fragment {
             }
         });
 
+        btn_follow_order.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                activity.DisplayFragmentMapFollowOrder(order);
+            }
+        });
+
 
     }
 
 
     private void UpdateUI(OrderDataModel.OrderModel order) {
         if (order != null) {
+
+            if (order.getOrder_image().equals("0"))
+            {
+                order_image.setVisibility(View.GONE);
+            }else
+                {
+
+                    Picasso.with(activity).load(Uri.parse(Tags.IMAGE_URL+order.getOrder_image())).fit().into(order_image);
+                    order_image.setVisibility(View.VISIBLE);
+
+                }
+
             tv_delegate_name.setText(order.getDriver_user_full_name());
             Picasso.with(activity).load(Uri.parse(Tags.IMAGE_URL + order.getDriver_user_image())).placeholder(R.drawable.logo_only).fit().into(image);
             tv_rate.setText("(" + order.getRate() + ")");
@@ -206,6 +230,7 @@ public class Fragment_Client_Order_Details extends Fragment {
                 updateStepView(0);
             } else{
 
+                btn_follow_order.setVisibility(View.VISIBLE);
                 ll_delegate_data_container.setVisibility(View.VISIBLE);
                 image_chat.setVisibility(View.VISIBLE);
                 image_call.setVisibility(View.VISIBLE);

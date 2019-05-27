@@ -316,6 +316,14 @@
 
                         </LinearLayout>
 
+                        <ImageView
+                            android:id="@+id/order_image"
+                            android:layout_width="160dp"
+                            android:layout_height="160dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="5dp"
+                            android:visibility="gone"
+                            />
                         <FrameLayout
                             android:id="@+id/fl_map"
                             android:layout_width="match_parent"

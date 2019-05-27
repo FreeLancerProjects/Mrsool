@@ -1,15 +1,18 @@
 package com.creativeshare.mrsoolk.activities_fragments.activity_home.client_home.fragments.fragment_home;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.NumberPicker;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,19 +21,32 @@ import androidx.fragment.app.Fragment;
 
 import com.creativeshare.mrsoolk.R;
 import com.creativeshare.mrsoolk.activities_fragments.activity_home.client_home.activity.ClientHomeActivity;
+import com.creativeshare.mrsoolk.models.UserModel;
+import com.creativeshare.mrsoolk.remote.Api;
+import com.creativeshare.mrsoolk.share.Common;
+import com.creativeshare.mrsoolk.singletone.UserSingleTone;
 import com.creativeshare.mrsoolk.tags.Tags;
+import com.zcw.togglebutton.ToggleButton;
 
+import java.io.IOException;
 import java.util.Locale;
 
 import io.paperdb.Paper;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class Fragment_Settings extends Fragment {
 
     private ClientHomeActivity activity;
-    private ConstraintLayout cons_back,cons_complains,cons_edit_profile,cons_language,cons_terms,cons_privacy,cons_rate,cons_about;
+    private ConstraintLayout cons_back,cons_alert,cons_complains,cons_edit_profile,cons_language,cons_terms,cons_privacy,cons_rate,cons_about;
     private ImageView arrow_back,arrow1,arrow2,arrow3,arrow4,arrow5,arrow6,arrow7;
     private String current_language;
     private String [] language_array;
+    private ToggleButton toggle_btn;
+    private View v_alert;
+    private UserSingleTone userSingleTone;
+    private UserModel userModel;
 
     @Nullable
     @Override
@@ -46,6 +62,8 @@ public class Fragment_Settings extends Fragment {
     }
     private void initView(View view) {
 
+        userSingleTone = UserSingleTone.getInstance();
+        userModel = userSingleTone.getUserModel();
         activity = (ClientHomeActivity) getActivity();
         Paper.init(activity);
         current_language = Paper.book().read("lang",Locale.getDefault().getLanguage());
@@ -88,6 +106,7 @@ public class Fragment_Settings extends Fragment {
             }
 
         cons_back = view.findViewById(R.id.cons_back);
+        cons_alert = view.findViewById(R.id.cons_alert);
         cons_complains = view.findViewById(R.id.cons_complains);
         cons_edit_profile = view.findViewById(R.id.cons_edit_profile);
         cons_language = view.findViewById(R.id.cons_language);
@@ -95,6 +114,9 @@ public class Fragment_Settings extends Fragment {
         cons_privacy = view.findViewById(R.id.cons_privacy);
         cons_rate = view.findViewById(R.id.cons_rate);
         cons_about = view.findViewById(R.id.cons_about);
+
+        toggle_btn = view.findViewById(R.id.toggle_btn);
+        v_alert = view.findViewById(R.id.v_alert);
 
         cons_rate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -154,6 +176,103 @@ public class Fragment_Settings extends Fragment {
                 activity.DisplayFragmentDelegateComment();
             }
         });
+
+        toggle_btn.setOnToggleChanged(new ToggleButton.OnToggleChanged() {
+            @Override
+            public void onToggle(boolean on) {
+                if (on)
+                {
+                    updateState("on");
+                }else
+                    {
+                        updateState("off");
+
+                    }
+            }
+        });
+
+
+
+        if (userModel.getData().getUser_type().equals(Tags.TYPE_DELEGATE))
+        {
+            cons_alert.setVisibility(View.VISIBLE);
+            v_alert.setVisibility(View.VISIBLE);
+            if (userModel.getData().getAvailable().equals("1"))
+            {
+                toggle_btn.setToggleOn();
+            }else
+            {
+                toggle_btn.setToggleOff();
+
+            }
+        }else
+            {
+                cons_alert.setVisibility(View.GONE);
+                v_alert.setVisibility(View.GONE);
+            }
+
+    }
+
+    private void updateState(final String state)
+    {
+        final ProgressDialog dialog = Common.createProgressDialog(activity,getString(R.string.wait));
+        dialog.show();
+
+        Api.getService(Tags.base_url)
+                .updateDelegateAvailable(userModel.getData().getUser_id(),state)
+                .enqueue(new Callback<UserModel>() {
+                    @Override
+                    public void onResponse(Call<UserModel> call, Response<UserModel> response) {
+                        dialog.dismiss();
+                        if (response.isSuccessful()&&response.body()!=null&&response.body().getData()!=null)
+                        {
+                            UpdateUserData(response.body());
+                        }else
+                        {
+
+                            if (state.equals("on"))
+                            {
+                                toggle_btn.setToggleOff();
+
+                            }else
+                            {
+                                toggle_btn.setToggleOn();
+
+                            }
+
+                            Toast.makeText(activity, getString(R.string.failed), Toast.LENGTH_SHORT).show();
+                            try {
+                                Log.e("Error_code",response.code()+"_"+response.errorBody().string());
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<UserModel> call, Throwable t) {
+                        try {
+                            if (state.equals("on"))
+                            {
+                                toggle_btn.setToggleOff();
+
+                            }else
+                            {
+                                toggle_btn.setToggleOn();
+
+                            }
+                            dialog.dismiss();
+                            Toast.makeText(activity, R.string.something, Toast.LENGTH_SHORT).show();
+                            Log.e("Error",t.getMessage());
+                        }catch (Exception e){}
+                    }
+                });
+
+    }
+
+    private void UpdateUserData(UserModel userModel) {
+        this.userModel = userModel;
+        activity.updateUserData(userModel);
     }
 
 

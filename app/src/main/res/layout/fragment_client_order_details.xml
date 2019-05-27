@@ -146,7 +146,23 @@
                                 android:visibility="gone"
                                 />
                         </FrameLayout>
+                        <Button
+                            android:id="@+id/btn_follow_order"
+                            android:layout_width="wrap_content"
+                            android:layout_height="35dp"
+                            android:layout_marginTop="20dp"
+                            android:layout_gravity="center_horizontal"
+                            android:paddingLeft="12dp"
+                            android:paddingRight="12dp"
+                            android:background="@drawable/edt_show_bg"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="14sp"
+                            android:gravity="center"
+                            android:text="@string/follow_your_order"
+                            android:textAllCaps="false"
+                            android:visibility="gone"
 
+                            />
                     </LinearLayout>
 
                 </FrameLayout>
@@ -367,6 +383,16 @@
 
 
                 </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/order_image"
+                    android:layout_width="160dp"
+                    android:layout_height="160dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="5dp"
+                    android:visibility="gone"
+                    />
+
 
                 <TextView
                     android:layout_width="150dp"

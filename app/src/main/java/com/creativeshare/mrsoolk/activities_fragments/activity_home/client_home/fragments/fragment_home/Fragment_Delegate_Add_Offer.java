@@ -1,5 +1,6 @@
 package com.creativeshare.mrsoolk.activities_fragments.activity_home.client_home.fragments.fragment_home;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -33,7 +34,7 @@ import io.paperdb.Paper;
 public class Fragment_Delegate_Add_Offer extends Fragment {
 
     private final static  String TAG = "Data";
-    private ImageView image_back;
+    private ImageView image_back,order_image;
     private LinearLayout ll_back,ll_client_container,ll_address,ll_shipment;
     private CircleImageView image;
     private TextView tv_client_name,tv_order_details,tv_order_address,tv_location_pickup,tv_location_dropoff;
@@ -84,6 +85,8 @@ public class Fragment_Delegate_Add_Offer extends Fragment {
 
             image_back.setImageResource(R.drawable.ic_left_arrow);
         }
+        order_image = view.findViewById(R.id.order_image);
+
         ll_back = view.findViewById(R.id.ll_back);
         image = view.findViewById(R.id.image);
         tv_client_name = view.findViewById(R.id.tv_client_name);
@@ -160,6 +163,18 @@ public class Fragment_Delegate_Add_Offer extends Fragment {
             Picasso.with(activity).load(Tags.IMAGE_URL+orderModel.getClient_user_image()).placeholder(R.drawable.logo_only).fit().into(image);
             tv_client_name.setText(orderModel.getClient_user_full_name());
             tv_order_details.setText(orderModel.getOrder_details());
+
+            if (orderModel.getOrder_image().equals("0"))
+            {
+                order_image.setVisibility(View.GONE);
+            }else
+            {
+                Picasso.with(activity).load(Uri.parse(Tags.IMAGE_URL+orderModel.getOrder_image())).fit().into(order_image);
+                order_image.setVisibility(View.VISIBLE);
+
+            }
+
+
 
             if (orderModel.getOrder_type().equals("1"))
             {

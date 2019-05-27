@@ -416,53 +416,7 @@ public class Fragment_Edit_Profile extends Fragment implements DatePickerDialog.
 
     }
 
-    private void CreateImageAlertDialog()
-    {
 
-        final AlertDialog dialog = new AlertDialog.Builder(activity)
-                .setCancelable(true)
-                .create();
-
-
-        View view = LayoutInflater.from(activity).inflate(R.layout.dialog_select_image,null);
-        Button btn_camera = view.findViewById(R.id.btn_camera);
-        Button btn_gallery = view.findViewById(R.id.btn_gallery);
-        Button btn_cancel = view.findViewById(R.id.btn_cancel);
-
-
-
-        btn_camera.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-                Check_CameraPermission();
-
-            }
-        });
-
-        btn_gallery.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-                Check_ReadPermission();
-
-
-
-            }
-        });
-
-        btn_cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-
-        dialog.getWindow().getAttributes().windowAnimations= R.style.dialog_congratulation_animation;
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.setView(view);
-        dialog.show();
-    }
     private void UpdateImage(Uri uri) {
         final ProgressDialog dialog = Common.createProgressDialog(activity,getString(R.string.wait));
         dialog.show();
@@ -566,7 +520,53 @@ public class Fragment_Edit_Profile extends Fragment implements DatePickerDialog.
         UpdateUI(userModel);
         activity.updateUserData(userModel);
     }
+    private void CreateImageAlertDialog()
+    {
 
+        final AlertDialog dialog = new AlertDialog.Builder(activity)
+                .setCancelable(true)
+                .create();
+
+
+        View view = LayoutInflater.from(activity).inflate(R.layout.dialog_select_image,null);
+        Button btn_camera = view.findViewById(R.id.btn_camera);
+        Button btn_gallery = view.findViewById(R.id.btn_gallery);
+        Button btn_cancel = view.findViewById(R.id.btn_cancel);
+
+
+
+        btn_camera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                Check_CameraPermission();
+
+            }
+        });
+
+        btn_gallery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                Check_ReadPermission();
+
+
+
+            }
+        });
+
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.getWindow().getAttributes().windowAnimations= R.style.dialog_congratulation_animation;
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setView(view);
+        dialog.show();
+    }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {

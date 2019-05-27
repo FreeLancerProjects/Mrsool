@@ -150,7 +150,7 @@
     <string name="couriers">Couriers</string>
     <string name="go_to_order">Follow order</string>
     <string name="order_sent_successfully_order_number_is">Order sent successfully order number is</string>
-    <string name="national_number">National number</string>
+    <string name="national_number">Residence</string>
     <string name="address">Address</string>
     <string name="identity_card_image">Identity card image</string>
     <string name="license_image">License image</string>
@@ -265,4 +265,15 @@
     <string name="add_rate2">Add rate</string>
     <string name="bad">Bad</string>
     <string name="very_bad">Very Bad</string>
+    <string name="alert_nearby_order">Alert nearby order</string>
+    <string name="follow_your_order">Follow your order</string>
+    <string name="remaining_time">Remaining time</string>
+    <string name="min2">min</string>
+    <string name="Admin">Admin</string>
+    <string name="req_acc_as_cour">Your request has been accepted as a Courier</string>
+    <string name="rej_as_cour">Sorry, your request was rejected as a Courier</string>
+    <string name="req_sent">Sorry, your request has been sent. Please wait for a response from the admin</string>
+    <string name="new_order_sent2">New order sent</string>
+    <string name="new_order_2">New order</string>
+    <string name="del_sent_offer">Delegate sent offer</string>
 </resources>

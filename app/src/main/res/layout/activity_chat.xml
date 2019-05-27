@@ -169,7 +169,8 @@
 
         </androidx.recyclerview.widget.RecyclerView>
 
-        <androidx.constraintlayout.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        <androidx.constraintlayout.widget.ConstraintLayout
+
             android:id="@+id/cons_typing"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -222,7 +223,7 @@
                    ></com.eyalbira.loadingdots.LoadingDots>
             </FrameLayout>
 
-        </androidx.constraintlayout.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout
             android:id="@+id/ll_msg_container"

@@ -1,503 +1,552 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--suppress ALL -->
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<?xml version="1.0" encoding="utf-8"?><!--suppress ALL -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/gray1"
-    android:clickable="true"
-    android:focusable="true"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
     >
-
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
-        <androidx.coordinatorlayout.widget.CoordinatorLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            app:titleEnabled="false"
-            app:scrimAnimationDuration="200"
-            android:fitsSystemWindows="true"
-            >
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                >
-                <ImageView
-                    android:id="@+id/image"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    android:layout_marginTop="80dp"
-                    android:layout_marginStart="16dp"
-                    tools:ignore="RtlCompat"
-                    android:background="@drawable/circle_place_bg"
-                    android:padding="8dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    android:layout_marginBottom="15dp"
-
-
-                    />
-                <TextView
-                    android:id="@+id/tv_place_name"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toTopOf="@id/image"
-                    app:layout_constraintStart_toEndOf="@id/image"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="40dp"
-                    android:textColor="@color/white"
-                    android:textSize="15sp"
-                    tools:ignore="RtlCompat"
-                    app:layout_constraintWidth_default="wrap"
-                    android:textStyle="bold"
-                    app:layout_constraintHorizontal_bias="0"
-                    />
-
-                <TextView
-                    android:id="@+id/tv_place_address"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@id/tv_place_name"
-                    app:layout_constraintStart_toEndOf="@id/image"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="40dp"
-                    android:textColor="@color/white"
-                    android:textSize="13sp"
-                    tools:ignore="RtlCompat"
-                    app:layout_constraintWidth_default="wrap"
-                    android:textStyle="bold"
-                    app:layout_constraintHorizontal_bias="0"
-                    android:layout_marginTop="5dp"
-                    />
-
-
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.appcompat.widget.Toolbar
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                app:contentInsetStart="0dp"
-                app:contentInsetEnd="0dp"
-                app:layout_collapseMode="pin"
-                >
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/colorPrimary"
-                    >
-                    <ImageView
-                        android:id="@+id/image_reserve"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-
-                        android:layout_marginStart="10dp"
-                        android:src="@drawable/ic_correct"
-                        android:padding="15dp"
-                        android:tint="@color/white"
-                        tools:ignore="RtlCompat" />
-
-                    <LinearLayout
-                        android:id="@+id/ll_back"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        android:orientation="horizontal"
-                        >
-                        <ImageView
-                            android:id="@+id/arrow"
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
-                            android:src="@drawable/ic_left_arrow"
-                            android:tint="@color/white"
-                            android:padding="15dp"
-                            tools:ignore="RtlCompat"
-                            />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="5dp"
-                            android:textColor="@color/white"
-                            android:textSize="14sp"
-                            tools:ignore="RtlCompat"
-                            android:text="@string/order_now"
-                            android:layout_gravity="center_vertical"
-                            />
-                    </LinearLayout>
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </androidx.appcompat.widget.Toolbar>
-        </androidx.coordinatorlayout.widget.CoordinatorLayout>
-    </com.google.android.material.appbar.AppBarLayout>
-
-
-    <androidx.core.widget.NestedScrollView
+    <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:fillViewport="true"
-        android:fitsSystemWindows="true"
-        android:scrollbars="none"
+        android:background="@color/gray1"
+        android:clickable="true"
+        android:focusable="true">
 
-        >
-
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/app_bar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            >
-            <LinearLayout
-                android:id="@+id/ll_delivery_location"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="@color/white"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
+                android:fitsSystemWindows="true"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                app:scrimAnimationDuration="200"
+                app:titleEnabled="false">
 
-                >
-                <LinearLayout
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cons_data_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
+                    android:layout_marginTop="80dp"
+
 
                     >
+
                     <ImageView
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
-                        android:src="@drawable/ic_map"
-                        android:padding="10dp"
-                        android:tint="@color/gray7"
-                        />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginStart="5dp"
-                        android:layout_marginEnd="5dp"
-                        android:textColor="@color/gray7"
-                        android:text="@string/delivery_location"
-                        android:textSize="15sp"
-
-                        />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="1"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginStart="40dp"
-                    tools:ignore="RtlCompat"
-
-                    >
-                    <TextView
-                        android:id="@+id/tv_address"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight=".9"
+                        android:id="@+id/image"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginBottom="15dp"
+                        android:background="@drawable/circle_place_bg"
+                        android:padding="8dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
                         tools:ignore="RtlCompat"
-                        android:textColor="@color/gray4"
-                        android:textSize="13sp"
-                        android:text="@string/choose_delivery_location"
-                        android:maxLines="2"
-                        android:ellipsize="end"
-                        android:layout_gravity="center_vertical"
+
 
                         />
-                    <FrameLayout
-                        android:layout_width="0dp"
-                        android:layout_weight=".10"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        >
-                        <CheckBox
 
-                            android:id="@+id/checkbox"
+                    <TextView
+                        android:id="@+id/tv_place_name"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="40dp"
+                        android:textColor="@color/white"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0"
+                        app:layout_constraintStart_toEndOf="@id/image"
+                        app:layout_constraintTop_toTopOf="@id/image"
+                        app:layout_constraintWidth_default="wrap"
+                        tools:ignore="RtlCompat" />
+
+                    <TextView
+                        android:id="@+id/tv_place_address"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginEnd="40dp"
+                        android:textColor="@color/white"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0"
+                        app:layout_constraintStart_toEndOf="@id/image"
+                        app:layout_constraintTop_toBottomOf="@id/tv_place_name"
+                        app:layout_constraintWidth_default="wrap"
+                        tools:ignore="RtlCompat" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.appcompat.widget.Toolbar
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    app:contentInsetEnd="0dp"
+                    app:contentInsetStart="0dp"
+                    app:layout_collapseMode="pin">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/colorPrimary"
+                        >
+
+                        <ImageView
+                            android:id="@+id/image_reserve"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:layout_marginStart="10dp"
+                            android:padding="15dp"
+                            android:src="@drawable/ic_correct"
+
+                            android:tint="@color/white"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:ignore="RtlCompat" />
+
+                        <LinearLayout
+                            android:id="@+id/ll_back"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:button="@drawable/ch_fav_loc"
-                            android:visibility="gone"
-                            android:scaleX=".6"
-                            android:scaleY=".6"
-                            />
-                    </FrameLayout>
-
-                </LinearLayout>
-
-
-            </LinearLayout>
-            <View
-                android:id="@+id/view1"
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/ll_delivery_location"
-                android:background="@color/gray4"/>
-            <net.cachapa.expandablelayout.ExpandableLayout
-                android:id="@+id/expandLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/view1"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:el_expanded="false"
-                app:el_parallax=".5"
-                app:el_duration="500"
-                >
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-
-                    >
-                    <LinearLayout
-                        android:id="@+id/ll_fav_address"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        android:paddingLeft="16dp"
-                        android:paddingRight="16dp"
-                        android:paddingTop="8dp"
-                        android:paddingBottom="8dp"
-                        android:background="@color/gray1"
-
-
-                        >
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
                             android:orientation="horizontal"
-                            android:clickable="false"
-                            android:longClickable="false"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
 
-                            >
                             <ImageView
-                                android:layout_width="35dp"
-                                android:layout_height="35dp"
-                                android:src="@drawable/ic_star"
-                                android:padding="10dp"
-                                android:tint="@color/gray7"
-                                android:clickable="false"
-                                android:longClickable="false"
+                                android:id="@+id/arrow"
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:padding="15dp"
+                                android:src="@drawable/ic_left_arrow"
+                                android:tint="@color/white"
+                                tools:ignore="RtlCompat" />
 
-                                />
                             <TextView
-                                android:id="@+id/tv_fav_address_title"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
-                                android:layout_marginStart="5dp"
                                 android:layout_marginEnd="5dp"
-                                android:textColor="@color/gray7"
-                                android:text="title"
+                                android:text="@string/order_now"
+                                android:textColor="@color/white"
                                 android:textSize="14sp"
-                                android:clickable="false"
-                                android:longClickable="false"
-                                />
-
+                                tools:ignore="RtlCompat" />
                         </LinearLayout>
-                        <TextView
-                            android:id="@+id/tv_fav_address"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            tools:ignore="RtlCompat"
-                            android:textColor="@color/gray4"
-                            android:textSize="12sp"
-                            android:text="address"
-                            android:maxLines="2"
-                            android:ellipsize="end"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginStart="40dp"
-                            android:clickable="false"
-                            android:longClickable="false"
-                            />
-                    </LinearLayout>
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1px"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/ll_map"
-                        android:background="@color/gray7"
-                        android:layout_marginStart="56dp"
-                        tools:ignore="RtlCompat" />
-                    <LinearLayout
-                        android:id="@+id/ll_fav_map_loc"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        android:paddingLeft="16dp"
-                        android:paddingRight="16dp"
-                        android:paddingTop="5dp"
-                        android:paddingBottom="5dp"
-                        android:background="@color/gray1"
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-                        >
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:clickable="false"
-                            android:longClickable="false"
-                            android:descendantFocusability="blocksDescendants"
-
-                            >
-                            <ImageView
-                                android:layout_width="35dp"
-                                android:layout_height="35dp"
-                                android:src="@drawable/ic_pin"
-                                android:padding="10dp"
-                                android:tint="@color/gray7"
-                                android:clickable="false"
-                                android:longClickable="false"
-                                />
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:layout_marginStart="5dp"
-                                android:layout_marginEnd="5dp"
-                                android:textColor="@color/gray7"
-                                android:text="@string/set_location_on_map"
-                                android:textSize="13sp"
-                                android:clickable="false"
-                                android:longClickable="false"
-                                />
-
-                        </LinearLayout>
-                    </LinearLayout>
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1px"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/ll_map"
-                        android:background="@color/gray7"
-                        />
-                </LinearLayout>
-
-            </net.cachapa.expandablelayout.ExpandableLayout>
+                </androidx.appcompat.widget.Toolbar>
 
 
-            <LinearLayout
-                android:id="@+id/ll_choose_delivery_time"
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+        </com.google.android.material.appbar.AppBarLayout>
+
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:fitsSystemWindows="true"
+            android:scrollbars="none"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+
+            >
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="@color/white"
-                app:layout_constraintTop_toBottomOf="@id/expandLayout"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
-                android:descendantFocusability="blocksDescendants"
+                android:layout_height="match_parent">
 
-                >
                 <LinearLayout
+                    android:id="@+id/ll_delivery_location"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
+                    android:background="@color/white"
+                    android:orientation="vertical"
+                    android:paddingLeft="16dp"
+                    android:paddingTop="8dp"
+                    android:paddingRight="16dp"
+                    android:paddingBottom="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
 
                     >
-                    <ImageView
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
-                        android:src="@drawable/ic_time"
-                        android:padding="11dp"
-                        android:tint="@color/gray7"
-                        android:clickable="false"
-                        android:longClickable="false"
-                        />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+
+                        >
+
+                        <ImageView
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:padding="10dp"
+                            android:src="@drawable/ic_map"
+                            android:tint="@color/gray7" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginEnd="5dp"
+                            android:text="@string/delivery_location"
+                            android:textColor="@color/gray7"
+                            android:textSize="15sp"
+
+                            />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="40dp"
+                        android:layout_marginTop="5dp"
+                        android:orientation="horizontal"
+                        android:weightSum="1"
+                        tools:ignore="RtlCompat"
+
+                        >
+
+                        <TextView
+                            android:id="@+id/tv_address"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight=".9"
+                            android:ellipsize="end"
+                            android:maxLines="2"
+                            android:text="@string/choose_delivery_location"
+                            android:textColor="@color/gray4"
+                            android:textSize="13sp"
+                            tools:ignore="RtlCompat"
+
+                            />
+
+                        <FrameLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight=".10">
+
+                            <CheckBox
+
+                                android:id="@+id/checkbox"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:button="@drawable/ch_fav_loc"
+                                android:scaleX=".6"
+                                android:scaleY=".6"
+                                android:visibility="gone" />
+                        </FrameLayout>
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/view1"
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/gray4"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/ll_delivery_location" />
+
+                <net.cachapa.expandablelayout.ExpandableLayout
+                    android:id="@+id/expandLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:el_duration="500"
+                    app:el_expanded="false"
+                    app:el_parallax=".5"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/view1">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+
+                        >
+
+                        <LinearLayout
+                            android:id="@+id/ll_fav_address"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/gray1"
+                            android:orientation="vertical"
+                            android:paddingLeft="16dp"
+                            android:paddingTop="8dp"
+                            android:paddingRight="16dp"
+                            android:paddingBottom="8dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+
+
+                            >
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:clickable="false"
+                                android:longClickable="false"
+                                android:orientation="horizontal"
+
+                                >
+
+                                <ImageView
+                                    android:layout_width="35dp"
+                                    android:layout_height="35dp"
+                                    android:clickable="false"
+                                    android:longClickable="false"
+                                    android:padding="10dp"
+                                    android:src="@drawable/ic_star"
+                                    android:tint="@color/gray7"
+
+                                    />
+
+                                <TextView
+                                    android:id="@+id/tv_fav_address_title"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_marginStart="5dp"
+                                    android:layout_marginEnd="5dp"
+                                    android:clickable="false"
+                                    android:longClickable="false"
+                                    android:text="title"
+                                    android:textColor="@color/gray7"
+                                    android:textSize="14sp" />
+
+                            </LinearLayout>
+
+                            <TextView
+                                android:id="@+id/tv_fav_address"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginStart="40dp"
+                                android:clickable="false"
+                                android:ellipsize="end"
+                                android:longClickable="false"
+                                android:maxLines="2"
+                                android:text="address"
+                                android:textColor="@color/gray4"
+                                android:textSize="12sp"
+                                tools:ignore="RtlCompat" />
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1px"
+                            android:layout_marginStart="56dp"
+                            android:background="@color/gray7"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/ll_map"
+                            tools:ignore="RtlCompat" />
+
+                        <LinearLayout
+                            android:id="@+id/ll_fav_map_loc"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/gray1"
+                            android:orientation="vertical"
+                            android:paddingLeft="16dp"
+                            android:paddingTop="5dp"
+                            android:paddingRight="16dp"
+                            android:paddingBottom="5dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+
+
+                            >
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:clickable="false"
+                                android:descendantFocusability="blocksDescendants"
+                                android:longClickable="false"
+                                android:orientation="horizontal"
+
+                                >
+
+                                <ImageView
+                                    android:layout_width="35dp"
+                                    android:layout_height="35dp"
+                                    android:clickable="false"
+                                    android:longClickable="false"
+                                    android:padding="10dp"
+                                    android:src="@drawable/ic_pin"
+                                    android:tint="@color/gray7" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_marginStart="5dp"
+                                    android:layout_marginEnd="5dp"
+                                    android:clickable="false"
+                                    android:longClickable="false"
+                                    android:text="@string/set_location_on_map"
+                                    android:textColor="@color/gray7"
+                                    android:textSize="13sp" />
+
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1px"
+                            android:background="@color/gray7"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/ll_map" />
+                    </LinearLayout>
+
+                </net.cachapa.expandablelayout.ExpandableLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/ll_choose_delivery_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:descendantFocusability="blocksDescendants"
+                    android:orientation="vertical"
+                    android:paddingLeft="16dp"
+                    android:paddingTop="8dp"
+                    android:paddingRight="16dp"
+                    android:paddingBottom="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/expandLayout"
+
+                    >
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+
+                        >
+
+                        <ImageView
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:clickable="false"
+                            android:longClickable="false"
+                            android:padding="11dp"
+                            android:src="@drawable/ic_time"
+                            android:tint="@color/gray7" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginEnd="5dp"
+                            android:clickable="false"
+                            android:longClickable="false"
+                            android:text="@string/delivery_time"
+                            android:textColor="@color/gray7"
+                            android:textSize="15sp"
+
+                            />
+                    </LinearLayout>
+
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:id="@+id/tv_delivery_time"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginStart="5dp"
-                        android:layout_marginEnd="5dp"
-                        android:textColor="@color/gray7"
-                        android:text="@string/delivery_time"
-                        android:textSize="15sp"
+                        android:layout_marginStart="40dp"
                         android:clickable="false"
                         android:longClickable="false"
+                        android:text="@string/check_here_to_choose_delivery_time"
+                        android:textColor="@color/gray4"
+                        android:textSize="13sp"
+                        tools:ignore="RtlCompat" />
 
-                        />
+
                 </LinearLayout>
 
-                <TextView
-                    android:id="@+id/tv_delivery_time"
+                <View
+                    android:id="@+id/view2"
                     android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/gray4"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/ll_choose_delivery_time" />
+
+
+                <EditText
+                    android:id="@+id/edt_order_details"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    tools:ignore="RtlCompat"
+                    android:background="@color/white"
+                    android:hint="@string/write_order_details"
+                    android:paddingLeft="25dp"
+                    android:paddingTop="8dp"
+                    android:paddingRight="25dp"
+                    android:paddingBottom="8dp"
                     android:textColor="@color/gray4"
-                    android:textSize="13sp"
-                    android:text="@string/check_here_to_choose_delivery_time"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="40dp"
-                    android:clickable="false"
-                    android:longClickable="false"
+                    android:textColorHint="@color/gray4"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/view2"
+
                     />
 
+                <ImageView
+                    android:id="@+id/image_details"
+                    android:layout_width="160dp"
+                    android:layout_height="160dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/edt_order_details"
+                    android:layout_marginTop="30dp"
+                    android:visibility="gone"
+                    android:scaleType="fitXY"
 
-            </LinearLayout>
-            <View
-                android:id="@+id/view2"
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/ll_choose_delivery_time"
-                android:background="@color/gray4"/>
+                    />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.core.widget.NestedScrollView>
 
 
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-            <EditText
-                android:id="@+id/edt_order_details"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/view2"
-                android:background="@color/white"
-                android:paddingLeft="25dp"
-                android:paddingRight="25dp"
-                android:textColorHint="@color/gray4"
-                android:textColor="@color/gray4"
-                android:hint="@string/write_order_details"
-                android:textSize="14sp"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
-
-                />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </androidx.core.widget.NestedScrollView>
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_margin="15dp"
+        android:src="@drawable/ic_camera"
+        app:borderWidth="3dp"
+        app:pressedTranslationZ="8dp"
+        />
+</FrameLayout>

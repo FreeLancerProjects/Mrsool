@@ -50,6 +50,7 @@ import com.creativeshare.mrsoolk.activities_fragments.activity_home.client_home.
 import com.creativeshare.mrsoolk.activities_fragments.activity_home.client_home.fragments.fragment_home.Fragment_Explain_Courier;
 import com.creativeshare.mrsoolk.activities_fragments.activity_home.client_home.fragments.fragment_home.Fragment_Home;
 import com.creativeshare.mrsoolk.activities_fragments.activity_home.client_home.fragments.fragment_home.Fragment_Map;
+import com.creativeshare.mrsoolk.activities_fragments.activity_home.client_home.fragments.fragment_home.Fragment_Map_Follow_Order;
 import com.creativeshare.mrsoolk.activities_fragments.activity_home.client_home.fragments.fragment_home.Fragment_Map_Location_Details;
 import com.creativeshare.mrsoolk.activities_fragments.activity_home.client_home.fragments.fragment_home.Fragment_Reserve_Order;
 import com.creativeshare.mrsoolk.activities_fragments.activity_home.client_home.fragments.fragment_home.Fragment_Search;
@@ -61,8 +62,10 @@ import com.creativeshare.mrsoolk.activities_fragments.activity_sign_in.activity.
 import com.creativeshare.mrsoolk.activities_fragments.activity_sign_in.fragments.Fragment_Phone;
 import com.creativeshare.mrsoolk.activities_fragments.terms_conditions.TermsConditionsActivity;
 import com.creativeshare.mrsoolk.language.Language_Helper;
+import com.creativeshare.mrsoolk.models.BeDriverModel;
 import com.creativeshare.mrsoolk.models.ChatUserModel;
 import com.creativeshare.mrsoolk.models.Favourite_location;
+import com.creativeshare.mrsoolk.models.FollowModel;
 import com.creativeshare.mrsoolk.models.LocationError;
 import com.creativeshare.mrsoolk.models.NotStateModel;
 import com.creativeshare.mrsoolk.models.NotificationCountModel;
@@ -144,6 +147,7 @@ public class ClientHomeActivity extends AppCompatActivity implements GoogleApiCl
     private Fragment_Explain_Courier fragment_explain_courier;
     private Fragment_Documentation_Data fragment_documentation_data;
     private Fragment_Delegates_Result fragment_delegates_result;
+    private Fragment_Map_Follow_Order fragment_map_follow_order;
     private UserSingleTone userSingleTone;
     private UserModel userModel;
     private Preferences preferences;
@@ -188,158 +192,164 @@ public class ClientHomeActivity extends AppCompatActivity implements GoogleApiCl
         Intent intent = getIntent();
         if (intent!=null)
         {
-            if (intent.hasExtra("status"))
+            try {
+                if (intent.hasExtra("status"))
+                {
+                    String status = intent.getStringExtra("status");
+
+                    Log.e("status",status+"");
+                    if (status.equals(String.valueOf(Tags.STATE_ORDER_NEW)))
+                    {
+
+                        DisplayFragmentMyOrders();
+
+                        new Handler()
+                                .postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        fragment_client_orders.NavigateToFragmentRefresh(0);
+                                    }
+                                },1000);
+
+                        new Handler()
+                                .postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                                        manager.cancelAll();
+                                    }
+                                },1);
+                    }else if (status.equals(String.valueOf(Tags.STATE_DELEGATE_SEND_OFFER)))
+                    {
+                        new Handler()
+                                .postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        DisplayFragmentNotification();
+
+                                    }
+                                },1000);
+                        new Handler()
+                                .postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                                        manager.cancelAll();
+                                    }
+                                },1);
+                    }else if (status.equals(String.valueOf(Tags.STATE_DELEGATE_REFUSE_ORDER)))
+                    {
+                        new Handler()
+                                .postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        DisplayFragmentNotification();
+
+                                    }
+                                },1000);
+
+                        new Handler()
+                                .postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                                        manager.cancelAll();
+                                    }
+                                },1);
+
+                    }else if (status.equals(String.valueOf(Tags.STATE_CLIENT_ACCEPT_OFFER)))
+                    {
+
+                        DisplayFragmentMyOrders();
+
+                        new Handler()
+                                .postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        fragment_client_orders.NavigateToFragmentRefresh(1);
+
+                                    }
+                                },1000);
+
+                        new Handler()
+                                .postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                                        manager.cancelAll();
+                                    }
+                                },1);
+
+
+                    }else if (status.equals(String.valueOf(Tags.STATE_CLIENT_REFUSE_OFFER)))
+                    {
+                        new Handler()
+                                .postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        DisplayFragmentNotification();
+
+                                    }
+                                },1000);
+
+                        new Handler()
+                                .postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                                        manager.cancelAll();
+                                    }
+                                },1);
+                    }
+                    else if (status.equals(String.valueOf(Tags.STATE_DELEGATE_COLLECTING_ORDER)) || status.equals(String.valueOf(Tags.STATE_DELEGATE_COLLECTED_ORDER)) || status.equals(String.valueOf(Tags.STATE_DELEGATE_DELIVERING_ORDER)))
+                    {
+                        DisplayFragmentMyOrders();
+
+                        new Handler()
+                                .postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        fragment_client_orders.NavigateToFragmentRefresh(1);
+
+                                    }
+                                },1000);
+
+                        new Handler()
+                                .postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                                        manager.cancelAll();
+                                    }
+                                },1);
+                    }else if (status.equals(String.valueOf(Tags.STATE_DELEGATE_DELIVERED_ORDER)))
+                    {
+                        DisplayFragmentMyOrders();
+
+                        new Handler()
+                                .postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        fragment_client_orders.NavigateToFragmentRefresh(2);
+
+                                    }
+                                },1000);
+
+                        new Handler()
+                                .postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                                        manager.cancelAll();
+                                    }
+                                },1);
+                    }
+                }
+            }catch (Exception e)
             {
-                String status = intent.getStringExtra("status");
-
-                Log.e("status",status+"");
-                if (status.equals(String.valueOf(Tags.STATE_ORDER_NEW)))
-                {
-
-                    DisplayFragmentMyOrders();
-
-                    new Handler()
-                            .postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    fragment_client_orders.NavigateToFragmentRefresh(0);
-                                }
-                            },1000);
-
-                    new Handler()
-                            .postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-                                    manager.cancelAll();
-                                }
-                            },1);
-                }else if (status.equals(String.valueOf(Tags.STATE_DELEGATE_SEND_OFFER)))
-                {
-                    new Handler()
-                            .postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    DisplayFragmentNotification();
-
-                                }
-                            },1000);
-                    new Handler()
-                            .postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-                                    manager.cancelAll();
-                                }
-                            },1);
-                }else if (status.equals(String.valueOf(Tags.STATE_DELEGATE_REFUSE_ORDER)))
-                {
-                    new Handler()
-                            .postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    DisplayFragmentNotification();
-
-                                }
-                            },1000);
-
-                    new Handler()
-                            .postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-                                    manager.cancelAll();
-                                }
-                            },1);
-
-                }else if (status.equals(String.valueOf(Tags.STATE_CLIENT_ACCEPT_OFFER)))
-                {
-
-                     DisplayFragmentMyOrders();
-
-                    new Handler()
-                            .postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    fragment_client_orders.NavigateToFragmentRefresh(1);
-
-                                }
-                            },1000);
-
-                    new Handler()
-                            .postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-                                    manager.cancelAll();
-                                }
-                            },1);
-
-
-                }else if (status.equals(String.valueOf(Tags.STATE_CLIENT_REFUSE_OFFER)))
-                {
-                    new Handler()
-                            .postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    DisplayFragmentNotification();
-
-                                }
-                            },1000);
-
-                    new Handler()
-                            .postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-                                    manager.cancelAll();
-                                }
-                            },1);
-                }
-                else if (status.equals(String.valueOf(Tags.STATE_DELEGATE_COLLECTING_ORDER)) || status.equals(String.valueOf(Tags.STATE_DELEGATE_COLLECTED_ORDER)) || status.equals(String.valueOf(Tags.STATE_DELEGATE_DELIVERING_ORDER)))
-                {
-                    DisplayFragmentMyOrders();
-
-                    new Handler()
-                            .postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    fragment_client_orders.NavigateToFragmentRefresh(1);
-
-                                }
-                            },1000);
-
-                    new Handler()
-                            .postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-                                    manager.cancelAll();
-                                }
-                            },1);
-                }else if (status.equals(String.valueOf(Tags.STATE_DELEGATE_DELIVERED_ORDER)))
-                {
-                    DisplayFragmentMyOrders();
-
-                    new Handler()
-                            .postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    fragment_client_orders.NavigateToFragmentRefresh(2);
-
-                                }
-                            },1000);
-
-                    new Handler()
-                            .postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-                                    manager.cancelAll();
-                                }
-                            },1);
-                }
+                Log.e("Exception",e.getMessage()+"_");
             }
+
         }
     }
 
@@ -493,6 +503,39 @@ public class ClientHomeActivity extends AppCompatActivity implements GoogleApiCl
             getUserDataById(userModel.getData().getUser_id());
 
         }
+
+
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void ListenNotificationBeDriver(BeDriverModel beDriverModel)
+    {
+
+        if (beDriverModel.getAction_status().equals("2"))
+        {
+            getUserDataById(userModel.getData().getUser_id());
+            
+        }
+
+
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void ListenNotificationDriverUpdate(final FollowModel followModel)
+    {
+
+        Log.e("ssss",followModel.getDriver_lat()+"__");
+       if (fragment_map_follow_order!=null&&fragment_map_follow_order.isAdded())
+       {
+           new Handler()
+                   .postDelayed(new Runnable() {
+                       @Override
+                       public void run() {
+                           fragment_map_follow_order.getFollowData();
+                       }
+                   },10);
+       }
 
 
     }
@@ -1225,6 +1268,23 @@ public class ClientHomeActivity extends AppCompatActivity implements GoogleApiCl
 
 
     }
+    public void DisplayFragmentMapFollowOrder(OrderDataModel.OrderModel orderModel)
+    {
+
+        fragment_count+=1;
+        fragment_map_follow_order = Fragment_Map_Follow_Order.newInstance(orderModel);
+
+        if (fragment_map_follow_order.isAdded()) {
+            fragmentManager.beginTransaction().show(fragment_map_follow_order).commit();
+
+        } else {
+            fragmentManager.beginTransaction().add(R.id.fragment_app_container, fragment_map_follow_order, "fragment_map_follow_order").addToBackStack("fragment_map_follow_order").commit();
+        }
+
+
+
+    }
+
     public void DisplayFragmentExplainCourier()
     {
         fragment_count+=1;
@@ -1713,6 +1773,9 @@ public class ClientHomeActivity extends AppCompatActivity implements GoogleApiCl
                                     }
                                 }
                             },1);
+                        }else if (response.code() == 406)
+                        {
+                            Toast.makeText(ClientHomeActivity.this, getString(R.string.req_sent), Toast.LENGTH_LONG).show();
                         }else
                             {
                                 try {
@@ -2244,8 +2307,8 @@ public class ClientHomeActivity extends AppCompatActivity implements GoogleApiCl
     private void intLocationRequest()
     {
         locationRequest = new LocationRequest();
-        locationRequest.setFastestInterval(10000);
-        locationRequest.setInterval(300000);
+        locationRequest.setFastestInterval(1000*60*2);
+        locationRequest.setInterval(1000*60*2);
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
                 .addLocationRequest(locationRequest);
         PendingResult<LocationSettingsResult> result = LocationServices.SettingsApi.checkLocationSettings(googleApiClient, builder.build());

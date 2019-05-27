@@ -1,5 +1,6 @@
 package com.creativeshare.mrsoolk.activities_fragments.activity_home.client_home.fragments.fragment_home;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,7 @@ import com.creativeshare.mrsoolk.models.OrderDataModel;
 import com.creativeshare.mrsoolk.models.UserModel;
 import com.creativeshare.mrsoolk.singletone.UserSingleTone;
 import com.creativeshare.mrsoolk.tags.Tags;
+import com.squareup.picasso.Picasso;
 
 import java.util.Currency;
 import java.util.Locale;
@@ -29,7 +31,7 @@ import io.paperdb.Paper;
 public class Fragment_Delegate_Current_Order_Details extends Fragment {
     private static final String TAG = "ORDER";
     private ClientHomeActivity activity;
-    private ImageView image_back,image_arrow,image_arrow2,image_chat;
+    private ImageView image_back,image_arrow,image_arrow2,image_chat,order_image;
     private LinearLayout ll_back,ll_address,ll_shipment;
     private String current_lang;
     private TextView tv_client_name,tv_address,tv_order_details,tv_order_state,tv_order_next_state,tv_location_pickup,tv_location_dropoff;
@@ -84,6 +86,7 @@ public class Fragment_Delegate_Current_Order_Details extends Fragment {
 
         }
         image_chat = view.findViewById(R.id.image_chat);
+        order_image = view.findViewById(R.id.order_image);
 
         ll_back = view.findViewById(R.id.ll_back);
         tv_order_details = view.findViewById(R.id.tv_order_details);
@@ -152,6 +155,16 @@ public class Fragment_Delegate_Current_Order_Details extends Fragment {
         tv_client_name.setText(order.getClient_user_full_name());
         tv_order_details.setText(order.getOrder_details()+"\n"+getString(R.string.delivery_cost)+":"+order.getDriver_offer()+currency.getSymbol());
 
+        if (order.getOrder_image().equals("0"))
+        {
+            order_image.setVisibility(View.GONE);
+        }else
+        {
+
+            Picasso.with(activity).load(Uri.parse(Tags.IMAGE_URL+order.getOrder_image())).fit().into(order_image);
+            order_image.setVisibility(View.VISIBLE);
+
+        }
         if (order.getOrder_type().equals("1"))
         {
             tv_address.setText(order.getClient_address());
