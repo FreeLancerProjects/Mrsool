@@ -155,7 +155,7 @@
     <string name="choose_identity_card_image">إختر صورة البطاقة الشخصية</string>
     <string name="choose_license_image">إختر صورة رخصة القيادة</string>
     <string name="suc">تم بنجاح !</string>
-    <string name="succ_be_courier"> لقد اصبحت مرسول بنجاح يمكنك الان استقبال الطلبات من العملاء</string>
+    <string name="succ_be_courier">سنقوم بمراجعة بياناتك سيصلك إشعار قريبا.</string>
     <string name="serv_aval_client">هذه الخدمة متاحة للعملاء فقط</string>
     <string name="already_courier">تم تسجيلك كمرسول من قبل.</string>
     <string name="order_number">رقم الطلب</string>
@@ -273,6 +273,11 @@
     <string name="new_order_sent2">تم إرسال طلب جديد</string>
     <string name="new_order_2">طلب جديد</string>
     <string name="del_sent_offer">المندوب أرسل لك عرض التوصيل</string>
+    <string name="bank_accounts">الحسابات البنكية</string>
+    <string name="bank_name">إسم البنك</string>
+    <string name="account_iban">الايبان</string>
+    <string name="account_number">رقم الحساب</string>
+    <string name="account_name">إسم الحساب</string>
 
 
 </resources>

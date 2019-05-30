@@ -1,6 +1,7 @@
 package com.creativeshare.mrsoolk.services;
 
 import com.creativeshare.mrsoolk.models.AppDataModel;
+import com.creativeshare.mrsoolk.models.BankDataModel;
 import com.creativeshare.mrsoolk.models.CommentDataModel;
 import com.creativeshare.mrsoolk.models.FollowModel;
 import com.creativeshare.mrsoolk.models.MessageDataModel;
@@ -375,6 +376,9 @@ public interface Service {
                                     @Field("driver_id")String driver_id,
                                     @Field("client_id")String client_id
                                     );
+
+    @GET("/Api/banks")
+    Call<BankDataModel> getBankAccount();
 }
 
 

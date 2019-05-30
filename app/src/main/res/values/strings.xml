@@ -157,7 +157,7 @@
     <string name="choose_identity_card_image">Choose identity card image</string>
     <string name="choose_license_image">Choose license image</string>
     <string name="suc">Success !</string>
-    <string name="succ_be_courier">You have been successfully be a Courier. You can now receive orders from clients</string>
+    <string name="succ_be_courier">We will review your data and you will receive a notification soon.</string>
     <string name="serv_aval_client">This service is available to clients</string>
     <string name="already_courier">You are already a courier.</string>
     <string name="order_number">Order number</string>
@@ -276,4 +276,9 @@
     <string name="new_order_sent2">New order sent</string>
     <string name="new_order_2">New order</string>
     <string name="del_sent_offer">Delegate sent offer</string>
+    <string name="bank_accounts">Bank Accounts</string>
+    <string name="bank_name">Bank name</string>
+    <string name="account_iban">Account IBAN</string>
+    <string name="account_number">Account Number</string>
+    <string name="account_name">Account Name</string>
 </resources>

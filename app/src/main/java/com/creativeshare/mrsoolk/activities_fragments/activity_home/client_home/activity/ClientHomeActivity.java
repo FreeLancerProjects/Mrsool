@@ -34,6 +34,7 @@ import androidx.fragment.app.FragmentManager;
 import com.creativeshare.mrsoolk.R;
 import com.creativeshare.mrsoolk.activities_fragments.activity_chat.ChatActivity;
 import com.creativeshare.mrsoolk.activities_fragments.activity_home.client_home.fragments.fragment_home.Fragment_Add_Coupon;
+import com.creativeshare.mrsoolk.activities_fragments.activity_home.client_home.fragments.fragment_home.Fragment_Bank_Account;
 import com.creativeshare.mrsoolk.activities_fragments.activity_home.client_home.fragments.fragment_home.Fragment_Client_Delegate_Offer;
 import com.creativeshare.mrsoolk.activities_fragments.activity_home.client_home.fragments.fragment_home.Fragment_Client_Notifications;
 import com.creativeshare.mrsoolk.activities_fragments.activity_home.client_home.fragments.fragment_home.Fragment_Client_Order_Details;
@@ -148,6 +149,7 @@ public class ClientHomeActivity extends AppCompatActivity implements GoogleApiCl
     private Fragment_Documentation_Data fragment_documentation_data;
     private Fragment_Delegates_Result fragment_delegates_result;
     private Fragment_Map_Follow_Order fragment_map_follow_order;
+    private Fragment_Bank_Account fragment_bank_account;
     private UserSingleTone userSingleTone;
     private UserModel userModel;
     private Preferences preferences;
@@ -1323,6 +1325,23 @@ public class ClientHomeActivity extends AppCompatActivity implements GoogleApiCl
             Common.CreateSignAlertDialog(this,getString(R.string.already_courier));
         }
 
+
+    }
+
+    public void DisplayFragmentBankAccount()
+    {
+
+        fragment_count+=1;
+
+        fragment_bank_account = Fragment_Bank_Account.newInstance();
+
+
+        if (fragment_bank_account.isAdded()) {
+            fragmentManager.beginTransaction().show(fragment_bank_account).commit();
+
+        } else {
+            fragmentManager.beginTransaction().add(R.id.fragment_app_container, fragment_bank_account, "fragment_bank_account").addToBackStack("fragment_bank_account").commit();
+        }
 
     }
 
