@@ -25,6 +25,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.creativeshare.mrsoolk.R;
 import com.creativeshare.mrsoolk.activities_fragments.activity_home.client_home.activity.ClientHomeActivity;
 import com.creativeshare.mrsoolk.adapters.NearbyAdapter;
+import com.creativeshare.mrsoolk.models.PhotosModel;
 import com.creativeshare.mrsoolk.adapters.QueryAdapter;
 import com.creativeshare.mrsoolk.adapters.SliderAdapter;
 import com.creativeshare.mrsoolk.models.NearbyModel;
@@ -327,9 +328,18 @@ public class Fragment_Client_Store extends Fragment {
         List<PlaceModel> returnedList = new ArrayList<>();
         for (NearbyModel nearbyModel : nearbyModelList)
         {
+            PlaceModel placeModel;
 
+            if (nearbyModel.getPhotos()!=null)
+            {
+                placeModel = new PlaceModel(nearbyModel.getId(),nearbyModel.getPlace_id(),nearbyModel.getName(),nearbyModel.getIcon(),nearbyModel.getPhotos(),nearbyModel.getRating(),nearbyModel.getGeometry().getLocation().getLat(),nearbyModel.getGeometry().getLocation().getLng(),nearbyModel.getVicinity());
 
-            PlaceModel placeModel = new PlaceModel(nearbyModel.getId(),nearbyModel.getPlace_id(),nearbyModel.getName(),nearbyModel.getIcon(),nearbyModel.getRating(),nearbyModel.getGeometry().getLocation().getLat(),nearbyModel.getGeometry().getLocation().getLng(),nearbyModel.getVicinity());
+            }else
+                {
+                    placeModel = new PlaceModel(nearbyModel.getId(),nearbyModel.getPlace_id(),nearbyModel.getName(),nearbyModel.getIcon(),new ArrayList<PhotosModel>(),nearbyModel.getRating(),nearbyModel.getGeometry().getLocation().getLat(),nearbyModel.getGeometry().getLocation().getLng(),nearbyModel.getVicinity());
+
+                }
+
 
 
             if (nearbyModel.getOpening_hours()!=null)
@@ -373,6 +383,7 @@ public class Fragment_Client_Store extends Fragment {
                 getNearbyPlaces(location,query);
 
             }
+
     }
 
     private class MyTimerTask extends TimerTask {

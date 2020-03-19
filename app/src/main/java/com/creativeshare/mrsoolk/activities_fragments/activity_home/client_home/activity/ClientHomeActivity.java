@@ -73,6 +73,7 @@ import com.creativeshare.mrsoolk.models.NotificationCountModel;
 import com.creativeshare.mrsoolk.models.NotificationModel;
 import com.creativeshare.mrsoolk.models.NotificationTypeModel;
 import com.creativeshare.mrsoolk.models.OrderDataModel;
+import com.creativeshare.mrsoolk.models.PlaceDetailsModel;
 import com.creativeshare.mrsoolk.models.PlaceModel;
 import com.creativeshare.mrsoolk.models.UserModel;
 import com.creativeshare.mrsoolk.preferences.Preferences;
@@ -973,7 +974,7 @@ public class ClientHomeActivity extends AppCompatActivity implements GoogleApiCl
 
 
     }
-    public void DisplayFragmentReserveOrder(PlaceModel placeModel)
+    public void DisplayFragmentReserveOrder(PlaceModel placeModel, PlaceDetailsModel.PlaceDetails placeDetails)
     {
 
 
@@ -989,7 +990,7 @@ public class ClientHomeActivity extends AppCompatActivity implements GoogleApiCl
                     {
                         fragment_count+=1;
 
-                        fragment_reserve_order = Fragment_Reserve_Order.newInstance(placeModel);
+                        fragment_reserve_order = Fragment_Reserve_Order.newInstance(placeModel,placeDetails);
 
                         if (fragment_reserve_order.isAdded()) {
                             fragmentManager.beginTransaction().show(fragment_reserve_order).commit();

@@ -14,8 +14,9 @@ public class PlaceModel implements Serializable {
     private String address;
     private boolean isOpenNow;
     private List<String> weekday_text;
+    private List<PhotosModel> photosList;
 
-    public PlaceModel(String id, String place_id, String name, String icon, float rating, double lat, double lng, String address) {
+    public PlaceModel(String id, String place_id, String name, String icon,List<PhotosModel> photosList, float rating, double lat, double lng, String address) {
         this.id = id;
         this.place_id = place_id;
         this.name = name;
@@ -24,6 +25,7 @@ public class PlaceModel implements Serializable {
         this.lat = lat;
         this.lng = lng;
         this.address = address;
+        this.photosList = photosList;
     }
 
     public String getId() {
@@ -72,5 +74,9 @@ public class PlaceModel implements Serializable {
 
     public String getAddress() {
         return address;
+    }
+
+    public List<PhotosModel> getPhotosList() {
+        return photosList;
     }
 }

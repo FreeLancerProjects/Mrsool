@@ -32,6 +32,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.creativeshare.mrsoolk.R;
 import com.creativeshare.mrsoolk.activities_fragments.activity_home.client_home.activity.ClientHomeActivity;
 import com.creativeshare.mrsoolk.adapters.NearbyAdapter;
+import com.creativeshare.mrsoolk.models.PhotosModel;
 import com.creativeshare.mrsoolk.adapters.SearchRecentAdapter;
 import com.creativeshare.mrsoolk.models.PlaceModel;
 import com.creativeshare.mrsoolk.models.QueryModel;
@@ -237,7 +238,7 @@ public class Fragment_Search extends Fragment {
 
 
         String loc = "circle:15000@"+lat+","+lng;
-        String fields ="id,place_id,name,geometry,rating,formatted_address,icon,opening_hours";
+        String fields ="id,place_id,name,geometry,rating,formatted_address,icon,opening_hours,photos";
 
         Api.getService("https://maps.googleapis.com/maps/api/")
                 .getNearbyStoresWithKeyword(loc,"textquery",(query+user_address),fields,current_language,getString(R.string.map_api_key))
@@ -297,7 +298,16 @@ public class Fragment_Search extends Fragment {
 
         for (SearchModel searchModel : searchModelList)
         {
-            PlaceModel placeModel = new PlaceModel(searchModel.getId(),searchModel.getPlace_id(),searchModel.getName(),searchModel.getIcon(),searchModel.getRating(),searchModel.getGeometry().getLocation().getLat(),searchModel.getGeometry().getLocation().getLng(),searchModel.getFormatted_address());
+            PlaceModel placeModel ;
+            if (searchModel.getPhotos()!=null)
+            {
+                placeModel = new PlaceModel(searchModel.getId(),searchModel.getPlace_id(),searchModel.getName(),searchModel.getIcon(),searchModel.getPhotos(),searchModel.getRating(),searchModel.getGeometry().getLocation().getLat(),searchModel.getGeometry().getLocation().getLng(),searchModel.getFormatted_address());
+
+            }else
+                {
+                    placeModel = new PlaceModel(searchModel.getId(),searchModel.getPlace_id(),searchModel.getName(),searchModel.getIcon(),new ArrayList<PhotosModel>(),searchModel.getRating(),searchModel.getGeometry().getLocation().getLat(),searchModel.getGeometry().getLocation().getLng(),searchModel.getFormatted_address());
+
+                }
 
             if (searchModel.getOpening_hours()!=null)
             {

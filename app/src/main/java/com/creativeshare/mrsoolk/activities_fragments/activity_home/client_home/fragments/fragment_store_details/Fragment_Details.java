@@ -79,6 +79,7 @@ public class Fragment_Details extends Fragment implements OnMapReadyCallback {
     private int delegate_count = 0;
     private UserSingleTone userSingleTone;
     private UserModel userModel;
+    private PlaceDetailsModel.PlaceDetails placeDetails;
 
     public static Fragment_Details newInstance(PlaceModel placeModel, double lat, double lng)
     {
@@ -216,7 +217,7 @@ public class Fragment_Details extends Fragment implements OnMapReadyCallback {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                activity.DisplayFragmentReserveOrder(placeModel);
+                activity.DisplayFragmentReserveOrder(placeModel,placeDetails);
             }
         });
 
@@ -313,7 +314,7 @@ public class Fragment_Details extends Fragment implements OnMapReadyCallback {
 
     private void getPlaceDetails(PlaceModel placeModel) {
 
-        String fields ="opening_hours";
+        String fields ="opening_hours,photos,reviews";
 
         Api.getService("https://maps.googleapis.com/maps/api/")
                 .getPlaceDetails(placeModel.getPlace_id(),fields,current_language,getString(R.string.map_api_key))
@@ -353,6 +354,8 @@ public class Fragment_Details extends Fragment implements OnMapReadyCallback {
     }
 
     private void updateHoursUI(PlaceDetailsModel body) {
+
+        placeDetails =body.getResult();
 
         if (body.getResult().getOpening_hours()!=null)
         {

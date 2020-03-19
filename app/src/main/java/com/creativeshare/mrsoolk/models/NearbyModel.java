@@ -1,6 +1,7 @@
 package com.creativeshare.mrsoolk.models;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class NearbyModel implements Serializable {
 
@@ -12,6 +13,9 @@ public class NearbyModel implements Serializable {
     private float rating;
     private String vicinity;
     private Opening_Hours opening_hours;
+    private List<PhotosModel> photos;
+
+
 
 
     public Geometry getGeometry() {
@@ -47,6 +51,10 @@ public class NearbyModel implements Serializable {
         return place_id;
     }
 
+    public List<PhotosModel> getPhotos() {
+        return photos;
+    }
+
     public class Geometry implements Serializable
     {
         private Location location;
@@ -79,4 +87,6 @@ public class NearbyModel implements Serializable {
             return open_now;
         }
     }
+
+
 }

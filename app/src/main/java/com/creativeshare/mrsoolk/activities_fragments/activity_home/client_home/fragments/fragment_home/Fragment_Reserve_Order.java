@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
@@ -31,11 +32,14 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
 
 import com.creativeshare.mrsoolk.R;
 import com.creativeshare.mrsoolk.activities_fragments.activity_home.client_home.activity.ClientHomeActivity;
+import com.creativeshare.mrsoolk.adapters.SliderStoreDetailsAdapter;
 import com.creativeshare.mrsoolk.models.Favourite_location;
 import com.creativeshare.mrsoolk.models.OrderIdDataModel;
+import com.creativeshare.mrsoolk.models.PlaceDetailsModel;
 import com.creativeshare.mrsoolk.models.PlaceModel;
 import com.creativeshare.mrsoolk.models.UserModel;
 import com.creativeshare.mrsoolk.preferences.Preferences;
@@ -44,6 +48,7 @@ import com.creativeshare.mrsoolk.share.Common;
 import com.creativeshare.mrsoolk.singletone.UserSingleTone;
 import com.creativeshare.mrsoolk.tags.Tags;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.tabs.TabLayout;
 import com.squareup.picasso.Picasso;
 
 import net.cachapa.expandablelayout.ExpandableLayout;
@@ -63,6 +68,8 @@ import retrofit2.Response;
 
 public class Fragment_Reserve_Order extends Fragment {
     private static final String TAG = "DATA";
+    private static final String TAG2 = "DATA2";
+
     private ClientHomeActivity activity;
     private ImageView image, arrow, image_reserve,image_details;
     private TextView tv_place_name, tv_place_address, tv_address;
@@ -71,6 +78,10 @@ public class Fragment_Reserve_Order extends Fragment {
     private ExpandableLayout expandLayout;
     private TextView tv_fav_address_title, tv_fav_address, tv_delivery_time;
     private EditText edt_order_details;
+    private TabLayout tab;
+    private ViewPager pager;
+    private FrameLayout llSlider;
+    private SliderStoreDetailsAdapter adapter;
     private PlaceModel placeModel;
     private String current_language;
     private Preferences preferences;
@@ -90,6 +101,7 @@ public class Fragment_Reserve_Order extends Fragment {
     private Favourite_location selected_location = null;
     private long selected_time=0;
     private String order_details,delegate_id="";
+    private PlaceDetailsModel.PlaceDetails placeDetails;
 
     @Nullable
     @Override
@@ -99,10 +111,12 @@ public class Fragment_Reserve_Order extends Fragment {
         return view;
     }
 
-    public static Fragment_Reserve_Order newInstance(PlaceModel placeModel) {
+    public static Fragment_Reserve_Order newInstance(PlaceModel placeModel, PlaceDetailsModel.PlaceDetails placeDetails) {
         Fragment_Reserve_Order fragment_reserve_order = new Fragment_Reserve_Order();
         Bundle bundle = new Bundle();
         bundle.putSerializable(TAG, placeModel);
+        bundle.putSerializable(TAG2, placeDetails);
+
         fragment_reserve_order.setArguments(bundle);
         return fragment_reserve_order;
 
@@ -138,6 +152,12 @@ public class Fragment_Reserve_Order extends Fragment {
 
 
         }
+        tab = view.findViewById(R.id.tab);
+        pager = view.findViewById(R.id.pager);
+        llSlider = view.findViewById(R.id.llSlider);
+
+        tab.setupWithViewPager(pager);
+
         ll_back = view.findViewById(R.id.ll_back);
         image = view.findViewById(R.id.image);
         image_details = view.findViewById(R.id.image_details);
@@ -240,6 +260,7 @@ public class Fragment_Reserve_Order extends Fragment {
         Bundle bundle = getArguments();
         if (bundle != null) {
             placeModel = (PlaceModel) bundle.getSerializable(TAG);
+            placeDetails = (PlaceDetailsModel.PlaceDetails) bundle.getSerializable(TAG2);
             updateUI(placeModel);
         }
 
@@ -323,7 +344,34 @@ public class Fragment_Reserve_Order extends Fragment {
         {
             tv_place_name.setText(placeModel.getName());
             tv_place_address.setText(placeModel.getAddress());
-            Picasso.with(activity).load(placeModel.getIcon()).fit().into(image);
+            if (placeModel.getPhotosList().size()>0)
+            {
+                String url = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference="+placeModel.getPhotosList().get(0).getPhoto_reference()+"&key=AIzaSyCbc2Y5AIwZ8uUeHRUXiozGN3CnpjKT0oI";
+                Picasso.with(activity).load(Uri.parse(url)).fit().into(image);
+            }else
+                {
+                    Picasso.with(activity).load(placeModel.getIcon()).fit().into(image);
+
+                }
+
+            if (placeDetails.getPhotos()!=null)
+            {
+                if (placeDetails.getPhotos().size()>0)
+                {
+                    llSlider.setVisibility(View.VISIBLE);
+                    adapter = new SliderStoreDetailsAdapter(placeDetails.getPhotos(),activity);
+                    pager.setAdapter(adapter);
+
+                }else
+                {
+                    llSlider.setVisibility(View.GONE);
+                }
+            }else
+                {
+                    llSlider.setVisibility(View.GONE);
+
+                }
+
 
 
         }
