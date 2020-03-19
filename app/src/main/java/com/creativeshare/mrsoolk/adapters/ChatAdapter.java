@@ -36,6 +36,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
     private final int ITEM_MESSAGE_IMAGE_LEFT = 3;
     private final int ITEM_MESSAGE_IMAGE_RIGHT = 4;
 
+
     private List<MessageModel> messageModelList;
     private String current_user_id;
     private String chat_user_image;

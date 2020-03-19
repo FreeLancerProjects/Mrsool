@@ -97,6 +97,7 @@ public interface Service {
                                     @Part("user_country") RequestBody user_country,
                                     @Part("user_age") RequestBody user_age,
                                     @Part MultipartBody.Part image
+
     );
 
 
